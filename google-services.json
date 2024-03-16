@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "404310386523",
+    "project_id": "car-sharing-tinder-4f633",
+    "storage_bucket": "car-sharing-tinder-4f633.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:404310386523:android:5c266c5e8f1818a9be1c7e",
+        "android_client_info": {
+          "package_name": "com.carsharingtinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "404310386523-b4nc4ljj43qukrgp1k32sq3pdg7mnftu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.carsharingtinder",
+            "certificate_hash": "d4c7bfdd2e04d5653dfc10e620a1ab732a230b42"
+          }
+        },
+        {
+          "client_id": "404310386523-hidmeiimceqv2sc29c3gmsgfda99m20i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWSt8_MiRaV5ErdqVPiUGRTu1Jv9H0z9k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "404310386523-hidmeiimceqv2sc29c3gmsgfda99m20i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "404310386523-vho4jdc2q5km5imu266pcv1gl2tfljp5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.carsharingtinder"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
