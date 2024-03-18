@@ -1,5 +1,5 @@
-import { SafeAreaView, ScrollView, View, Text } from "react-native";
-import { Stack, useRouter } from "expo-router";
+import { SafeAreaView, ScrollView, View, Text, Pressable } from "react-native";
+import { Stack, Link, useRouter } from "expo-router";
 
 const Home = () => {
   return (
@@ -14,7 +14,11 @@ const Home = () => {
       />
       <ScrollView>
         <View>
-          <Text>Home</Text>
+          <Link href="ride" asChild>
+            <Pressable>
+              <Text>Create ride</Text>
+            </Pressable>
+          </Link>
         </View>
       </ScrollView>
     </SafeAreaView>
