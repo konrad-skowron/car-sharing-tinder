@@ -14,6 +14,18 @@ const Home = () => {
       />
       <ScrollView>
         <View>
+          <Link href="ride/App" asChild>
+            <Pressable>
+              <Text>Widok z soboty</Text>
+            </Pressable> 
+            
+          </Link>
+          <Link href="ride/App2" asChild>
+            <Pressable>
+              <Text>Widok zaznaczanie dni</Text>
+            </Pressable> 
+            
+          </Link>
           <Link href="ride" asChild>
             <Pressable>
               <Text>Create ride</Text>
