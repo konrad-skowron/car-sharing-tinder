@@ -1,15 +1,15 @@
-import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import React from "react";
+import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Link } from "expo-router";
 
 const NextButton = ({ text }) => {
   return (
     <View style={styles.buttonEnv}>
-        <Link href={text} asChild>
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Next</Text>
-            </TouchableOpacity>
-        </Link>   
+      <Link href={text} asChild>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Next</Text>
+        </TouchableOpacity>
+      </Link>
     </View>
   );
 };
@@ -18,12 +18,13 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#222831",
     borderRadius: 16,
-    width: '90%',
-    alignItems: 'center', 
-    justifyContent: 'center',
+    width: "90%",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  buttonEnv:{
-    alignItems: 'center',
+  buttonEnv: {
+    alignItems: "center",
+    marginTop: "auto",
   },
   buttonText: {
     fontSize: 19,
