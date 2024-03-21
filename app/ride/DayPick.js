@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS, FONTS } from "../../constants";
 import NavBar from "./NavBar";
-import NextButton from "./NextButton";
+import MainButton from "./MainButton";
 
 export default function App() {
   const [days, setDays] = useState([
@@ -52,7 +52,7 @@ export default function App() {
         ))}
       </View>
 
-      <NextButton text="ride/TimePick" />
+      <MainButton href="ride/TimePick" content="Next" />
       <StatusBar style="auto" />
     </View>
   );

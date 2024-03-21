@@ -1,47 +1,53 @@
 import { useState } from "react";
-import RNDateTimePicker from '@react-native-community/datetimepicker';
+import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Button } from "react-native";
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  SafeAreaView,
+  Button,
+} from "react-native";
+import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import NavBar from "./NavBar";
-import NextButton from "./NextButton";
+import MainButton from "./MainButton";
 import Link from "expo-router";
-export default function App () {
-    const [date, setDate] = useState(new Date(1598051730000));
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
-  
-    const onChange = (event, selectedDate) => {
-      const currentDate = selectedDate;
-      setShow(false);
-      setDate(currentDate);
-    };
-  
-    const showMode = (currentMode) => {
-      setShow(true);
-      setMode(currentMode);
-    };
- 
-    const showTimepicker = () => {
-      showMode('time');
-    };
-  
-    return (
+export default function App() {
+  const [date, setDate] = useState(new Date(1598051730000));
+  const [mode, setMode] = useState("date");
+  const [show, setShow] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showTimepicker = () => {
+    showMode("time");
+  };
+
+  return (
     <View style={styles.container}>
       <NavBar prev="ride/LocalizationPick" close="ride/LocalizationPick" />
       <SafeAreaView>
         <View style={styles.buttonEnv}>
-            <TouchableOpacity style={styles.button} onPress={showTimepicker}>
-                <Text style={styles.buttonHourPicker}>{date.getHours()} : {date.getMinutes()}</Text>
-            </TouchableOpacity>
-            
+          <TouchableOpacity style={styles.button} onPress={showTimepicker}>
+            <Text style={styles.buttonHourPicker}>
+              {date.getHours()} : {date.getMinutes()}
+            </Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.textEnv}>
-            <Text style={styles.text}>
-                Where are you going?
-            </Text>
+          <Text style={styles.text}>What time are you leaving?</Text>
         </View>
-        
+
         {show && (
           <RNDateTimePicker
             textColor="red"
@@ -51,21 +57,17 @@ export default function App () {
             is24Hour={true}
             onChange={onChange}
             display="spinner"
-            positiveButton={{label: 'OK', textColor: "#222831"}}
-            negativeButton={{label: 'Anuluj', textColor: '#222831'}}
+            positiveButton={{ label: "OK", textColor: "#222831" }}
+            negativeButton={{ label: "Anuluj", textColor: "#222831" }}
             minuteInterval={5}
           />
         )}
       </SafeAreaView>
-      <NextButton text="ride/CarDetails" />
+      <MainButton href="ride/CarDetails" content="Next" />
       <StatusBar style="auto" />
     </View>
-
-
-      
-    );
-  };
-
+  );
+}
 
 const styles = StyleSheet.create({
   inputWrapper: {
@@ -100,11 +102,15 @@ const styles = StyleSheet.create({
     padding: 32,
     backgroundColor: "#eee",
   },
-  textEnv:{
+  textEnv: {
+    marginTop: 8,
     marginBottom: "auto",
     // paddingVertical: 5,
   },
-  
+  text: {
+    fontSize: 16,
+  },
+
   button: {
     backgroundColor: "#222831",
     borderRadius: 16,
@@ -116,7 +122,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: "auto",
   },
-  buttonHourPicker:{
+  buttonHourPicker: {
     fontSize: 42,
     color: "#eee",
     margin: "auto",

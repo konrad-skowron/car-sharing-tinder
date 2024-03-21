@@ -4,10 +4,9 @@ import { Link } from "expo-router";
 const StartLocation = () => {
   return (
     <View>
-      <Text>Start Location</Text>
-      <Link href="ride/endLocation" asChild>
+      <Link href="ride/Home" asChild>
         <Pressable>
-          <Text>End Location</Text>
+          <Text>Main Screen</Text>
         </Pressable>
       </Link>
       <Link href="ride/LocalizationPick" asChild>

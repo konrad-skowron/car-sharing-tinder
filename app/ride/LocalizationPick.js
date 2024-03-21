@@ -1,17 +1,22 @@
 // import * as React from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import { useFonts } from "expo-font";
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS, FONTS } from "../../constants";
 import NavBar from "./NavBar";
-import NextButton from "./NextButton";
+import MainButton from "./MainButton";
 
 export default function App() {
-
   return (
     <View style={styles.container}>
-      <NavBar prev = "ride/LocalizationPick" close = "ride/LocalizationPick"/>
+      <NavBar prev="ride/LocalizationPick" close="ride/LocalizationPick" />
       <View style={styles.inputWrapper}>
         <View>
           <TextInput placeholder="Start location" style={styles.input} />
@@ -20,13 +25,11 @@ export default function App() {
           </Text>
         </View>
         <View>
-          <TextInput placeholder="End location" style={styles.input} />
-          <Text style={styles.text}>
-            Where are you going?
-          </Text>
+          <TextInput placeholder="Destination" style={styles.input} />
+          <Text style={styles.text}>Where are you going?</Text>
         </View>
       </View>
-      <NextButton text="ride/DayPick" />
+      <MainButton href="ride/DayPick" content="Next" />
 
       <StatusBar style="auto" />
     </View>
@@ -36,7 +39,7 @@ export default function App() {
 const styles = StyleSheet.create({
   inputWrapper: {
     marginBottom: "auto",
-    rowGap: 15,
+    rowGap: 16,
   },
   input: {
     backgroundColor: "#D9D9D9",
@@ -45,14 +48,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   text: {
-     fontSize: 15,
+    marginTop: 8,
+    fontSize: 16,
   },
-   container: {
-     flex: 1,
-     display: "flex",
-     flexDirection: 'column',
-     padding: 32,
-     rowGap: 50,
-     backgroundColor: "#eee",
-   },
+  container: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    padding: 32,
+    rowGap: 50,
+    backgroundColor: "#eee",
+  },
 });

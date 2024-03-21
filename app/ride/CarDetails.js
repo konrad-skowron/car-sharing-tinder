@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import NavBar from "./NavBar";
-import NextButton from "./NextButton";
+import MainButton from "./MainButton";
 import { useState } from "react";
 
 export default function App() {
@@ -56,7 +56,7 @@ export default function App() {
           )}
         </View>
       </View>
-      <NextButton text="" />
+      <MainButton href="ride/Success" content="Finish" />
 
       <StatusBar style="auto" />
     </View>
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   text: {
-    fontSize: 15,
+    fontSize: 16,
   },
   container: {
     flex: 1,
