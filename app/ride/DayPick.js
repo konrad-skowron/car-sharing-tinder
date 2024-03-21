@@ -52,7 +52,7 @@ export default function App() {
         ))}
       </View>
 
-      <NextButton text="ride/CarDetails" />
+      <NextButton text="ride/TimePick" />
       <StatusBar style="auto" />
     </View>
   );
