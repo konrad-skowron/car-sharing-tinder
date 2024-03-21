@@ -21,3 +21,6 @@ npx create-expo-app -e with-router
 ## 📝 Notes
 
 - [Expo Router: Docs](https://docs.expo.dev/router/introduction/)
+
+## link do figmy
+https://www.figma.com/file/mQtdhQaVYkFxQqXJ3gTXtB/App-design?type=design&node-id=39-107&mode=design&t=l6Enqh1r5e2inR4q-0
