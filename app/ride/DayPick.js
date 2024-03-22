@@ -47,7 +47,7 @@ export default function App() {
             }
             onPress={() => handleDayPress(index)}
           >
-            <Text style={styles.buttonDayText}>{day.day}</Text>
+            <Text style={day.pressed ? styles.buttonDayTextPressed : styles.buttonDayTextUnPressed}>{day.day}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -76,13 +76,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  buttonDayText: {
+  buttonDayTextUnPressed: {
     fontSize: 20,
     color: "#000000",
     margin: "auto",
     padding: 10,
-    opacity: 0.4,
+    opacity: 0.6,
   },
+  buttonDayTextPressed: {
+    fontSize: 20,
+    color: "#FFFFFF",
+    margin: "auto",
+    padding: 10,
+    opacity: 0.6,
+  },
+
   container: {
     flex: 1,
     display: "flex",

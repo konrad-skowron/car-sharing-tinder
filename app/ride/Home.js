@@ -75,7 +75,7 @@ const Home = () => {
           </Link>
         </View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Link href="" asChild>
+          <Link href="ride/AboutUser" state={{some: "value"}} asChild>
             <TouchableOpacity style={styles.navButtons}>
               <FontAwesome6
                 name="face-smile"
@@ -89,11 +89,17 @@ const Home = () => {
       </View>
       <View>
         <Text style={{ fontSize: 16, marginBottom: 4 }}>Available:</Text>
-        <View style={styles.tileContainer}>
-          {sampleRides.map((sampleRide) => (
-            <RideTile key={sampleRide.id} ride={sampleRide} />
-          ))}
-        </View>
+          <View style={styles.tileContainer}>
+            {sampleRides.map((sampleRide) => (
+              <Link href="ride/AboutRide" asChild>
+                <TouchableOpacity>
+                  <RideTile key={sampleRide.id} ride={sampleRide} />       
+                </TouchableOpacity>
+              </Link>
+            ))}
+          </View>
+          
+                  
       </View>
       <View style={{ position: "fixed", alignSelf: "flex-end" }}>
         <Link href="ride/LocalizationPick" asChild>
