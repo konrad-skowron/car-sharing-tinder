@@ -113,7 +113,6 @@ const Home = () => {
           </TouchableOpacity>
         </Link>
       </View>
-
       <StatusBar style="auto" />
     </View>
   );

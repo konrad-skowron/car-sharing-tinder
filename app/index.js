@@ -1,9 +1,9 @@
 import { SafeAreaView, ScrollView, View, Text, Pressable } from "react-native";
 import { Stack, Link, useRouter } from "expo-router";
-import Home from "./ride/Home";
+import SignIn from "./ride/SignIn";
 const App = () => {
   return (
-    <Home />
+    <SignIn />
 
     // <SafeAreaView>
     //   <Stack.Screen
