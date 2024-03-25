@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -8,11 +8,11 @@ import {
   TouchableOpacity,
   Button
 } from "react-native";
-import { UserContext } from '../../../UserContext';
 import { Link } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome6 } from "@expo/vector-icons";
 import RideTile from "../../AboutRide/General/RideTile";
+import { UserContext } from '../../../UserContext';
 
 const sampleRides = [
   {
@@ -60,19 +60,12 @@ const sampleRides = [
 ];
 
 const Home = () => {
-  const { user, getUserData, handleAuthentication } = useContext(UserContext);
-  const [userData, setUserData] = useState('');
-
-  useEffect(() => {
-    getUserData(user.uid).then(data => {
-      setUserData(data);
-   });
- }, []);
+  const { firstName, handleAuthentication } = useContext(UserContext);
 
   return (
     <View style={styles.container}>
       <View>
-        <Text>Welcome {userData.firstName}</Text>
+        <Text>Welcome {firstName}</Text>
         <Button onPress={handleAuthentication} title="Sign out" />
       </View>
       <View style={styles.navWrapper}>
@@ -89,7 +82,7 @@ const Home = () => {
           </Link>
         </View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Link href="../../User/AboutUser/AboutUser" state={{ some: "value" }} asChild>
+          <Link href="ride/User/AboutUser/AboutUser" state={{ some: "value" }} asChild>
             <TouchableOpacity style={styles.navButtons}>
               <FontAwesome6
                 name="face-smile"
@@ -105,7 +98,7 @@ const Home = () => {
         <Text style={{ fontSize: 16, marginBottom: 4 }}>Available:</Text>
         <View style={styles.tileContainer}>
           {sampleRides.map((sampleRide) => (
-            <Link key={sampleRide.id} href="../../AboutRide/Detailed/AboutRide" asChild>
+            <Link key={sampleRide.id} href="ride/AboutRide/Detailed/AboutRide" asChild>
               <TouchableOpacity>
                 <RideTile ride={sampleRide} />
               </TouchableOpacity>
@@ -114,7 +107,7 @@ const Home = () => {
         </View>
       </View>
       <View style={{ position: "fixed", alignSelf: "flex-end" }}>
-        <Link href="../../AddingOffer/LocalizationPick/LocalizationPick" asChild>
+        <Link href="ride/AddingOffer/LocalizationPick/LocalizationPick" asChild>
           <TouchableOpacity style={styles.plusButton}>
             <AntDesign
               name="plus"

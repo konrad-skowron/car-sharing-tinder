@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import app from "../firebaseConfig";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from '@firebase/auth';
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import Layout from "./_layout";
 import SignIn from "./ride/Authentication/Login/SignIn";
 import SignUp from "./ride/Authentication/Register/SignUp";
 import Home from "./ride/MainPage/Home/Home";
@@ -32,14 +33,24 @@ const App = () => {
         await signOut(auth);
       } else {
         if (isLogin) {
-          await signInWithEmailAndPassword(auth, email, password);
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          const userUid = userCredential.user.uid;
+
+          const db = getFirestore(app);
+          const docRef = doc(db, "users", userUid);
+          const docSnap = await getDoc(docRef);
+
+          setFirstName(docSnap.data().firstName);
+          setLastName(docSnap.data().lastName);
+          setPhoneNumber(docSnap.data().phoneNumber);
+          setEmail(userCredential.user.email);
         } else {
           const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          const userId = userCredential.user.uid;
+          const userUid = userCredential.user.uid;
 
           const db = getFirestore(app);
 
-          await setDoc(doc(db, "users", userId), {
+          await setDoc(doc(db, "users", userUid), {
             firstName: firstName,
             lastName: lastName,
             phoneNumber: phoneNumber
@@ -51,19 +62,9 @@ const App = () => {
     }
   };
 
-  const getUserData = async (userUid) => {
-    const db = getFirestore(app);
-    const docRef = doc(db, "users", userUid);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      return docSnap.data();
-    }
-  };
-
   return (
     user ? (
-      <UserContext.Provider value={{ user, getUserData, handleAuthentication }}>
+      <UserContext.Provider value={{ firstName, lastName, email, phoneNumber, handleAuthentication }}>
         <Home />
       </UserContext.Provider>
     ) : (
