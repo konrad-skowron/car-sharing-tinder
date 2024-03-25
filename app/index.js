@@ -1,4 +1,5 @@
-import SignIn from "./ride/SignIn";
+import SignIn from "./ride/Authentication/Login/SignIn";
+import Layout from "./_layout";
 const App = () => {
   return (
     <SignIn />

@@ -1,0 +1,39 @@
+.container {
+    flex: 1;
+    display: "flex";
+    flex-direction: "column";
+    /* flexDirection: "column"; */
+    row-gap: 50;
+    padding: 32;
+    background-color: "eee";
+ }
+.outer {
+    margin-top: 32;
+    display: "flex";
+    justify-content: "center";
+    align-items: "center";
+    margin-left: auto;
+    margin-right: auto;
+    width: 256;
+    height: 256;
+    border-radius: 256;
+    /* backgroundColor: COLORS.primary; */
+}
+.inner {
+    display: "flex";
+    justify-content: "center";
+    align-items: "center";
+    margin-left: auto;
+    margin-right: auto;
+    width: 208;
+    height: 208;
+    border-radius: 256;
+    border-width: 4;
+    /* borderColor: COLORS.white; */
+    /* backgroundColor: COLORS.primary, */
+  }
+  .title {
+    margin-top: 64;
+    font-size: 32;
+    text-align: center;
+}
