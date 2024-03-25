@@ -1,6 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Link } from "expo-router";
+import { FONTS } from "../../constants";
 
 const MainButton = ({ href, content }) => {
   return (
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#222831",
     borderRadius: 16,
-    width: "90%",
+    width: "100%",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -27,7 +28,8 @@ const styles = StyleSheet.create({
     marginTop: "auto",
   },
   buttonText: {
-    fontSize: 19,
+    fontFamily: FONTS.primaryBold,
+    fontSize: 20,
     color: "#eee",
     margin: "auto",
     padding: 16,

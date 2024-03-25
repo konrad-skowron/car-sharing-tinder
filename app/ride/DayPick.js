@@ -3,10 +3,12 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS, FONTS } from "../../constants";
+import { Link, Stack, useRouter } from "expo-router";
 import NavBar from "./NavBar";
 import MainButton from "./MainButton";
 
 export default function App() {
+  const router = useRouter();
   const [days, setDays] = useState([
     { day: "Monday", pressed: false },
     { day: "Tuesday", pressed: false },
@@ -27,7 +29,24 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <NavBar prev="ride/LocalizationPick" close="ride/LocalizationPick" />
+      <Stack.Screen
+        options={{
+          headerShadowVisible: false,
+          headerTitle: "",
+          headerStyle: { backgroundColor: "#eee" },
+          headerRight: () => (
+            <AntDesign
+              name="close"
+              size={24}
+              color={COLORS.darkGray}
+              onPress={() => {
+                router.navigate("ride/Home");
+              }}
+            />
+          ),
+        }}
+      />
+      {/* <NavBar prev="ride/LocalizationPick" close="ride/LocalizationPick" /> */}
       <View
         style={{
           width: "100%",
@@ -47,7 +66,15 @@ export default function App() {
             }
             onPress={() => handleDayPress(index)}
           >
-            <Text style={day.pressed ? styles.buttonDayTextPressed : styles.buttonDayTextUnPressed}>{day.day}</Text>
+            <Text
+              style={
+                day.pressed
+                  ? styles.buttonDayTextPressed
+                  : styles.buttonDayTextUnPressed
+              }
+            >
+              {day.day}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -71,6 +98,7 @@ const styles = StyleSheet.create({
   },
   buttonDayUnpressed: {
     backgroundColor: "#D9D9D9",
+
     width: "100%",
     borderRadius: 8,
     alignItems: "center",
@@ -78,6 +106,7 @@ const styles = StyleSheet.create({
   },
   buttonDayTextUnPressed: {
     fontSize: 20,
+    fontFamily: FONTS.primaryRegular,
     color: "#000000",
     margin: "auto",
     padding: 10,
@@ -85,6 +114,7 @@ const styles = StyleSheet.create({
   },
   buttonDayTextPressed: {
     fontSize: 20,
+    fontFamily: FONTS.primaryRegular,
     color: "#FFFFFF",
     margin: "auto",
     padding: 10,

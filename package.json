@@ -23,7 +23,8 @@
     "react-native-screens": "~3.29.0",
     "react-native-web": "~0.19.6",
     "@react-native-community/datetimepicker": "7.6.1",
-    "expo-linear-gradient": "~12.7.2"
+    "expo-linear-gradient": "~12.7.2",
+    "expo-font": "~11.10.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

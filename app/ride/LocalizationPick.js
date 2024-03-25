@@ -1,4 +1,3 @@
-// import * as React from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -6,7 +5,9 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  Button,
 } from "react-native";
+import { Link, Stack, useRouter } from "expo-router";
 import { useFonts } from "expo-font";
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS, FONTS } from "../../constants";
@@ -14,9 +15,28 @@ import NavBar from "./NavBar";
 import MainButton from "./MainButton";
 
 export default function App() {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
-      <NavBar prev="ride/LocalizationPick" close="ride/LocalizationPick" />
+      <Stack.Screen
+        options={{
+          headerShadowVisible: false,
+          headerTitle: "",
+          headerStyle: { backgroundColor: "#eee" },
+          headerRight: () => (
+            <AntDesign
+              name="close"
+              size={24}
+              color={COLORS.darkGray}
+              onPress={() => {
+                router.navigate("ride/Home");
+              }}
+            />
+          ),
+        }}
+      />
+      {/* <NavBar prev="ride/LocalizationPick" close="ride/LocalizationPick" /> */}
       <View style={styles.inputWrapper}>
         <View>
           <TextInput placeholder="Start location" style={styles.input} />
@@ -30,7 +50,6 @@ export default function App() {
         </View>
       </View>
       <MainButton href="ride/DayPick" content="Next" />
-
       <StatusBar style="auto" />
     </View>
   );
@@ -43,20 +62,23 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: "#D9D9D9",
-    padding: 8,
-    fontSize: 19,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    fontSize: 18,
+    fontFamily: FONTS.primaryRegular,
     borderRadius: 8,
   },
   text: {
     marginTop: 8,
     fontSize: 16,
+    fontFamily: FONTS.primaryRegular,
   },
   container: {
     flex: 1,
     display: "flex",
     flexDirection: "column",
     padding: 32,
-    rowGap: 50,
+    rowGap: 32,
     backgroundColor: "#eee",
   },
 });

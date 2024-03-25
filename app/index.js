@@ -1,5 +1,3 @@
-import { SafeAreaView, ScrollView, View, Text, Pressable } from "react-native";
-import { Stack, Link, useRouter } from "expo-router";
 import SignIn from "./ride/SignIn";
 const App = () => {
   return (

@@ -1,6 +1,10 @@
 const FONTS = {
-  primary: "Inter",
-  secondary: "Montserrat",
+  primaryRegular: "DMRegular",
+  primaryMedium: "DMMedium",
+  primaryBold: "DMBold",
+  secondaryRegular: "MontserratRegular",
+  secondaryMedium: "MontserratMedium",
+  secondaryBold: "MontserratBold",
 };
 
 export { FONTS };

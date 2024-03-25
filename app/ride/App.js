@@ -1,16 +1,17 @@
 import * as React from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import { useFonts } from "expo-font";
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS, FONTS } from "../../constants";
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
-    Inter: require("../../assets/Inter.ttf"),
-    Montserrat: require("../../assets/Montserrat.ttf"),
-  });
-
   return (
     <View style={styles.container}>
       <View
@@ -19,8 +20,8 @@ export default function App() {
           flexDirection: "row",
           justifyContent: "space-between",
           width: "100%",
-          padding: 0, 
-          paddingBottom: 50 
+          padding: 0,
+          paddingBottom: 50,
         }}
       >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
