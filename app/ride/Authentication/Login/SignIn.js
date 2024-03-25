@@ -12,13 +12,13 @@ import { Link, Stack } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function SignIn({
-  email,
-  setEmail,
-  password,
-  setPassword,
-  setIsLogin,
-  handleAuthentication,
+export default function SignIn({ 
+  email, 
+  setEmail, 
+  password, 
+  setPassword, 
+  setIsLogin, 
+  handleAuthentication
 }) {
   return (
     <SafeAreaView>
@@ -49,9 +49,7 @@ export default function SignIn({
                 secureTextEntry
               />
             </View>
-
             <View style={{ width: "100%", gap: 16 }}>
-              {/* <Button onPress={handleAuthentication} title="SIGN IN" style /> */}
               <TouchableOpacity
                 style={styles.button}
                 onPress={handleAuthentication}
@@ -77,6 +75,7 @@ export default function SignIn({
     </SafeAreaView>
   );
 }
+
 const styles = {
   inputs: {
     width: "100%",
@@ -100,7 +99,6 @@ const styles = {
     width: "100%",
     height: "100%",
   },
-
   image: {
     width: "80%",
     height: 190,

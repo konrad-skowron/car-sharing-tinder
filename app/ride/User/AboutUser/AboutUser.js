@@ -11,6 +11,8 @@ import {StyleSheet, View,
 } from "react-native";
 import PrevButton from "../../Components/PrevButton/PrevButton";
 import MainButton from "../../Components/MainButton/MainButton";
+import React, { useContext } from 'react';
+import { UserContext } from '../../../UserContext';
 
 const sampleUser = {
   user: {
@@ -28,10 +30,8 @@ const sampleUser = {
   },
   }
   
-
-
-
 export default function App() {
+  const { user, getUserData, handleAuthentication } = useContext(UserContext);
   return (
     <SafeAreaView style={styles.container}>
       <PrevButton prev="../../MainPage/Home/Home" />

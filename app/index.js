@@ -1,5 +1,3 @@
-import { SafeAreaView, ScrollView, View, Text, Pressable } from "react-native";
-import { Stack, Link, useRouter } from "expo-router";
 import React, { useState, useEffect } from 'react';
 import app from "../firebaseConfig";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from '@firebase/auth';
@@ -7,6 +5,7 @@ import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 import SignIn from "./ride/Authentication/Login/SignIn";
 import SignUp from "./ride/Authentication/Register/SignUp";
 import Home from "./ride/MainPage/Home/Home";
+import { UserContext } from './UserContext';
 
 const App = () => {
   const [email, setEmail] = useState('');
@@ -64,11 +63,9 @@ const App = () => {
 
   return (
     user ? (
-      <Home
-        user={user}
-        getUserData={getUserData}
-        handleAuthentication={handleAuthentication}
-      />
+      <UserContext.Provider value={{ user, getUserData, handleAuthentication }}>
+        <Home />
+      </UserContext.Provider>
     ) : (
       isLogin ? (
         <SignIn

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -6,8 +6,9 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Button,
+  Button
 } from "react-native";
+import { UserContext } from '../../../UserContext';
 import { Link } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -58,10 +59,11 @@ const sampleRides = [
   },
 ];
 
-const Home = ({ user, getUserData, handleAuthentication }) => {
- const [userData, setUserData] = useState('');
+const Home = () => {
+  const { user, getUserData, handleAuthentication } = useContext(UserContext);
+  const [userData, setUserData] = useState('');
 
- useEffect(() => {
+  useEffect(() => {
     getUserData(user.uid).then(data => {
       setUserData(data);
    });

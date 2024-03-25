@@ -1,23 +1,24 @@
 import React from "react";
 import { View, Image, Text, TextInput, ScrollView, Button } from "react-native";
 import { COLORS, FONTS } from "../../../../constants";
-import MainButton from "../../Components/MainButton/MainButton";
 import { Link, Stack } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function SignUp({ firstName,
-                                 setFirstName,
-                                 lastName,
-                                 setLastName,
-                                 email,
-                                 setEmail,
-                                 phoneNumber,
-                                 setPhoneNumber,
-                                 password,
-                                 setPassword,
-                                 setIsLogin,
-                                 handleAuthentication }) {
+export default function SignUp({ 
+  firstName,
+  setFirstName,
+  lastName,
+  setLastName,
+  email,
+  setEmail,
+  phoneNumber,
+  setPhoneNumber,
+  password,
+  setPassword,
+  setIsLogin,
+  handleAuthentication 
+}) {
   return (
     <SafeAreaView>
       <Stack.Screen options={{ headerShown: false }} />
