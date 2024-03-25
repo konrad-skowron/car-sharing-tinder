@@ -1,16 +1,25 @@
 import React from "react";
-import { View, Image, Text, TextInput, Button } from "react-native";
+import {
+  View,
+  Image,
+  Text,
+  TextInput,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 import { COLORS, FONTS } from "../../../../constants";
 import { Link, Stack } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function SignIn({ email,
-                                 setEmail,
-                                 password,
-                                 setPassword,
-                                 setIsLogin,
-                                 handleAuthentication }) {
+export default function SignIn({
+  email,
+  setEmail,
+  password,
+  setPassword,
+  setIsLogin,
+  handleAuthentication,
+}) {
   return (
     <SafeAreaView>
       <Stack.Screen options={{ headerShown: false }} />
@@ -26,27 +35,40 @@ export default function SignIn({ email,
           <View style={{ width: "100%", gap: 16 }}>
             <View style={styles.inputs}>
               <TextInput
-                  style={styles.input}
-                  value={email}
-                  onChangeText={setEmail}
-                  placeholder="Email"
-                  autoCapitalize="none"
+                style={styles.input}
+                value={email}
+                onChangeText={setEmail}
+                placeholder="Email"
+                autoCapitalize="none"
               />
               <TextInput
-                  style={styles.input}
-                  value={password}
-                  onChangeText={setPassword}
-                  placeholder="Password"
-                  secureTextEntry
+                style={styles.input}
+                value={password}
+                onChangeText={setPassword}
+                placeholder="Password"
+                secureTextEntry
               />
             </View>
 
             <View style={{ width: "100%", gap: 16 }}>
-              <Button onPress={handleAuthentication} title="SIGN IN" />
+              {/* <Button onPress={handleAuthentication} title="SIGN IN" style /> */}
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleAuthentication}
+              >
+                <Text style={styles.buttonText}>SIGN IN</Text>
+              </TouchableOpacity>
               <View style={styles.buttonTextEnv}>
-                  <Text onPress={() => setIsLogin(false)} style={{ color: "#000", textDecorationLine: "underline", fontFamily: FONTS.primaryRegular }}>
-                    Don't have an account? Sign up!
-                  </Text>
+                <Text
+                  onPress={() => setIsLogin(false)}
+                  style={{
+                    color: "#000",
+                    textDecorationLine: "underline",
+                    fontFamily: FONTS.primaryRegular,
+                  }}
+                >
+                  Don't have an account? Sign up!
+                </Text>
               </View>
             </View>
           </View>
@@ -96,5 +118,19 @@ const styles = {
     borderRadius: 10,
     fontSize: 18,
     fontFamily: FONTS.primaryRegular,
+  },
+  button: {
+    backgroundColor: "#222831",
+    borderRadius: 16,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonText: {
+    fontFamily: FONTS.primaryBold,
+    fontSize: 20,
+    color: "#eee",
+    margin: "auto",
+    padding: 16,
   },
 };
