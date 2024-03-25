@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -5,6 +6,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Button,
 } from "react-native";
 import { Link } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
@@ -56,9 +58,21 @@ const sampleRides = [
   },
 ];
 
-const Home = () => {
+const Home = ({ user, getUserData, handleAuthentication }) => {
+ const [userData, setUserData] = useState('');
+
+ useEffect(() => {
+    getUserData(user.uid).then(data => {
+      setUserData(data);
+   });
+ }, []);
+
   return (
     <View style={styles.container}>
+      <View>
+        <Text>Welcome {userData.firstName}</Text>
+        <Button onPress={handleAuthentication} title="Sign out" />
+      </View>
       <View style={styles.navWrapper}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Link href="" asChild>

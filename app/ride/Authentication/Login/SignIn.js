@@ -1,12 +1,16 @@
 import React from "react";
-import { View, Image, Text, TextInput } from "react-native";
+import { View, Image, Text, TextInput, Button } from "react-native";
 import { COLORS, FONTS } from "../../../../constants";
-import MainButton from "../../Components/MainButton/MainButton";
 import { Link, Stack } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function SignIn() {
+export default function SignIn({ email,
+                                 setEmail,
+                                 password,
+                                 setPassword,
+                                 setIsLogin,
+                                 handleAuthentication }) {
   return (
     <SafeAreaView>
       <Stack.Screen options={{ headerShown: false }} />
@@ -21,24 +25,28 @@ export default function SignIn() {
           />
           <View style={{ width: "100%", gap: 16 }}>
             <View style={styles.inputs}>
-              <TextInput style={styles.input} placeholder="Username" />
               <TextInput
-                style={styles.input}
-                placeholder="Password"
-                secureTextEntry={true}
+                  style={styles.input}
+                  value={email}
+                  onChangeText={setEmail}
+                  placeholder="Email"
+                  autoCapitalize="none"
+              />
+              <TextInput
+                  style={styles.input}
+                  value={password}
+                  onChangeText={setPassword}
+                  placeholder="Password"
+                  secureTextEntry
               />
             </View>
 
             <View style={{ width: "100%", gap: 16 }}>
-              <MainButton href="../../ride/MainPage/Home/Home" content="LOGIN" />
+              <Button onPress={handleAuthentication} title="SIGN IN" />
               <View style={styles.buttonTextEnv}>
-                <Link href="../../ride/Authentication/Register/Register" asChild>
-                  <Text
-                    style={{ color: "#000", fontFamily: FONTS.primaryRegular }}
-                  >
+                  <Text onPress={() => setIsLogin(false)} style={{ color: "#000", textDecorationLine: "underline", fontFamily: FONTS.primaryRegular }}>
                     Don't have an account? Sign up!
                   </Text>
-                </Link>
               </View>
             </View>
           </View>

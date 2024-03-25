@@ -1,12 +1,23 @@
 import React from "react";
-import { View, Image, Text, TextInput, ScrollView } from "react-native";
+import { View, Image, Text, TextInput, ScrollView, Button } from "react-native";
 import { COLORS, FONTS } from "../../../../constants";
 import MainButton from "../../Components/MainButton/MainButton";
 import { Link, Stack } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function StartLocation() {
+export default function SignUp({ firstName,
+                                 setFirstName,
+                                 lastName,
+                                 setLastName,
+                                 email,
+                                 setEmail,
+                                 phoneNumber,
+                                 setPhoneNumber,
+                                 password,
+                                 setPassword,
+                                 setIsLogin,
+                                 handleAuthentication }) {
   return (
     <SafeAreaView>
       <Stack.Screen options={{ headerShown: false }} />
@@ -27,36 +38,44 @@ export default function StartLocation() {
           />
           <View style={{ width: "100%", gap: 16 }}>
             <View style={styles.inputs}>
-              <TextInput style={styles.input} placeholder="Username" />
               <TextInput
-                style={styles.input}
-                secureTextEntry={true}
-                placeholder="Password"
+                  style={styles.input}
+                  value={firstName}
+                  onChangeText={setFirstName}
+                  placeholder="First name"
               />
               <TextInput
-                style={styles.input}
-                inputMode="email"
-                placeholder="E-mail"
+                  style={styles.input}
+                  value={lastName}
+                  onChangeText={setLastName}
+                  placeholder="Last name"
               />
               <TextInput
-                style={styles.input}
-                inputMode="tel"
-                placeholder="Phone number"
+                  style={styles.input}
+                  value={email}
+                  onChangeText={setEmail}
+                  placeholder="Email"
               />
-              <TextInput style={styles.input} placeholder="First name" />
-              <TextInput style={styles.input} placeholder="Last name" />
+              <TextInput
+                  style={styles.input}
+                  value={phoneNumber}
+                  onChangeText={setPhoneNumber}
+                  placeholder="Phone number"
+              />
+              <TextInput
+                  style={styles.input}
+                  value={password}
+                  onChangeText={setPassword}
+                  placeholder="Password"
+                  secureTextEntry
+              />
             </View>
             <View style={{ width: "100%", gap: 16 }}>
-              <MainButton href="../../MainPage/Home/Home" content="REGISTER" />
+              <Button onPress={handleAuthentication} title="SIGN UP" />
               <View style={styles.buttonTextEnv}>
-
-                <Link href="../../Authentication/Login/SignIn" asChild>
-                  <Text
-                    style={{ color: "#000", fontFamily: FONTS.primaryRegular }}
-                  >
-                    Already have an account? Sign in!
-                  </Text>
-                </Link>
+                <Text onPress={() => setIsLogin(true)} style={{ color: "#000", textDecorationLine: "underline", fontFamily: FONTS.primaryRegular }}>
+                  Already have an account? Sign in!
+                </Text>
               </View>
             </View>
           </View>
@@ -65,6 +84,7 @@ export default function StartLocation() {
     </SafeAreaView>
   );
 }
+
 const styles = {
   inputs: {
     width: "100%",
