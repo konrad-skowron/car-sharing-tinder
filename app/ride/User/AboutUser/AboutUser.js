@@ -8,16 +8,19 @@ import {StyleSheet, View,
   Text,
   Image,
   Button,
+  Modal,
 } from "react-native";
 import PrevButton from "../../Components/PrevButton/PrevButton";
 import MainButton from "../../Components/MainButton/MainButton";
-import '../../../index.js';
+import '../../MainPage/Home/Home';
+import '../../../index';
+import Link from "expo-router";
 
 const sampleUser = {
   user: {
     firstName: "Jan",
     lastName: "Kowalski",
-    email: "jan.kowalski@email.com",
+    // email: "jan.kowalski@email.com",
     phoneNumber: "123456789",
     aboutMe: "Bad driver from Wroclaw"
   },
@@ -30,6 +33,7 @@ const sampleUser = {
   }
   
 export default function App() {
+  const [modalVisible, setModalVisible] = useState(false);
   return (
     <SafeAreaView style={styles.container}>
       <PrevButton prev="ride/MainPage/Home/Home" />
@@ -116,6 +120,35 @@ export default function App() {
               <Text style={styles.headerForSection}>{sampleUser.user.aboutMe}</Text>
               </View>
         </View>
+
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <Text style={styles.logOut}>Log out</Text>
+        </TouchableOpacity>  
+
+        <View style={styles.modalBand}>
+          <Modal visible={modalVisible} transparent={true} animationType="fade" hardwareAccelerated={true} presentationStyle="overFullScreen">
+            <View style={styles.modalContainer}>
+              <View style={styles.modal}>
+                <Text>Do you really want to logout?</Text>
+                  <View style={styles.buttonContainer}>
+                  
+                    <TouchableOpacity onPress={() => {handleAuthentication(); setModalVisible(false); }}>
+                      <View>
+                        <Text>Yes</Text>
+                       </View>                      
+                    </TouchableOpacity>
+                  <TouchableOpacity onPress={() => {setModalVisible(false)}}>
+                    <View>
+                      <Text>No</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                
+              </View>
+            </View>
+          </Modal>
+        </View>
+        
       </View>
       <MainButton href="" content="Edit" />
       <StatusBar style="auto" />
@@ -124,6 +157,36 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  buttonContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: '30%',
+  },
+  modalBand: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Półprzezroczyste tło
+  },
+  modal: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    display: 'flex',
+    rowGap: 20,
+    alignItems: 'center',
+  },
+  // { flex: 1, justifyContent: 'center', alignItems: 'center', width:'50%', height:'50%'}
+  logOut: {
+    color: "red",
+  },
   headerForSection: {
     fontSize: 12,
     color: "#999",
