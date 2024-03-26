@@ -14,7 +14,7 @@ import PrevButton from "../../Components/PrevButton/PrevButton";
 import MainButton from "../../Components/MainButton/MainButton";
 import '../../MainPage/Home/Home';
 import '../../../index';
-import Link from "expo-router";
+import {Link} from "expo-router";
 
 const sampleUser = {
   user: {
@@ -124,6 +124,15 @@ export default function App() {
         <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Text style={styles.logOut}>Log out</Text>
         </TouchableOpacity>  
+        {/* <View>
+          <Link href="../../../index" asChild>
+            <TouchableOpacity>
+              <Text style={styles.logOut}>Log out</Text>
+            </TouchableOpacity>  
+          </Link>
+        </View> */}
+       
+        
 
         <View style={styles.modalBand}>
           <Modal visible={modalVisible} transparent={true} animationType="fade" hardwareAccelerated={true} presentationStyle="overFullScreen">
@@ -131,12 +140,13 @@ export default function App() {
               <View style={styles.modal}>
                 <Text>Do you really want to logout?</Text>
                   <View style={styles.buttonContainer}>
-                  
-                    <TouchableOpacity onPress={() => {handleAuthentication(); setModalVisible(false); }}>
-                      <View>
-                        <Text>Yes</Text>
-                       </View>                      
-                    </TouchableOpacity>
+                    <Link href="../../../" asChild>
+                      <TouchableOpacity onPress={() => {handleAuthentication(); setModalVisible(false); }}>
+                        <View>
+                          <Text>Yes</Text>
+                        </View>                      
+                      </TouchableOpacity>
+                    </Link>
                   <TouchableOpacity onPress={() => {setModalVisible(false)}}>
                     <View>
                       <Text>No</Text>
@@ -147,7 +157,7 @@ export default function App() {
               </View>
             </View>
           </Modal>
-        </View>
+        </View> 
         
       </View>
       <MainButton href="" content="Edit" />
