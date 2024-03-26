@@ -60,6 +60,8 @@ const App = () => {
             lastName: lastName,
             phoneNumber: phoneNumber
           });
+
+          setIsLogin(true);
         }
       }
     } catch (error) {
