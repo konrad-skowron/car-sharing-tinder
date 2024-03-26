@@ -11,7 +11,7 @@ import {StyleSheet, View,
 } from "react-native";
 import PrevButton from "../../Components/PrevButton/PrevButton";
 import MainButton from "../../Components/MainButton/MainButton";
-import '../../MainPage/Home/Home';
+import '../../../index.js';
 
 const sampleUser = {
   user: {

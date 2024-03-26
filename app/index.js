@@ -20,8 +20,23 @@ const App = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      global.user = user
+      if (user) {
+        global.email = user.email;
+        global.uid = user.uid;
+        getUserData(uid).then(data => {
+          global.firstName = data.firstName;
+          global.lastName = data.lastName;
+          global.phoneNumber = data.phoneNumber;
+          setUser(user);
+        });
+      } else {
+        global.email = '';
+        global.uid = '';
+        global.firstName = '';
+        global.lastName = '';
+        global.phoneNumber = '';
+        setUser(user);
+      }
     });
 
     return () => unsubscribe();
@@ -52,9 +67,9 @@ const App = () => {
     }
   };
 
-  global.getUserData = getUserData = async () => {
+  global.getUserData = getUserData = async (userUid) => {
     const db = getFirestore(app);
-    const docRef = doc(db, "users", user.uid);
+    const docRef = doc(db, "users", userUid);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -64,6 +79,7 @@ const App = () => {
 
   return (
     user ? (
+      // TODO: Await firebase response
       <Home />
     ) : (
       isLogin ? (

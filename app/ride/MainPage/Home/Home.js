@@ -60,22 +60,10 @@ const sampleRides = [
 ];
 
 const Home = () => {
-  const [userData, setUserData] = useState('');
-
-  useEffect(() => {
-      getUserData().then(data => {
-        setUserData(data);
-        global.firstName = data.firstName;
-        global.lastName = data.lastName;
-        global.phoneNumber = data.phoneNumber;
-        global.email = user.email;
-      });
-  }, []);
-
   return (
     <View style={styles.container}>
       <View>
-        <Text>Welcome {userData.firstName}</Text>
+        <Text>Welcome {firstName}</Text>
         <Button onPress={handleAuthentication} title="Sign out" />
       </View>
       <View style={styles.navWrapper}>
