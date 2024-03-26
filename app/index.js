@@ -79,7 +79,6 @@ const App = () => {
 
   return (
     user ? (
-      // TODO: Await firebase response
       <Home />
     ) : (
       isLogin ? (
