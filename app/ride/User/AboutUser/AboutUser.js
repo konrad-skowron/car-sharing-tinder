@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { StatusBar } from "expo-status-bar";
 import { COLORS } from "../../../../constants";
@@ -11,7 +11,7 @@ import {StyleSheet, View,
 } from "react-native";
 import PrevButton from "../../Components/PrevButton/PrevButton";
 import MainButton from "../../Components/MainButton/MainButton";
-import { UserContext } from '../../../UserContext';
+import '../../MainPage/Home/Home';
 
 const sampleUser = {
   user: {
@@ -30,9 +30,6 @@ const sampleUser = {
   }
   
 export default function App() {
-  // Nie działa tutaj
-  const { firstName, lastName, email, phoneNumber } = useContext(UserContext);
-
   return (
     <SafeAreaView style={styles.container}>
       <PrevButton prev="ride/MainPage/Home/Home" />
@@ -64,7 +61,7 @@ export default function App() {
               <Text style={styles.foontEighteen}>E-mail</Text>
             </View>
             <View style={styles.center}>
-              <Text style={styles.fontSixteen}>{sampleUser.user.email}</Text>
+              <Text style={styles.fontSixteen}>{email}</Text>
             </View>
           </View>
           <View style={styles.row}>
@@ -72,7 +69,7 @@ export default function App() {
                   <Text style={styles.foontEighteen}>Phone</Text>
                 </View>
                 <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>{sampleUser.user.phoneNumber}</Text>
+                  <Text style={styles.fontSixteen}>{phoneNumber}</Text>
                 </View>
           </View>
         </View>

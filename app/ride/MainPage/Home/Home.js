@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -12,7 +12,7 @@ import { Link } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome6 } from "@expo/vector-icons";
 import RideTile from "../../AboutRide/General/RideTile";
-import { UserContext } from '../../../UserContext';
+import '../../../index.js';
 
 const sampleRides = [
   {
@@ -60,12 +60,22 @@ const sampleRides = [
 ];
 
 const Home = () => {
-  const { firstName, handleAuthentication } = useContext(UserContext);
+  const [userData, setUserData] = useState('');
+
+  useEffect(() => {
+      getUserData().then(data => {
+        setUserData(data);
+        global.firstName = data.firstName;
+        global.lastName = data.lastName;
+        global.phoneNumber = data.phoneNumber;
+        global.email = user.email;
+      });
+  }, []);
 
   return (
     <View style={styles.container}>
       <View>
-        <Text>Welcome {firstName}</Text>
+        <Text>Welcome {userData.firstName}</Text>
         <Button onPress={handleAuthentication} title="Sign out" />
       </View>
       <View style={styles.navWrapper}>

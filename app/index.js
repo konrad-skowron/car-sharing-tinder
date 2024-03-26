@@ -6,7 +6,6 @@ import Layout from "./_layout";
 import SignIn from "./ride/Authentication/Login/SignIn";
 import SignUp from "./ride/Authentication/Register/SignUp";
 import Home from "./ride/MainPage/Home/Home";
-import { UserContext } from './UserContext';
 
 const App = () => {
   const [email, setEmail] = useState('');
@@ -22,28 +21,19 @@ const App = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
+      global.user = user
     });
 
     return () => unsubscribe();
   }, [auth]);
 
-  const handleAuthentication = async () => {
+   global.handleAuthentication = handleAuthentication = async () => {
     try {
       if (user) {
         await signOut(auth);
       } else {
         if (isLogin) {
-          const userCredential = await signInWithEmailAndPassword(auth, email, password);
-          const userUid = userCredential.user.uid;
-
-          const db = getFirestore(app);
-          const docRef = doc(db, "users", userUid);
-          const docSnap = await getDoc(docRef);
-
-          setFirstName(docSnap.data().firstName);
-          setLastName(docSnap.data().lastName);
-          setPhoneNumber(docSnap.data().phoneNumber);
-          setEmail(userCredential.user.email);
+          await signInWithEmailAndPassword(auth, email, password);
         } else {
           const userCredential = await createUserWithEmailAndPassword(auth, email, password);
           const userUid = userCredential.user.uid;
@@ -62,11 +52,19 @@ const App = () => {
     }
   };
 
+  global.getUserData = getUserData = async () => {
+    const db = getFirestore(app);
+    const docRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data();
+    }
+  };
+
   return (
     user ? (
-      <UserContext.Provider value={{ firstName, lastName, email, phoneNumber, handleAuthentication }}>
-        <Home />
-      </UserContext.Provider>
+      <Home />
     ) : (
       isLogin ? (
         <SignIn
