@@ -1,50 +1,55 @@
-
 import { StatusBar } from "expo-status-bar";
-import { COLORS } from "../../../../constants";
-import {StyleSheet, View, SafeAreaView, Text, Image} from "react-native";
+import { StyleSheet, View, SafeAreaView, Text, Image } from "react-native";
 import PrevButton from "../../Components/PrevButton/PrevButton";
 import MainButton from "../../Components/MainButton/MainButton";
 import { ForceTouchGestureHandler } from "react-native-gesture-handler";
+import { Stack } from "expo-router";
+import { COLORS, FONTS } from "../../../../constants";
 
 const sampleUser = {
   user: {
     firstName: "Jan",
     lastName: "Kowalski",
-    aboutMe: "Bad driver from Wroclaw"
+    aboutMe: "Bad driver from Wroclaw",
   },
-  car:{
+  car: {
     brand: "Toyota",
     model: "Corolla",
     color: "white",
-    seats: 5
+    seats: 5,
   },
-  advert:{
+  advert: {
     startLocation: "Biskupin",
     destination: "Oporów",
     time: "12:00",
     days: [
-        { day: "M", pressed: false },
-        { day: "Tu", pressed: true },
-        { day: "W", pressed: false },
-        { day: "Th", pressed: true },
-        { day: "F", pressed: true },
-        { day: "Sa", pressed: false },
-        { day: "Su", pressed: false },
-      ]
-  }
-  }
-  
-
+      { day: "M", pressed: false },
+      { day: "Tu", pressed: true },
+      { day: "W", pressed: false },
+      { day: "Th", pressed: true },
+      { day: "F", pressed: true },
+      { day: "Sa", pressed: false },
+      { day: "Su", pressed: false },
+    ],
+  },
+};
 
 export default function App() {
   return (
     <SafeAreaView style={styles.container}>
-        {/* <Text>text:{ride}</Text> */}
-      <PrevButton prev="../../MainPage/Home/Home" />
+      {/* <Text>text:{ride}</Text> */}
+      {/* <PrevButton prev="../../MainPage/Home/Home" /> */}
+      <Stack.Screen
+        options={{
+          headerShadowVisible: false,
+          headerTitle: "",
+          headerStyle: { backgroundColor: "#eee" },
+        }}
+      />
       <View style={styles.row}>
         <View>
           <Text style={styles.nameSurnameText}>
-              {sampleUser.user.firstName} {sampleUser.user.lastName}
+            {sampleUser.user.firstName} {sampleUser.user.lastName}
           </Text>
         </View>
         <View>
@@ -53,8 +58,6 @@ export default function App() {
               height: 64,
               width: 64,
               borderRadius: 64,
-              borderWidth: 2,
-              borderColor: COLORS.white,
             }}
             source={{
               uri: "https://picsum.photos/200",
@@ -69,36 +72,56 @@ export default function App() {
               <Text style={styles.foontEighteen}>Start location</Text>
             </View>
             <View style={styles.center}>
-              <Text style={styles.fontSixteen}>{sampleUser.advert.startLocation}</Text>
+              <Text style={styles.fontSixteen}>
+                {sampleUser.advert.startLocation}
+              </Text>
             </View>
           </View>
           <View style={styles.row}>
-                <View style={styles.center}>
-                  <Text style={styles.foontEighteen}>Destination</Text>
-                </View>
-                <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>{sampleUser.advert.destination}</Text>
-                </View>
+            <View style={styles.center}>
+              <Text style={styles.foontEighteen}>Destination</Text>
+            </View>
+            <View style={styles.center}>
+              <Text style={styles.fontSixteen}>
+                {sampleUser.advert.destination}
+              </Text>
+            </View>
           </View>
           <View style={styles.row}>
-                <View style={styles.center}>
-                  <Text style={styles.foontEighteen}>Days</Text>
+            <View style={styles.center}>
+              <Text style={styles.foontEighteen}>Days</Text>
+            </View>
+            <View style={styles.days}>
+              {/*TODO*/}
+              {sampleUser.advert.days.map((day, index) => (
+                <View
+                  key={index}
+                  style={
+                    day.pressed
+                      ? styles.buttonDayChoosen
+                      : styles.buttonDayUnChoosen
+                  }
+                >
+                  <Text
+                    style={
+                      day.pressed
+                        ? styles.buttonDayTextUnChoosen
+                        : styles.buttonDayTextChoosen
+                    }
+                  >
+                    {day.day}
+                  </Text>
                 </View>
-                <View style={styles.days}>{/*TODO*/}
-                    {sampleUser.advert.days.map((day, index) => (
-                        <View style={day.pressed ? styles.buttonDayChoosen : styles.buttonDayUnChoosen}>
-                            <Text style={day.pressed ? styles.buttonDayTextUnChoosen : styles.buttonDayTextChoosen}>{day.day}</Text>
-                        </View>
-                    ))}
-                </View>
+              ))}
+            </View>
           </View>
           <View style={styles.row}>
-                <View style={styles.center}>
-                  <Text style={styles.foontEighteen}>Hour</Text>
-                </View>
-                <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>{sampleUser.advert.time}</Text>
-                </View>
+            <View style={styles.center}>
+              <Text style={styles.foontEighteen}>Hour</Text>
+            </View>
+            <View style={styles.center}>
+              <Text style={styles.fontSixteen}>{sampleUser.advert.time}</Text>
+            </View>
           </View>
         </View>
         <View style={styles.column}>
@@ -129,12 +152,14 @@ export default function App() {
           </View>
         </View>
         <View style={styles.column}>
-              <View>
-                <Text style={styles.foontEighteen}>About me</Text>
-              </View>
-              <View>
-              <Text style={styles.headerForSection}>{sampleUser.user.aboutMe}</Text>
-              </View>
+          <View>
+            <Text style={styles.foontEighteen}>About me</Text>
+          </View>
+          <View>
+            <Text style={styles.headerForSection}>
+              {sampleUser.user.aboutMe}
+            </Text>
+          </View>
         </View>
       </View>
       <MainButton href="../../MainPage/Home/Home" content="Match" />
@@ -144,14 +169,15 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  days:{
+  days: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-end",
   },
 
   headerForSection: {
-    fontSize: 12,
+    fontFamily: FONTS.primaryRegular,
+    fontSize: 14,
     color: "#999",
   },
   center: {
@@ -161,25 +187,28 @@ const styles = StyleSheet.create({
   },
 
   foontEighteen: {
+    fontFamily: FONTS.primaryMedium,
     fontSize: 18,
   },
   fontSixteen: {
+    fontFamily: FONTS.primaryRegular,
     fontSize: 16,
   },
-  row:{
+  row: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingVertical: 2,
   },
-  column:{
+  column: {
     display: "flex",
     flexDirection: "column",
     paddingVertical: 8,
   },
-  nameSurnameText:{
-    fontSize: 24,
+  nameSurnameText: {
+    fontFamily: FONTS.primaryMedium,
+    fontSize: 22,
   },
 
   container: {
@@ -204,7 +233,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     aspectRatio: 1,
-    width: '10%',
+    width: "10%",
     aspectRatio: 1,
     margin: 1,
   },
@@ -214,16 +243,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     aspectRatio: 1,
-    width: '10%',
+    width: "10%",
     aspectRatio: 1,
     margin: 1,
     borderColor: "#76ABAE",
-    borderWidth: 1, 
+    borderWidth: 1,
   },
   buttonDayTextUnChoosen: {
+    fontFamily: FONTS.primaryMedium,
     color: "#FFFFFF",
   },
   buttonDayTextChoosen: {
+    fontFamily: FONTS.primaryMedium,
     color: "#76ABAE",
   },
 });

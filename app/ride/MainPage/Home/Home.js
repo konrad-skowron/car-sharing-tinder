@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -6,13 +6,15 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Button
+  Button,
+  Image,
 } from "react-native";
-import { Link } from "expo-router";
+import { Link, Stack, useRouter } from "expo-router";
+import { COLORS, FONTS } from "../../../../constants";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome6 } from "@expo/vector-icons";
 import RideTile from "../../AboutRide/General/RideTile";
-import '../../../index.js';
+import "../../../index.js";
 
 const sampleRides = [
   {
@@ -60,43 +62,63 @@ const sampleRides = [
 ];
 
 const Home = () => {
+  const router = useRouter();
   return (
     <View style={styles.container}>
-      <View>
-        <Text>Welcome {firstName}</Text>
-        <Button onPress={handleAuthentication} title="Sign out" />
-      </View>
-      <View style={styles.navWrapper}>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Link href="" asChild>
-            <TouchableOpacity style={styles.navButtons}>
-              <AntDesign
-                name="book"
-                size={24}
-                color="#eee"
-                style={{ padding: 14 }}
+      <Stack.Screen
+        options={{
+          headerShadowVisible: false,
+          headerTitle: "",
+          headerStyle: { backgroundColor: "#eee" },
+          headerLeft: () => (
+            <AntDesign
+              name="book"
+              style={{ marginLeft: 16 }}
+              size={28}
+              color={COLORS.darkGray}
+              onPress={() => {
+                router.navigate("/");
+              }}
+            />
+          ),
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => {
+                router.navigate("ride/User/AboutUser/AboutUser");
+              }}
+            >
+              <Image
+                style={{
+                  height: 48,
+                  width: 48,
+                  borderRadius: 48,
+                  marginRight: 16,
+                }}
+                source={{
+                  uri: "https://picsum.photos/200",
+                }}
               />
             </TouchableOpacity>
-          </Link>
-        </View>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Link href="ride/User/AboutUser/AboutUser" state={{ some: "value" }} asChild>
-            <TouchableOpacity style={styles.navButtons}>
-              <FontAwesome6
-                name="face-smile"
-                size={24}
-                color="#eee"
-                style={{ padding: 14 }}
-              />
-            </TouchableOpacity>
-          </Link>
-        </View>
-      </View>
+          ),
+        }}
+      />
       <View>
-        <Text style={{ fontSize: 16, marginBottom: 4 }}>Available:</Text>
+        <Text
+          style={{
+            fontSize: 16,
+            fontFamily: FONTS.primaryRegular,
+            marginBottom: 4,
+          }}
+        >
+          Available:
+        </Text>
         <View style={styles.tileContainer}>
           {sampleRides.map((sampleRide) => (
-            <Link key={sampleRide.id} href="ride/AboutRide/Detailed/AboutRide" asChild>
+            <Link
+              key={sampleRide.id}
+              href="ride/AboutRide/Detailed/AboutRide"
+              asChild
+            >
               <TouchableOpacity>
                 <RideTile ride={sampleRide} />
               </TouchableOpacity>

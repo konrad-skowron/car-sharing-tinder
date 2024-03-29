@@ -39,7 +39,7 @@ export default function App() {
               size={24}
               color={COLORS.darkGray}
               onPress={() => {
-                router.navigate("ride/Home");
+                router.navigate("/");
               }}
             />
           ),
@@ -77,7 +77,7 @@ export default function App() {
           </TouchableOpacity>
         ))}
       </View>
-
+      <Text style={styles.text}>Choose which days you will travel.</Text>
       <MainButton href="../TimePick/TimePick" content="Next" />
       <StatusBar style="auto" />
     </View>
@@ -119,12 +119,15 @@ const styles = StyleSheet.create({
     padding: 10,
     opacity: 0.6,
   },
-
+  text: {
+    fontSize: 16,
+    fontFamily: FONTS.primaryRegular,
+  },
   container: {
     flex: 1,
     display: "flex",
     flexDirection: "column",
-    rowGap: 50,
+    rowGap: 16,
     padding: 32,
     backgroundColor: "#eee",
   },

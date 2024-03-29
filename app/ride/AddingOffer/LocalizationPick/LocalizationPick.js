@@ -28,7 +28,7 @@ export default function App() {
               size={24}
               color={COLORS.darkGray}
               onPress={() => {
-                router.navigate("ride/Home");
+                router.navigate("/");
               }}
             />
           ),

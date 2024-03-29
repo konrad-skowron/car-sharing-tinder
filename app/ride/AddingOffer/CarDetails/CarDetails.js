@@ -10,13 +10,33 @@ import { AntDesign } from "@expo/vector-icons";
 import NavBar from "../../Components/NavBar/NavBar";
 import MainButton from "../../Components/MainButton/MainButton";
 import { useState } from "react";
+import { Stack, useRouter } from "expo-router";
+import { COLORS, FONTS } from "../../../../constants";
 
 export default function App() {
+  const router = useRouter();
   const [haveCar, setHaveCar] = useState(false);
 
   return (
     <View style={styles.container}>
-      <NavBar prev="../TimePick/TimePick" close="../../MainPage/Home/Home" />
+      <Stack.Screen
+        options={{
+          headerShadowVisible: false,
+          headerTitle: "",
+          headerStyle: { backgroundColor: "#eee" },
+          headerRight: () => (
+            <AntDesign
+              name="close"
+              size={24}
+              color={COLORS.darkGray}
+              onPress={() => {
+                router.navigate("/");
+              }}
+            />
+          ),
+        }}
+      />
+      {/* <NavBar prev="../TimePick/TimePick" close="../../MainPage/Home/Home" /> */}
       <View style={styles.inputWrapper}>
         <View>
           <View
@@ -37,10 +57,18 @@ export default function App() {
                 style={{ padding: 14 }}
               />
             </TouchableOpacity>
-            <Text style={{ marginLeft: 16, fontSize: 18 }}>Have a car?</Text>
+            <Text
+              style={{
+                marginLeft: 16,
+                fontSize: 18,
+                fontFamily: FONTS.primaryRegular,
+              }}
+            >
+              Have a car?
+            </Text>
           </View>
           {haveCar ? (
-            <View>
+            <View style={{ gap: 4 }}>
               <TextInput placeholder="Brand" style={styles.input} />
               <TextInput placeholder="Model" style={styles.input} />
               <TextInput placeholder="Color" style={styles.input} />
@@ -52,7 +80,9 @@ export default function App() {
               <Text style={styles.text}>Enter the details of your car.</Text>
             </View>
           ) : (
-            ""
+            <Text style={styles.text}>
+              Check if you own a car and want to drive.
+            </Text>
           )}
         </View>
       </View>
@@ -74,9 +104,11 @@ const styles = StyleSheet.create({
     fontSize: 19,
     borderRadius: 8,
     marginBottom: 8,
+    fontFamily: FONTS.primaryRegular,
   },
   text: {
     fontSize: 16,
+    fontFamily: FONTS.primaryRegular,
   },
   container: {
     flex: 1,

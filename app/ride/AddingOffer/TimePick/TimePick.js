@@ -1,6 +1,9 @@
 import { useState } from "react";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { StatusBar } from "expo-status-bar";
+import { COLORS, FONTS } from "../../../../constants";
+import { Link, Stack, useRouter } from "expo-router";
+import { AntDesign } from "@expo/vector-icons";
 import {
   StyleSheet,
   Text,
@@ -12,8 +15,9 @@ import {
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import NavBar from "../../Components/NavBar/NavBar";
 import MainButton from "../../Components/MainButton/MainButton";
-import Link from "expo-router";
+
 export default function App() {
+  const router = useRouter();
   const [date, setDate] = useState(new Date(1598051730000));
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
@@ -35,7 +39,24 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <NavBar prev="ride/LocalizationPick" close="ride/LocalizationPick" />
+      <Stack.Screen
+        options={{
+          headerShadowVisible: false,
+          headerTitle: "",
+          headerStyle: { backgroundColor: "#eee" },
+          headerRight: () => (
+            <AntDesign
+              name="close"
+              size={24}
+              color={COLORS.darkGray}
+              onPress={() => {
+                router.navigate("/");
+              }}
+            />
+          ),
+        }}
+      />
+      {/* <NavBar prev="ride/LocalizationPick" close="ride/LocalizationPick" /> */}
       <SafeAreaView>
         <View style={styles.buttonEnv}>
           <TouchableOpacity style={styles.button} onPress={showTimepicker}>
@@ -63,7 +84,10 @@ export default function App() {
           />
         )}
       </SafeAreaView>
-      <MainButton href="ride/AddingOffer/CarDetails/CarDetails" content="Next" />
+      <MainButton
+        href="ride/AddingOffer/CarDetails/CarDetails"
+        content="Next"
+      />
       <StatusBar style="auto" />
     </View>
   );
@@ -109,10 +133,12 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+    fontFamily: FONTS.primaryRegular,
   },
 
   button: {
-    backgroundColor: "#222831",
+    // backgroundColor: "#222831",
+    backgroundColor: "#D9D9D9",
     borderRadius: 16,
     width: "100%",
     alignItems: "center",
@@ -124,7 +150,8 @@ const styles = StyleSheet.create({
   },
   buttonHourPicker: {
     fontSize: 42,
-    color: "#eee",
+    color: COLORS.darkGray,
+    fontFamily: FONTS.primaryRegular,
     margin: "auto",
     padding: 4,
   },

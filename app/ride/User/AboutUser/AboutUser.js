@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { StatusBar } from "expo-status-bar";
-import { COLORS } from "../../../../constants";
-import {StyleSheet, View,
+import { COLORS, FONTS } from "../../../../constants";
+import {
+  StyleSheet,
+  View,
   TouchableOpacity,
   SafeAreaView,
   Text,
@@ -12,9 +14,9 @@ import {StyleSheet, View,
 } from "react-native";
 import PrevButton from "../../Components/PrevButton/PrevButton";
 import MainButton from "../../Components/MainButton/MainButton";
-import '../../MainPage/Home/Home';
-import '../../../index';
-import {Link} from "expo-router";
+import "../../MainPage/Home/Home";
+import "../../../index";
+import { Link, Stack } from "expo-router";
 
 const sampleUser = {
   user: {
@@ -22,25 +24,32 @@ const sampleUser = {
     lastName: "Kowalski",
     // email: "jan.kowalski@email.com",
     phoneNumber: "123456789",
-    aboutMe: "Bad driver from Wroclaw"
+    aboutMe: "Bad driver from Wroclaw",
   },
-  car:{
+  car: {
     brand: "Toyota",
     model: "Corolla",
     color: "white",
-    seats: 5
+    seats: 5,
   },
-  }
-  
+};
+
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <SafeAreaView style={styles.container}>
-      <PrevButton prev="ride/MainPage/Home/Home" />
+      <Stack.Screen
+        options={{
+          headerShadowVisible: false,
+          headerTitle: "",
+          headerStyle: { backgroundColor: "#eee" },
+        }}
+      />
+      {/* <PrevButton prev="ride/MainPage/Home/Home" /> */}
       <View style={styles.row}>
         <View>
           <Text style={styles.nameSurnameText}>
-              {firstName} {lastName}
+            {firstName} {lastName}
           </Text>
         </View>
         <View>
@@ -49,8 +58,6 @@ export default function App() {
               height: 64,
               width: 64,
               borderRadius: 64,
-              borderWidth: 2,
-              borderColor: COLORS.white,
             }}
             source={{
               uri: "https://picsum.photos/200",
@@ -69,12 +76,12 @@ export default function App() {
             </View>
           </View>
           <View style={styles.row}>
-                <View style={styles.center}>
-                  <Text style={styles.foontEighteen}>Phone</Text>
-                </View>
-                <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>{phoneNumber}</Text>
-                </View>
+            <View style={styles.center}>
+              <Text style={styles.foontEighteen}>Phone</Text>
+            </View>
+            <View style={styles.center}>
+              <Text style={styles.fontSixteen}>{phoneNumber}</Text>
+            </View>
           </View>
         </View>
         <View style={styles.column}>
@@ -104,26 +111,28 @@ export default function App() {
             </View>
           </View>
           <View style={styles.row}>
-                <View style={styles.center}>
-                  <Text style={styles.foontEighteen}>Seats</Text>
-                </View>
-                <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>{sampleUser.car.seats}</Text>
-                </View>
+            <View style={styles.center}>
+              <Text style={styles.foontEighteen}>Seats</Text>
+            </View>
+            <View style={styles.center}>
+              <Text style={styles.fontSixteen}>{sampleUser.car.seats}</Text>
+            </View>
           </View>
         </View>
         <View style={styles.column}>
-              <View>
-                <Text style={styles.foontEighteen}>About me</Text>
-              </View>
-              <View>
-              <Text style={styles.headerForSection}>{sampleUser.user.aboutMe}</Text>
-              </View>
+          <View>
+            <Text style={styles.foontEighteen}>About me</Text>
+          </View>
+          <View>
+            <Text style={styles.headerForSection}>
+              {sampleUser.user.aboutMe}
+            </Text>
+          </View>
         </View>
 
         <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Text style={styles.logOut}>Log out</Text>
-        </TouchableOpacity>  
+        </TouchableOpacity>
         {/* <View>
           <Link href="../../../index" asChild>
             <TouchableOpacity>
@@ -131,34 +140,45 @@ export default function App() {
             </TouchableOpacity>  
           </Link>
         </View> */}
-       
-        
 
         <View style={styles.modalBand}>
-          <Modal visible={modalVisible} transparent={true} animationType="fade" hardwareAccelerated={true} presentationStyle="overFullScreen">
+          <Modal
+            visible={modalVisible}
+            transparent={true}
+            animationType="fade"
+            hardwareAccelerated={true}
+            presentationStyle="overFullScreen"
+          >
             <View style={styles.modalContainer}>
               <View style={styles.modal}>
                 <Text>Do you really want to logout?</Text>
-                  <View style={styles.buttonContainer}>
-                    <Link href="../../../" asChild>
-                      <TouchableOpacity onPress={() => {handleAuthentication(); setModalVisible(false); }}>
-                        <View>
-                          <Text>Yes</Text>
-                        </View>                      
-                      </TouchableOpacity>
-                    </Link>
-                  <TouchableOpacity onPress={() => {setModalVisible(false)}}>
+                <View style={styles.buttonContainer}>
+                  <Link href="../../../" asChild>
+                    <TouchableOpacity
+                      onPress={() => {
+                        handleAuthentication();
+                        setModalVisible(false);
+                      }}
+                    >
+                      <View>
+                        <Text>Yes</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </Link>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setModalVisible(false);
+                    }}
+                  >
                     <View>
                       <Text>No</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
-                
               </View>
             </View>
           </Modal>
-        </View> 
-        
+        </View>
       </View>
       <MainButton href="" content="Edit" />
       <StatusBar style="auto" />
@@ -172,33 +192,35 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    width: '30%',
+    width: "30%",
   },
   modalBand: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Półprzezroczyste tło
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Półprzezroczyste tło
   },
   modal: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 20,
     borderRadius: 10,
-    display: 'flex',
+    display: "flex",
     rowGap: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   // { flex: 1, justifyContent: 'center', alignItems: 'center', width:'50%', height:'50%'}
   logOut: {
     color: "red",
+    fontFamily: FONTS.primaryMedium,
   },
   headerForSection: {
-    fontSize: 12,
+    fontFamily: FONTS.primaryRegular,
+    fontSize: 14,
     color: "#999",
   },
   center: {
@@ -208,25 +230,28 @@ const styles = StyleSheet.create({
   },
 
   foontEighteen: {
+    fontFamily: FONTS.primaryMedium,
     fontSize: 18,
   },
   fontSixteen: {
+    fontFamily: FONTS.primaryRegular,
     fontSize: 16,
   },
-  row:{
+  row: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingVertical: 2,
   },
-  column:{
+  column: {
     display: "flex",
     flexDirection: "column",
     paddingVertical: 12,
   },
-  nameSurnameText:{
-    fontSize: 24,
+  nameSurnameText: {
+    fontFamily: FONTS.primaryMedium,
+    fontSize: 22,
   },
   container: {
     flex: 1,

@@ -1,11 +1,19 @@
 import React from "react";
-import { View, Image, Text, TextInput, ScrollView, Button } from "react-native";
+import {
+  View,
+  Image,
+  Text,
+  TextInput,
+  ScrollView,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 import { COLORS, FONTS } from "../../../../constants";
 import { Link, Stack } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function SignUp({ 
+export default function SignUp({
   firstName,
   setFirstName,
   lastName,
@@ -17,7 +25,7 @@ export default function SignUp({
   password,
   setPassword,
   setIsLogin,
-  handleAuthentication 
+  handleAuthentication,
 }) {
   return (
     <SafeAreaView>
@@ -40,41 +48,54 @@ export default function SignUp({
           <View style={{ width: "100%", gap: 16 }}>
             <View style={styles.inputs}>
               <TextInput
-                  style={styles.input}
-                  value={firstName}
-                  onChangeText={setFirstName}
-                  placeholder="First name"
+                style={styles.input}
+                value={firstName}
+                onChangeText={setFirstName}
+                placeholder="First name"
               />
               <TextInput
-                  style={styles.input}
-                  value={lastName}
-                  onChangeText={setLastName}
-                  placeholder="Last name"
+                style={styles.input}
+                value={lastName}
+                onChangeText={setLastName}
+                placeholder="Last name"
               />
               <TextInput
-                  style={styles.input}
-                  value={email}
-                  onChangeText={setEmail}
-                  placeholder="Email"
+                style={styles.input}
+                value={email}
+                onChangeText={setEmail}
+                placeholder="Email"
               />
               <TextInput
-                  style={styles.input}
-                  value={phoneNumber}
-                  onChangeText={setPhoneNumber}
-                  placeholder="Phone number"
+                style={styles.input}
+                value={phoneNumber}
+                onChangeText={setPhoneNumber}
+                placeholder="Phone number"
               />
               <TextInput
-                  style={styles.input}
-                  value={password}
-                  onChangeText={setPassword}
-                  placeholder="Password"
-                  secureTextEntry
+                style={styles.input}
+                value={password}
+                onChangeText={setPassword}
+                placeholder="Password"
+                secureTextEntry
               />
             </View>
             <View style={{ width: "100%", gap: 16 }}>
-              <Button onPress={handleAuthentication} title="SIGN UP" />
+              {/* <Button onPress={handleAuthentication} title="SIGN UP" /> */}
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleAuthentication}
+              >
+                <Text style={styles.buttonText}>SIGN UP</Text>
+              </TouchableOpacity>
               <View style={styles.buttonTextEnv}>
-                <Text onPress={() => setIsLogin(true)} style={{ color: "#000", textDecorationLine: "underline", fontFamily: FONTS.primaryRegular }}>
+                <Text
+                  onPress={() => setIsLogin(true)}
+                  style={{
+                    color: "#000",
+                    textDecorationLine: "underline",
+                    fontFamily: FONTS.primaryRegular,
+                  }}
+                >
                   Already have an account? Sign in!
                 </Text>
               </View>
@@ -118,5 +139,19 @@ const styles = {
     borderRadius: 10,
     fontSize: 18,
     fontFamily: FONTS.primaryRegular,
+  },
+  button: {
+    backgroundColor: "#222831",
+    borderRadius: 16,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonText: {
+    fontFamily: FONTS.primaryBold,
+    fontSize: 20,
+    color: "#eee",
+    margin: "auto",
+    padding: 16,
   },
 };

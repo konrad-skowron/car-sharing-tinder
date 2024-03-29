@@ -1,12 +1,15 @@
-import {StatusBar } from "expo-status-bar";
-import {StyleSheet, Text, View} from "react-native";
-import {Ionicons } from "@expo/vector-icons";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import MainButton from "../../Components/MainButton/MainButton";
-import {COLORS, FONTS } from "../../../../constants";
+import { COLORS, FONTS } from "../../../../constants";
+import { AntDesign } from "@expo/vector-icons";
+import { Stack } from "expo-router";
 
 const Success = () => {
   return (
     <View style={styles.container}>
+      <Stack.Screen options={{ headerShown: false }} />
       <Text style={styles.title}>Success!</Text>
       <View style={styles.outer}>
         <View style={styles.inner}>
@@ -29,7 +32,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#eee",
   },
   outer: {
-    marginTop: 32,
+    marginTop: 48,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -55,7 +58,8 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 64,
-    fontSize: 32,
+    fontSize: 42,
+    fontFamily: FONTS.secondaryBold,
     textAlign: "center",
   },
 });

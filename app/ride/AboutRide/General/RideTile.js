@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { COLORS } from "../../../../constants";
+import { COLORS, FONTS } from "../../../../constants";
 
 const RideTile = ({ ride }) => {
   return (
@@ -29,7 +29,8 @@ const RideTile = ({ ride }) => {
             width: 56,
             borderRadius: 56,
             borderWidth: 2,
-            borderColor: COLORS.white,
+            // borderColor: COLORS.white,
+            // borderColor: COLORS.darkGray,
           }}
           source={{
             uri: "https://picsum.photos/200",
@@ -52,18 +53,32 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 12,
     borderRadius: 8,
-    backgroundColor: COLORS.gray,
+    // backgroundColor: COLORS.gray,
+    backgroundColor: "#D9D9D9",
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 1,
+    // },
+    // shadowOpacity: 0.18,
+    // shadowRadius: 1.0,
+    // elevation: 1,
   },
   name: {
-    color: COLORS.white,
+    // color: COLORS.white,
+    fontFamily: FONTS.primaryBold,
+    color: COLORS.darkGray,
     fontSize: 18,
-    fontWeight: "bold",
   },
   car: {
-    color: COLORS.white,
+    // color: COLORS.white,
+    color: COLORS.darkGray,
+    fontFamily: FONTS.primaryRegular,
   },
   location: {
-    color: COLORS.white,
+    // color: COLORS.white,
+    color: COLORS.darkGray,
+    fontFamily: FONTS.primaryRegular,
   },
 });
 
