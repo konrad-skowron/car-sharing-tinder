@@ -1,22 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { StatusBar } from "expo-status-bar";
 import { COLORS, FONTS } from "../../../../constants";
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-  Text,
-  Image,
-  Button,
-  Modal,
-} from "react-native";
+import { StyleSheet, View, TouchableOpacity, SafeAreaView, Text, Image, Button, Modal } from "react-native";
 import PrevButton from "../../Components/PrevButton/PrevButton";
 import MainButton from "../../Components/MainButton/MainButton";
 import "../../MainPage/Home/Home";
 import "../../../index";
-import { Link, Stack } from "expo-router";
+import { Link, Stack, useRouter } from "expo-router";
+import { useAuthContext } from "../../../../context/AuthProvider";
 
 const sampleUser = {
   user: {
@@ -35,7 +27,11 @@ const sampleUser = {
 };
 
 export default function App() {
+  const router = useRouter();
   const [modalVisible, setModalVisible] = useState(false);
+  const { user, isLogged, getUserData, handleLogOut } = useAuthContext();
+  const { email, firstName, lastName, phoneNumber } = user;
+
   return (
     <SafeAreaView style={styles.container}>
       <Stack.Screen
@@ -124,9 +120,7 @@ export default function App() {
             <Text style={styles.foontEighteen}>About me</Text>
           </View>
           <View>
-            <Text style={styles.headerForSection}>
-              {sampleUser.user.aboutMe}
-            </Text>
+            <Text style={styles.headerForSection}>{sampleUser.user.aboutMe}</Text>
           </View>
         </View>
 
@@ -142,37 +136,26 @@ export default function App() {
         </View> */}
 
         <View style={styles.modalBand}>
-          <Modal
-            visible={modalVisible}
-            transparent={true}
-            animationType="fade"
-            hardwareAccelerated={true}
-            presentationStyle="overFullScreen"
-          >
+          <Modal visible={modalVisible} transparent={true} animationType="fade" hardwareAccelerated={true} presentationStyle="overFullScreen">
             <View style={styles.modalContainer}>
               <View style={styles.modal}>
                 <Text>Do you really want to logout?</Text>
                 <View style={styles.buttonContainer}>
-                  <Link href="../../../" asChild>
-                    <TouchableOpacity
-                      onPress={() => {
-                        handleAuthentication();
-                        setModalVisible(false);
-                      }}
-                    >
-                      <View>
-                        <Text>Yes</Text>
-                      </View>
-                    </TouchableOpacity>
-                  </Link>
+                  <TouchableOpacity
+                    onPress={() => {
+                      handleLogOut();
+                      setModalVisible(false);
+                      router.replace("/SignIn");
+                    }}
+                  >
+                    <Text>Yes</Text>
+                  </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
                       setModalVisible(false);
                     }}
                   >
-                    <View>
-                      <Text>No</Text>
-                    </View>
+                    <Text>No</Text>
                   </TouchableOpacity>
                 </View>
               </View>
