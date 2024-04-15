@@ -6,7 +6,7 @@ import { COLORS, FONTS } from "../../../../constants";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome6 } from "@expo/vector-icons";
 import RideTile from "../../AboutRide/General/RideTile";
-import "../../../index.js";
+import "../../../index.jsx";
 
 const sampleRides = [
   {

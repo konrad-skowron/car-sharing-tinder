@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css" />
+    <title>Find Address</title>
+</head>
+<body>
+    <div class="autocomplete-container" id="autocomplete-container"></div>
+    <script>
+        
+    function addressAutocomplete(containerElement, callback, options) {
+    // create input element
+    var inputElement = document.createElement("input");
+    inputElement.setAttribute("type", "text");
+    inputElement.setAttribute("placeholder", options.placeholder);
+    containerElement.appendChild(inputElement);
+
+    // add input field clear button
+    var clearButton = document.createElement("div");
+    clearButton.addEventListener("click", (e) => {
+        e.stopPropagation();
+        inputElement.value = '';
+        callback(null);
+        clearButton.classList.remove("visible");
+        closeDropDownList();
+    });
+    containerElement.appendChild(clearButton);
+
+    /* Current autocomplete items data (GeoJSON.Feature) */
+    var currentItems;
+
+
+
+
+    /* Focused item in the autocomplete list. This variable is used to navigate with buttons */
+    var focusedItemIndex;
+
+    /* Execute a function when someone writes in the text field: */
+    inputElement.addEventListener("input", function(e) {
+        var currentValue = this.value;
+
+        /* Close any already open dropdown list */
+        closeDropDownList();
+
+        // Cancel previous request promise
+    
+
+        if (!currentValue) {
+        clearButton.classList.remove("visible");
+        return false;
+        }
+
+        // Show clearButton when there is a text
+        clearButton.classList.add("visible");
+
+        /* Create a new promise and send geocoding request */
+        var promise = new Promise((resolve, reject) => {
+        currentPromiseReject = reject;
+
+        var apiKey = "aacfa879748e45b291751d430282f092";
+        var url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(currentValue)}&limit=5&apiKey=${apiKey}`;
+        
+        if (options.type) {
+            url += `&type=${options.type}`;
+        }
+
+        fetch(url)
+            .then(response => {
+            // check if the call was successful
+            if (response.ok) {
+                response.json().then(data => resolve(data));
+            } else {
+                response.json().then(data => reject(data));
+            }
+            });
+        });
+
+        promise.then((data) => {
+        currentItems = data.features;
+        console.log(currentItems)
+
+        /*create a DIV element that will contain the items (values):*/
+        var autocompleteItemsElement = document.createElement("div");
+        autocompleteItemsElement.setAttribute("class", "autocomplete-items");
+        containerElement.appendChild(autocompleteItemsElement);
+
+        /* For each item in the results */
+        data.features.forEach((feature, index) => {
+            /* Create a DIV element for each element: */
+            var itemElement = document.createElement("DIV");
+            /* Set formatted address as item value */
+            itemElement.innerHTML = feature.properties.formatted;
+
+            /* Set the value for the autocomplete text field and notify: */
+            itemElement.addEventListener("click", function(e) {
+            inputElement.value = currentItems[index].properties.formatted;
+
+            callback(currentItems[index]);
+
+            /* Close the list of autocompleted values: */
+            closeDropDownList();
+            });
+
+            autocompleteItemsElement.appendChild(itemElement);
+        });
+        }, (err) => {
+        if (!err.canceled) {
+            console.log(err);
+        }
+        });
+    });
+
+    
+
+    function closeDropDownList() {
+        var autocompleteItemsElement = containerElement.querySelector(".autocomplete-items");
+        if (autocompleteItemsElement) {
+        containerElement.removeChild(autocompleteItemsElement);
+        }
+
+        focusedItemIndex = -1;
+    }
+    
+
+    }
+
+    addressAutocomplete(document.getElementById("autocomplete-container"), (data) => {
+    console.log("Selected option: ");
+    console.log(data);
+    }, {
+        placeholder: "Enter an address here"
+    });
+
+    
+        </script>
+</body>
+</html> 

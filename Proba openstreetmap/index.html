@@ -3,19 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://unpkg.com/@geoapify/leaflet-address-search-plugin@^1/dist/L.Control.GeoapifyAddressSearch.min.css" />
-    <link rel="stylesheet" href="style.css" />
+    
     <title>Find Address</title>
 </head>
-<body>
-
-
-    
-        <div id="map"></div>
-
+<body>    
+    <div id="map" style=" height: 100vh" ></div>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/@geoapify/leaflet-address-search-plugin@^1/dist/L.Control.GeoapifyAddressSearch.min.js"></script>
-    <script src="scripts.js"></script>
-
+    <script>
+        let mapOptions = {
+            center:[51.110203, 17.032979],
+            zoom:12
+        }
+        let map = new L.map('map' , mapOptions);
+        let apiKey = "aacfa879748e45b291751d430282f092";
+        const addressSearchControl = L.control.addressSearch(apiKey, {
+            position: 'topleft',
+            mapViewBias:true,
+            placeholder:"Enter an address here",
+            resultCallback: (address) => {
+                if (marker) {
+                    marker.remove();
+                }
+                if (!address) {
+                        return;
+                }
+                console.log([address.lat, address.lon]);
+                map.setView([address.lat, address.lon], 20);
+            },
+            suggestionsCallback: (suggestions) => {
+                console.log(suggestions);
+            }
+        });
+        map.addControl(addressSearchControl);
+    </script>
 </body>
 </html>

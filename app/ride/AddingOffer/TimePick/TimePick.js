@@ -85,7 +85,7 @@ export default function App() {
         )}
       </SafeAreaView>
       <MainButton
-        href="ride/AddingOffer/CarDetails/CarDetails"
+        href="ride/AddingOffer/TimePick/AutoComplete"
         content="Next"
       />
       <StatusBar style="auto" />
