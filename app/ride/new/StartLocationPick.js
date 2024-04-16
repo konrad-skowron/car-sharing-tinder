@@ -6,10 +6,13 @@ import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import { COLORS, FONTS } from "../../../constants";
 import fetchLocations from "../../../utils";
 import MainButton from "../../../components/MainButton";
+import { setStartLocation } from "../../../context/NewRideProvider";
 
 export default function StartLocationPick() {
   const router = useRouter();
-  const [startLocation, setStartLocation] = useState("");
+  const [startLocationText, setStartLocationText] = useState("");
+  const [selectedStartLocation, setSelectedStartLocation] = useState(null);
+
   // const [data, setData] = useState([]);
 
   //TO NA TESTA, ŻEBY NIE WYSŁAĆ CO CHWILĘ REQUESTÓW
@@ -38,11 +41,15 @@ export default function StartLocationPick() {
   ]);
 
   const handleFetchData = () => {
-    fetchLocations(startLocation).then((data) => setData(data));
+    fetchLocations(startLocationText).then((data) => setData(data));
   };
 
   const handleStartLocationChange = (text) => {
-    setStartLocation(text);
+    setStartLocationText(text);
+  };
+
+  const handleSaveStartLocation = () => {
+    setStartLocation(selectedStartLocation);
   };
 
   return (
@@ -67,7 +74,7 @@ export default function StartLocationPick() {
       <View style={styles.inputWrapper}>
         <View>
           <View style={{ flexDirection: "row", alignItems: "center", width: "100%" }}>
-            <TextInput placeholder="Start location" style={styles.input} value={startLocation} onChangeText={handleStartLocationChange} onSubmitEditing={handleFetchData} />
+            <TextInput placeholder="Start location" style={styles.input} value={startLocationText} onChangeText={handleStartLocationChange} onSubmitEditing={handleFetchData} />
             <TouchableOpacity onPress={handleFetchData} style={{ backgroundColor: "#D9D9D9", paddingVertical: 7.6, paddingHorizontal: 6, justifyContent: "center", borderTopRightRadius: 8, borderBottomRightRadius: 8 }}>
               <AntDesign name="search1" size={24} color="black" />
             </TouchableOpacity>
@@ -76,7 +83,11 @@ export default function StartLocationPick() {
             <FlatList
               data={data}
               renderItem={({ item, index }) => (
-                <Pressable key={index} style={styles.item}>
+                <Pressable
+                  key={index}
+                  style={styles.item}
+                  onPress={() => setStartLocation({ address_line1: item.address_line1, address_line2: item.address_line2, street: item.street, postcode: item.postcode, city: item.city, lat: item.lat, lon: item.lon })}
+                >
                   {item.resultType === "city" ? <FontAwesome6 name="city" size={24} color={COLORS.darkGray} /> : <FontAwesome6 name="location-dot" size={24} color={COLORS.darkGray} />}
 
                   <View>
@@ -91,7 +102,7 @@ export default function StartLocationPick() {
           )}
         </View>
       </View>
-      <MainButton href="./EndLocationPick" content="Next" />
+      <MainButton href="./EndLocationPick" content="Next" onPress={handleSaveStartLocation} />
       <StatusBar style="auto" />
     </View>
   );
