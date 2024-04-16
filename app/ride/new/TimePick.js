@@ -13,8 +13,8 @@ import {
   Button,
 } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-import NavBar from "../Components/NavBar";
-import MainButton from "../Components/MainButton";
+import NavBar from "../../../components/NavBar";
+import MainButton from "../../../components/MainButton";
 
 export default function App() {
   const router = useRouter();

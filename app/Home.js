@@ -5,7 +5,7 @@ import { Link, Stack, useRouter } from "expo-router";
 import { COLORS, FONTS } from "../constants";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome6 } from "@expo/vector-icons";
-import RideTile from "./ride/AboutRide/RideTile";
+import RideTile from "../components/RideTile";
 import "./index.jsx";
 
 const sampleRides = [
@@ -76,7 +76,7 @@ const Home = () => {
           headerRight: () => (
             <TouchableOpacity
               onPress={() => {
-                router.navigate("ride/User/AboutUser");
+                router.navigate("./user/About");
               }}
             >
               <Image
@@ -106,7 +106,7 @@ const Home = () => {
         </Text>
         <View style={styles.tileContainer}>
           {sampleRides.map((sampleRide) => (
-            <Link key={sampleRide.id} href="ride/AboutRide/AboutRide" asChild>
+            <Link key={sampleRide.id} href={`ride/${sampleRide.id}`} asChild>
               <TouchableOpacity>
                 <RideTile ride={sampleRide} />
               </TouchableOpacity>

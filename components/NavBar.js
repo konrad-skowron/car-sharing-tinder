@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
 import { useFonts } from "expo-font";
 import { AntDesign } from "@expo/vector-icons";
-import { COLORS, FONTS } from "../../../constants";
+import { COLORS, FONTS } from "../constants";
 import { Link } from "expo-router";
 
 const NavBar = ({ prev, close }) => {

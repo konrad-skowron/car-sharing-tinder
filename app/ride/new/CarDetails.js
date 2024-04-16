@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import NavBar from "../Components/NavBar";
-import MainButton from "../Components/MainButton";
+import NavBar from "../../../components/NavBar";
+import MainButton from "../../../components/MainButton";
 import { useState } from "react";
 import { Stack, useRouter } from "expo-router";
 import { COLORS, FONTS } from "../../../constants";

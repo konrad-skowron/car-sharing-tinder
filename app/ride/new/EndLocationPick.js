@@ -5,7 +5,7 @@ import { Link, Stack, useRouter } from "expo-router";
 import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import { COLORS, FONTS } from "../../../constants";
 import fetchLocations from "../../../utils";
-import MainButton from "../Components/MainButton";
+import MainButton from "../../../components/MainButton";
 
 export default function EndLocationPick() {
   const router = useRouter();

@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import MainButton from "../Components/MainButton";
+import MainButton from "../../../components/MainButton";
 import { COLORS, FONTS } from "../../../constants";
 import { AntDesign } from "@expo/vector-icons";
 import { Stack } from "expo-router";

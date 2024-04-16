@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { COLORS, FONTS } from "../../../constants";
+import { COLORS, FONTS } from "../constants";
 
 const RideTile = ({ ride }) => {
   return (

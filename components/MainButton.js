@@ -1,7 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Link } from "expo-router";
-import { FONTS } from "../../../constants";
+import { FONTS } from "../constants";
 
 const MainButton = ({ href, content }) => {
   return (

@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS, FONTS } from "../../../constants";
 import { Link, Stack, useRouter } from "expo-router";
-import MainButton from "../Components/MainButton";
+import MainButton from "../../../components/MainButton";
 
 export default function App() {
   const router = useRouter();
