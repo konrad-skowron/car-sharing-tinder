@@ -20,7 +20,7 @@ const SignUp = () => {
   const submit = async () => {
     try {
       await handleSignUp(form.email, form.password, form.firstName, form.lastName, form.phoneNumber);
-      router.replace("ride/MainPage/Home/Home");
+      router.replace("/Home");
     } catch (error) {
       console.error("Sign in error:", error.message);
     }

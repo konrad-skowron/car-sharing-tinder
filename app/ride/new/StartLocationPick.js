@@ -3,11 +3,11 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Button, FlatList, Pressable } from "react-native";
 import { Link, Stack, useRouter } from "expo-router";
 import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
-import { COLORS, FONTS } from "../../../../constants";
-import fetchLocations from "../../../../utils";
-import MainButton from "../../Components/MainButton/MainButton";
+import { COLORS, FONTS } from "../../../constants";
+import fetchLocations from "../../../utils";
+import MainButton from "../Components/MainButton";
 
-export default function App() {
+export default function StartLocationPick() {
   const router = useRouter();
   const [startLocation, setStartLocation] = useState("");
   // const [data, setData] = useState([]);
@@ -91,7 +91,7 @@ export default function App() {
           )}
         </View>
       </View>
-      <MainButton href="../DayPick/DayPick" content="Next" />
+      <MainButton href="./EndLocationPick" content="Next" />
       <StatusBar style="auto" />
     </View>
   );

@@ -2,9 +2,9 @@ import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { COLORS, FONTS } from "../../../../constants";
+import { COLORS, FONTS } from "../../../constants";
 import { Link, Stack, useRouter } from "expo-router";
-import MainButton from "../../Components/MainButton/MainButton";
+import MainButton from "../Components/MainButton";
 
 export default function App() {
   const router = useRouter();
@@ -78,7 +78,7 @@ export default function App() {
         ))}
       </View>
       <Text style={styles.text}>Choose which days you will travel.</Text>
-      <MainButton href="../TimePick/TimePick" content="Next" />
+      <MainButton href="./TimePick" content="Next" />
       <StatusBar style="auto" />
     </View>
   );

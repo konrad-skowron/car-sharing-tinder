@@ -1,10 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, SafeAreaView, Text, Image } from "react-native";
-import PrevButton from "../../Components/PrevButton/PrevButton";
-import MainButton from "../../Components/MainButton/MainButton";
+import PrevButton from "../Components/PrevButton";
+import MainButton from "../Components/MainButton";
 import { ForceTouchGestureHandler } from "react-native-gesture-handler";
 import { Stack } from "expo-router";
-import { COLORS, FONTS } from "../../../../constants";
+import { COLORS, FONTS } from "../../../constants";
 
 const sampleUser = {
   user: {
@@ -38,7 +38,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       {/* <Text>text:{ride}</Text> */}
-      {/* <PrevButton prev="../../MainPage/Home/Home" /> */}
+      {/* <PrevButton prev="../../Home" /> */}
       <Stack.Screen
         options={{
           headerShadowVisible: false,
@@ -162,7 +162,7 @@ export default function App() {
           </View>
         </View>
       </View>
-      <MainButton href="../../MainPage/Home/Home" content="Match" />
+      <MainButton href="../../Home" content="Match" />
       <StatusBar style="auto" />
     </SafeAreaView>
   );

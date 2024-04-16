@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import NavBar from "../../Components/NavBar/NavBar";
-import MainButton from "../../Components/MainButton/MainButton";
+import NavBar from "../Components/NavBar";
+import MainButton from "../Components/MainButton";
 import { useState } from "react";
 import { Stack, useRouter } from "expo-router";
-import { COLORS, FONTS } from "../../../../constants";
+import { COLORS, FONTS } from "../../../constants";
 
 export default function App() {
   const router = useRouter();
@@ -36,7 +36,7 @@ export default function App() {
           ),
         }}
       />
-      {/* <NavBar prev="../TimePick/TimePick" close="../../MainPage/Home/Home" /> */}
+      {/* <NavBar prev="../TimePick/TimePick" close="../../Home" /> */}
       <View style={styles.inputWrapper}>
         <View>
           <View
@@ -86,7 +86,7 @@ export default function App() {
           )}
         </View>
       </View>
-      <MainButton href="../Success/Success" content="Finish" />
+      <MainButton href="./Success" content="Finish" />
 
       <StatusBar style="auto" />
     </View>

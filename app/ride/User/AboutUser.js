@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { StatusBar } from "expo-status-bar";
-import { COLORS, FONTS } from "../../../../constants";
+import { COLORS, FONTS } from "../../../constants";
 import { StyleSheet, View, TouchableOpacity, SafeAreaView, Text, Image, Button, Modal } from "react-native";
-import PrevButton from "../../Components/PrevButton/PrevButton";
-import MainButton from "../../Components/MainButton/MainButton";
-import "../../MainPage/Home/Home";
-import "../../../index";
+import PrevButton from "../Components/PrevButton";
+import MainButton from "../Components/MainButton";
+import "../../Home";
+import "../../index";
 import { Link, Stack, useRouter } from "expo-router";
-import { useAuthContext } from "../../../../context/AuthProvider";
+import { useAuthContext } from "../../../context/AuthProvider";
 
 const sampleUser = {
   user: {
@@ -41,7 +41,7 @@ export default function App() {
           headerStyle: { backgroundColor: "#eee" },
         }}
       />
-      {/* <PrevButton prev="ride/MainPage/Home/Home" /> */}
+      {/* <PrevButton prev="../../Home"" /> */}
       <View style={styles.row}>
         <View>
           <Text style={styles.nameSurnameText}>

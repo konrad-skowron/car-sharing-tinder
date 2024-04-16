@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button, Image } from "react-native";
 import { Link, Stack, useRouter } from "expo-router";
-import { COLORS, FONTS } from "../../../../constants";
+import { COLORS, FONTS } from "../constants";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome6 } from "@expo/vector-icons";
-import RideTile from "../../AboutRide/General/RideTile";
-import "../../../index.jsx";
+import RideTile from "./ride/AboutRide/RideTile";
+import "./index.jsx";
 
 const sampleRides = [
   {
@@ -76,7 +76,7 @@ const Home = () => {
           headerRight: () => (
             <TouchableOpacity
               onPress={() => {
-                router.navigate("ride/User/AboutUser/AboutUser");
+                router.navigate("ride/User/AboutUser");
               }}
             >
               <Image
@@ -106,7 +106,7 @@ const Home = () => {
         </Text>
         <View style={styles.tileContainer}>
           {sampleRides.map((sampleRide) => (
-            <Link key={sampleRide.id} href="ride/AboutRide/Detailed/AboutRide" asChild>
+            <Link key={sampleRide.id} href="ride/AboutRide/AboutRide" asChild>
               <TouchableOpacity>
                 <RideTile ride={sampleRide} />
               </TouchableOpacity>
@@ -115,7 +115,7 @@ const Home = () => {
         </View>
       </View>
       <View style={{ position: "fixed", alignSelf: "flex-end" }}>
-        <Link href="ride/AddingOffer/LocalizationPick/LocalizationPick" asChild>
+        <Link href="ride/new/StartLocationPick" asChild>
           <TouchableOpacity style={styles.plusButton}>
             <AntDesign name="plus" size={24} color="#eee" style={{ padding: 14 }} />
           </TouchableOpacity>

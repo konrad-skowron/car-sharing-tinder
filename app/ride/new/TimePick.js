@@ -1,7 +1,7 @@
 import { useState } from "react";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { StatusBar } from "expo-status-bar";
-import { COLORS, FONTS } from "../../../../constants";
+import { COLORS, FONTS } from "../../../constants";
 import { Link, Stack, useRouter } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 import {
@@ -13,8 +13,8 @@ import {
   Button,
 } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-import NavBar from "../../Components/NavBar/NavBar";
-import MainButton from "../../Components/MainButton/MainButton";
+import NavBar from "../Components/NavBar";
+import MainButton from "../Components/MainButton";
 
 export default function App() {
   const router = useRouter();
@@ -85,7 +85,7 @@ export default function App() {
         )}
       </SafeAreaView>
       <MainButton
-        href="ride/AddingOffer/TimePick/AutoComplete"
+        href="./CarDetails"
         content="Next"
       />
       <StatusBar style="auto" />

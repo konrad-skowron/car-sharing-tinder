@@ -4,7 +4,7 @@ import { useAuthContext } from "../context/AuthProvider";
 
 const App = () => {
   const { user } = useAuthContext();
-  return user ? <Redirect href="ride/MainPage/Home/Home" /> : <Redirect href="SignIn" />;
+  return user ? <Redirect href="Home" /> : <Redirect href="SignIn" />;
 };
 
 export default App;

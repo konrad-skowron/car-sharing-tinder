@@ -17,7 +17,7 @@ const SignIn = () => {
   const submit = async () => {
     try {
       await handleSignIn(form.email, form.password);
-      router.replace("ride/MainPage/Home/Home");
+      router.replace("/Home");
     } catch (error) {
       console.error("Sign in error:", error.message);
     }

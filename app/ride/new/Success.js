@@ -1,8 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import MainButton from "../../Components/MainButton/MainButton";
-import { COLORS, FONTS } from "../../../../constants";
+import MainButton from "../Components/MainButton";
+import { COLORS, FONTS } from "../../../constants";
 import { AntDesign } from "@expo/vector-icons";
 import { Stack } from "expo-router";
 
@@ -16,7 +16,7 @@ const Success = () => {
           <Ionicons name="checkmark-outline" size={128} color={COLORS.white} />
         </View>
       </View>
-      <MainButton href="../../MainPage/Home/Home" content="Home" />
+      <MainButton href="../../Home" content="Home" />
       <StatusBar style="auto" />
     </View>
   );
