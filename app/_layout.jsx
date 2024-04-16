@@ -36,6 +36,7 @@ const RootLayout = () => {
     <AuthProvider>
       <Stack initialRouteName="home">
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="ride/new" options={{ headerShown: false }} />
         <Stack.Screen name="index" options={{ headerShown: false }} />
       </Stack>
     </AuthProvider>
