@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, Button, FlatList, 
 import { Link, Stack, useRouter } from "expo-router";
 import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import { COLORS, FONTS } from "../../../../constants";
+import fetchLocations from "../../../../utils";
 import MainButton from "../../Components/MainButton/MainButton";
 
 export default function App() {
@@ -37,55 +38,7 @@ export default function App() {
   ]);
 
   const handleFetchData = () => {
-    fetchData();
-  };
-
-  const fetchData = () => {
-    if (startLocation.length <= 3) return;
-    var promise = new Promise((resolve, reject) => {
-      currentPromiseReject = reject;
-      var apiKey = "aacfa879748e45b291751d430282f092";
-      var url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(startLocation)}&limit=3&apiKey=${apiKey}`;
-
-      // if (options.type) {
-      //     url += `&type=${options.type}`;
-      // }
-
-      fetch(url).then((response) => {
-        if (response.ok) {
-          response.json().then((data) => resolve(data));
-        } else {
-          response.json().then((data) => reject(data));
-        }
-      });
-    });
-
-    promise.then(
-      (data) => {
-        currentItems = data.features;
-        console.log(currentItems);
-        setData(
-          currentItems.map((feature) => {
-            return {
-              address_line1: feature.properties.address_line1,
-              address_line2: feature.properties.address_line2,
-              street: feature.properties.city,
-              housenumber: feature.properties.housenumber,
-              postcode: feature.properties.postcode,
-              city: feature.properties.city,
-              resultType: feature.properties.result_type,
-              lat: feature.properties.lat,
-              lon: feature.properties.lon,
-            };
-          })
-        );
-      },
-      (err) => {
-        if (!err.canceled) {
-          console.log(err);
-        }
-      }
-    );
+    fetchLocations(startLocation).then((data) => setData(data));
   };
 
   const handleStartLocationChange = (text) => {
@@ -114,7 +67,7 @@ export default function App() {
       <View style={styles.inputWrapper}>
         <View>
           <View style={{ flexDirection: "row", alignItems: "center", width: "100%" }}>
-            <TextInput placeholder="Start location" style={styles.input} value={startLocation} onChangeText={handleStartLocationChange} />
+            <TextInput placeholder="Start location" style={styles.input} value={startLocation} onChangeText={handleStartLocationChange} onSubmitEditing={handleFetchData} />
             <TouchableOpacity onPress={handleFetchData} style={{ backgroundColor: "#D9D9D9", paddingVertical: 7.6, paddingHorizontal: 6, justifyContent: "center", borderTopRightRadius: 8, borderBottomRightRadius: 8 }}>
               <AntDesign name="search1" size={24} color="black" />
             </TouchableOpacity>
