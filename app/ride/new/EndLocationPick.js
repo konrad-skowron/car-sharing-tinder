@@ -6,10 +6,14 @@ import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import { COLORS, FONTS } from "../../../constants";
 import fetchLocations from "../../../utils";
 import MainButton from "../../../components/MainButton";
+import { useNewRideContext } from "../../../context/NewRideProvider";
 
 export default function EndLocationPick() {
   const router = useRouter();
-  const [startLocation, setStartLocation] = useState("");
+  const [endLocationText, setEndLocationText] = useState("");
+  const [selectedEndLocation, setSelectedEndLocation] = useState(null);
+  const { setEndLocation } = useNewRideContext();
+  
   // const [data, setData] = useState([]);
 
   //TO NA TESTA, ŻEBY NIE WYSŁAĆ CO CHWILĘ REQUESTÓW
@@ -38,11 +42,19 @@ export default function EndLocationPick() {
   ]);
 
   const handleFetchData = () => {
-    fetchLocations(startLocation).then((data) => setData(data));
+    fetchLocations(endLocationText).then((data) => setData(data));
   };
 
-  const handleStartLocationChange = (text) => {
-    setStartLocation(text);
+  const handleEndLocationChange = (text) => {
+    setEndLocation(text);
+  };
+
+  const handleSelectedEndLocation = (text) => {
+    setSelectedEndLocation(text);
+  }
+
+  const handleSaveEndLocation = () => {
+    setEndLocation(selectedEndLocation);
   };
 
   return (
@@ -67,7 +79,7 @@ export default function EndLocationPick() {
       <View style={styles.inputWrapper}>
         <View>
           <View style={{ flexDirection: "row", alignItems: "center", width: "100%" }}>
-            <TextInput placeholder="Destination" style={styles.input} value={startLocation} onChangeText={handleStartLocationChange} onSubmitEditing={handleFetchData} />
+            <TextInput placeholder="Destination" style={styles.input} value={endLocationText} onChangeText={handleEndLocationChange} onSubmitEditing={handleFetchData} />
             <TouchableOpacity onPress={handleFetchData} style={{ backgroundColor: "#D9D9D9", paddingVertical: 7.6, paddingHorizontal: 6, justifyContent: "center", borderTopRightRadius: 8, borderBottomRightRadius: 8 }}>
               <AntDesign name="search1" size={24} color="black" />
             </TouchableOpacity>
@@ -76,7 +88,8 @@ export default function EndLocationPick() {
             <FlatList
               data={data}
               renderItem={({ item, index }) => (
-                <Pressable key={index} style={styles.item}>
+                <Pressable key={index} style={styles.item}
+                onPress={() => handleSelectedEndLocation({ address_line1: item.address_line1, address_line2: item.address_line2, street: item.street, postcode: item.postcode, city: item.city, lat: item.lat, lon: item.lon })}>
                   {item.resultType === "city" ? <FontAwesome6 name="city" size={24} color={COLORS.darkGray} /> : <FontAwesome6 name="location-dot" size={24} color={COLORS.darkGray} />}
 
                   <View>
@@ -91,7 +104,7 @@ export default function EndLocationPick() {
           )}
         </View>
       </View>
-      <MainButton href="./DayPick" content="Next" />
+      <MainButton href="./DayPick" content="Next" onPress={handleSaveEndLocation}/>
       <StatusBar style="auto" />
     </View>
   );

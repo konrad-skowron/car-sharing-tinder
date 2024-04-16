@@ -6,12 +6,13 @@ import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import { COLORS, FONTS } from "../../../constants";
 import fetchLocations from "../../../utils";
 import MainButton from "../../../components/MainButton";
-import { setStartLocation } from "../../../context/NewRideProvider";
+import { useNewRideContext } from "../../../context/NewRideProvider";
 
 export default function StartLocationPick() {
   const router = useRouter();
   const [startLocationText, setStartLocationText] = useState("");
   const [selectedStartLocation, setSelectedStartLocation] = useState(null);
+  const { setStartLocation } = useNewRideContext();
 
   // const [data, setData] = useState([]);
 
@@ -46,6 +47,10 @@ export default function StartLocationPick() {
 
   const handleStartLocationChange = (text) => {
     setStartLocationText(text);
+  };
+
+  const handleSelectedStartLocation = (text) => {
+    setSelectedStartLocation(text);
   };
 
   const handleSaveStartLocation = () => {
@@ -86,10 +91,9 @@ export default function StartLocationPick() {
                 <Pressable
                   key={index}
                   style={styles.item}
-                  onPress={() => setStartLocation({ address_line1: item.address_line1, address_line2: item.address_line2, street: item.street, postcode: item.postcode, city: item.city, lat: item.lat, lon: item.lon })}
+                  onPress={() => handleSelectedStartLocation({ address_line1: item.address_line1, address_line2: item.address_line2, street: item.street, postcode: item.postcode, city: item.city, lat: item.lat, lon: item.lon })}
                 >
                   {item.resultType === "city" ? <FontAwesome6 name="city" size={24} color={COLORS.darkGray} /> : <FontAwesome6 name="location-dot" size={24} color={COLORS.darkGray} />}
-
                   <View>
                     <Text style={styles.itemText}>{item.address_line1}</Text>
                     <Text style={styles.itemSubtext}>{item.address_line2}</Text>
@@ -101,7 +105,7 @@ export default function StartLocationPick() {
             <Text style={styles.text}>Choose the location from which you will travel.</Text>
           )}
         </View>
-      </View>
+      </View>      
       <MainButton href="./EndLocationPick" content="Next" onPress={handleSaveStartLocation} />
       <StatusBar style="auto" />
     </View>

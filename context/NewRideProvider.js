@@ -39,6 +39,9 @@ const NewRideProvider = ({ children }) => {
     },
   });
 
+  useEffect(()=>{console.log(startLocation)}, [startLocation]);
+  useEffect(()=>{console.log(endLocation)}, [endLocation]);
+
   return <NewRideContext.Provider value={{ setStartLocation, setEndLocation, setDays, setTime, setCarDetails }}>{children}</NewRideContext.Provider>;
 };
 
