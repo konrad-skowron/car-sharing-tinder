@@ -1,26 +1,13 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from "react-native";
 import { COLORS, FONTS } from "../constants";
 
 const RideTile = ({ ride }) => {
   return (
     <View style={styles.container}>
       <View>
-        <Text
-          style={styles.name}
-        >{`${ride.user.firstName} ${ride.user.lastName}`}</Text>
-        <Text style={styles.car}>{`${capitalizeFirstLetter(ride.car.color)} ${
-          ride.car.brand
-        } ${ride.car.model}`}</Text>
-        <Text
-          style={styles.location}
-        >{`${ride.startLocation} - ${ride.destination}`}</Text>
+        <Text style={styles.name}>{`${ride.firstName} ${ride.lastName}`}</Text>
+        {ride.carDetails != null ? <Text style={styles.car}>{`${capitalizeFirstLetter(ride.carDetails.color)} ${ride.carDetails.brand} ${ride.carDetails.model}`}</Text> : ""}
+        <Text style={styles.location}>{`${ride.startLocation.address_line1} - ${ride.endLocation.address_line1}`}</Text>
       </View>
       <View>
         <Image

@@ -4,14 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { COLORS, FONTS } from "../../../constants";
 import { Link, Stack, useRouter } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-  Button,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Button } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import NavBar from "../../../components/NavBar";
 import MainButton from "../../../components/MainButton";
@@ -20,7 +13,7 @@ import { useNewRideContext } from "../../../context/NewRideProvider";
 
 export default function App() {
   const router = useRouter();
-  const [date, setDate] = useState(new Date(1598051730000));
+  const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
   const { setTime } = useNewRideContext();
@@ -91,11 +84,7 @@ export default function App() {
           />
         )}
       </SafeAreaView>
-      <MainButton
-        href="./CarDetails"
-        content="Next"
-        onPress={handleSaveTime}
-      />
+      <MainButton href="./CarDetails" content="Next" onPress={handleSaveTime} />
       <StatusBar style="auto" />
     </View>
   );

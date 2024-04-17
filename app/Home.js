@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button, Image } from "react-native";
+import app from "../firebaseConfig";
+import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
 import { Link, Stack, useRouter } from "expo-router";
 import { COLORS, FONTS } from "../constants";
 import { AntDesign } from "@expo/vector-icons";
@@ -55,6 +57,32 @@ const sampleRides = [
 
 const Home = () => {
   const router = useRouter();
+  const [rides, setRides] = useState([]);
+
+  useEffect(() => {
+    getRides();
+  }, []);
+
+  const getRides = async () => {
+    try {
+      const db = getFirestore(app);
+      const userRidesRef = collection(db, "users");
+      const q = query(userRidesRef, where("rides", "!=", "null"));
+      const querySnapshot = await getDocs(q);
+      const result = [];
+      querySnapshot.forEach((doc, index) => {
+        data = doc.data();
+        const { firstName, lastName } = data;
+        data.rides.forEach((ride) => {
+          result.push({ ...ride, firstName, lastName, index });
+        });
+      });
+      setRides(result);
+    } catch (error) {
+      console.error("Get rides error: ", error.message);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Stack.Screen
@@ -105,13 +133,14 @@ const Home = () => {
           Available:
         </Text>
         <View style={styles.tileContainer}>
-          {sampleRides.map((sampleRide) => (
-            <Link key={sampleRide.id} href={`ride/${sampleRide.id}`} asChild>
-              <TouchableOpacity>
-                <RideTile ride={sampleRide} />
-              </TouchableOpacity>
-            </Link>
-          ))}
+          {!rides.length ||
+            rides.map((ride, index) => (
+              <Link key={index} href={`ride/${ride.index}`} asChild>
+                <TouchableOpacity>
+                  <RideTile ride={ride} />
+                </TouchableOpacity>
+              </Link>
+            ))}
         </View>
       </View>
       <View style={{ position: "fixed", alignSelf: "flex-end" }}>

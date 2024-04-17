@@ -9,46 +9,15 @@ export const useNewRideContext = () => useContext(NewRideContext);
 const NewRideProvider = ({ children }) => {
   const { user } = useAuthContext();
 
-  const [startLocation, setStartLocation] = useState({
-    address_line1: "",
-    address_line2: "",
-    street: "",
-    postcode: "",
-    city: "",
-    lat: "",
-    lon: "",
-  });
+  const [startLocation, setStartLocation] = useState({});
 
-  const [endLocation, setEndLocation] = useState({
-    startLocation: {
-      address_line1: "",
-      address_line2: "",
-      street: "",
-      postcode: "",
-      city: "",
-      lat: "",
-      lon: "",
-    },
-  });
+  const [endLocation, setEndLocation] = useState({});
 
   const [days, setDays] = useState([]);
 
   const [time, setTime] = useState(null);
 
-  const [carDetails, setCarDetails] = useState({
-    car: {
-      brand: "",
-      model: "",
-      color: "",
-      seats: 0,
-    },
-  });
-
-  useEffect(()=>{console.log(startLocation)}, [startLocation]);
-  useEffect(()=>{console.log(endLocation)}, [endLocation]);
-  useEffect(()=>{console.log(days)}, [days]);
-  useEffect(()=>{console.log(time)}, [time]);
-  useEffect(()=>{console.log(carDetails)}, [carDetails]);
+  const [carDetails, setCarDetails] = useState({});
 
   const addOffer = async () => {
     try {
@@ -56,12 +25,12 @@ const NewRideProvider = ({ children }) => {
       const userDocRef = doc(db, "users", user.uid);
 
       console.log(user.uid);
-  
+
       const userSnapshot = await getDoc(userDocRef);
       if (!userSnapshot.exists()) {
         throw new Error("User does not exist in the database");
       }
-  
+
       const newOffer = {
         startLocation,
         endLocation,
@@ -69,12 +38,14 @@ const NewRideProvider = ({ children }) => {
         time,
         carDetails,
       };
-  
+
+      console.log(newOffer);
+
       await updateDoc(userDocRef, {
-        rides: arrayUnion(newOffer)
+        rides: arrayUnion(newOffer),
       });
     } catch (error) {
-        throw new Error(error.message);
+      throw new Error(error.message);
     }
   };
 

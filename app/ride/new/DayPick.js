@@ -22,7 +22,7 @@ export default function App() {
 
   useEffect(() => {
     setDays(daysD.filter((day) => day.pressed).map((day) => day.day));
-  }, [daysD, setDays]);
+  }, [daysD]);
 
   const handleDayPress = (index) => {
     setDaysD((prevDays) => {
@@ -66,27 +66,13 @@ export default function App() {
         }}
       >
         {daysD.map((day, index) => (
-          <TouchableOpacity
-            key={day.day}
-            style={
-              day.pressed ? styles.buttonDayPressed : styles.buttonDayUnpressed
-            }
-            onPress={() => handleDayPress(index)}
-          >
-            <Text
-              style={
-                day.pressed
-                  ? styles.buttonDayTextPressed
-                  : styles.buttonDayTextUnPressed
-              }
-            >
-              {day.day}
-            </Text>
+          <TouchableOpacity key={day.day} style={day.pressed ? styles.buttonDayPressed : styles.buttonDayUnpressed} onPress={() => handleDayPress(index)}>
+            <Text style={day.pressed ? styles.buttonDayTextPressed : styles.buttonDayTextUnPressed}>{day.day}</Text>
           </TouchableOpacity>
         ))}
       </View>
       <Text style={styles.text}>Choose which days you will travel.</Text>
-      <MainButton href="./TimePick" content="Next" disabled={!isAnyDaySelected}/>
+      <MainButton href="./TimePick" content="Next" disabled={!isAnyDaySelected} />
       <StatusBar style="auto" />
     </View>
   );
