@@ -105,7 +105,7 @@ export default function EndLocationPick() {
           )}
         </View>
       </View>
-      <MainButton href="./DayPick" content="Next" onPress={handleSaveEndLocation}/>
+      <MainButton href="./DayPick" content="Next" onPress={handleSaveEndLocation} disabled={!selectedEndLocation}/>
       <StatusBar style="auto" />
     </View>
   );

@@ -12,10 +12,23 @@ import MainButton from "../../../components/MainButton";
 import { useState } from "react";
 import { Stack, useRouter } from "expo-router";
 import { COLORS, FONTS } from "../../../constants";
+import { useNewRideContext } from "../../../context/NewRideProvider";
 
 export default function App() {
   const router = useRouter();
   const [haveCar, setHaveCar] = useState(false);
+  const [details, setDetails] = useState({
+    brand: "",
+    model: "",
+    color: "",
+    freeSeats: "",
+  });
+  const { setCarDetails } = useNewRideContext();
+
+  const handleSaveCarDetails = () => {
+    const detailsToSave = haveCar ? details : null;
+    setCarDetails(detailsToSave);
+  };
 
   return (
     <View style={styles.container}>
@@ -69,14 +82,51 @@ export default function App() {
           </View>
           {haveCar ? (
             <View style={{ gap: 4 }}>
-              <TextInput placeholder="Brand" style={styles.input} />
-              <TextInput placeholder="Model" style={styles.input} />
-              <TextInput placeholder="Color" style={styles.input} />
-              <TextInput
-                placeholder="Free seats"
-                style={styles.input}
-                inputMode="numeric"
-              />
+          <TextInput
+            placeholder="Brand"
+            style={styles.input}
+            value={details.brand}
+            onChangeText={(text) =>
+              setDetails((prevDetails) => ({
+                ...prevDetails,
+                brand: text,
+              }))
+            }
+          />
+          <TextInput
+            placeholder="Model"
+            style={styles.input}
+            value={details.model}
+            onChangeText={(text) =>
+              setDetails((prevDetails) => ({
+                ...prevDetails,
+                model: text,
+              }))
+            }
+          />
+          <TextInput
+            placeholder="Color"
+            style={styles.input}
+            value={details.color}
+            onChangeText={(text) =>
+              setDetails((prevDetails) => ({
+                ...prevDetails,
+                color: text,
+              }))
+            }
+          />
+          <TextInput
+            placeholder="Free seats"
+            style={styles.input}
+            value={details.freeSeats}
+            onChangeText={(text) =>
+              setDetails((prevDetails) => ({
+                ...prevDetails,
+                freeSeats: text,
+              }))
+            }
+            keyboardType="numeric"
+          />
               <Text style={styles.text}>Enter the details of your car.</Text>
             </View>
           ) : (
@@ -86,7 +136,7 @@ export default function App() {
           )}
         </View>
       </View>
-      <MainButton href="./Success" content="Finish" />
+      <MainButton href="./Success" content="Finish" onPress={handleSaveCarDetails}/>
 
       <StatusBar style="auto" />
     </View>
