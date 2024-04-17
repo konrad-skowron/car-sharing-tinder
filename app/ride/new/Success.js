@@ -5,8 +5,11 @@ import MainButton from "../../../components/MainButton";
 import { COLORS, FONTS } from "../../../constants";
 import { AntDesign } from "@expo/vector-icons";
 import { Stack } from "expo-router";
+import { useNewRideContext } from "../../../context/NewRideProvider";
 
 const Success = () => {
+  const { addOffer } = useNewRideContext();
+
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
@@ -16,7 +19,7 @@ const Success = () => {
           <Ionicons name="checkmark-outline" size={128} color={COLORS.white} />
         </View>
       </View>
-      <MainButton href="../../Home" content="Home" />
+      <MainButton href="../../Home" content="Home" onPress={() => addOffer()} />
       <StatusBar style="auto" />
     </View>
   );

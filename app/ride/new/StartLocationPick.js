@@ -88,7 +88,7 @@ export default function StartLocationPick() {
           {data.length ? (
             <FlatList
             data={data}
-            renderItem={({ item, index }) => (
+            renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles.item}
                 onPress={() => handleSelectedStartLocation({ address_line1: item.address_line1, address_line2: item.address_line2, street: item.street, postcode: item.postcode, city: item.city, lat: item.lat, lon: item.lon })}
