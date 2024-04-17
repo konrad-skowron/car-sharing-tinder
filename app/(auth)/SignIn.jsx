@@ -33,6 +33,7 @@ const SignIn = () => {
             justifyContent: "space-evenly",
             alignItems: "center",
           }}
+          keyboardShouldPersistTaps="handled"
         >
           <Image style={styles.image} source={require("../../assets/Logo_car_sharing_tinder.png")} />
           <View style={styles.formContainer}>

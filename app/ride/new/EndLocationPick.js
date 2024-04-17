@@ -87,19 +87,21 @@ export default function EndLocationPick() {
           </View>
           {data.length ? (
             <FlatList
-              data={data}
-              renderItem={({ item, index }) => (
-                <Pressable key={index} style={styles.item}
-                onPress={() => handleSelectedEndLocation({ address_line1: item.address_line1, address_line2: item.address_line2, street: item.street, postcode: item.postcode, city: item.city, lat: item.lat, lon: item.lon })}>
-                  {item.resultType === "city" ? <FontAwesome6 name="city" size={24} color={COLORS.darkGray} /> : <FontAwesome6 name="location-dot" size={24} color={COLORS.darkGray} />}
-
-                  <View>
-                    <Text style={styles.itemText}>{item.address_line1}</Text>
-                    <Text style={styles.itemSubtext}>{item.address_line2}</Text>
-                  </View>
-                </Pressable>
-              )}
-            />
+            data={data}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.item}
+                onPress={() => handleSelectedEndLocation({ address_line1: item.address_line1, address_line2: item.address_line2, street: item.street, postcode: item.postcode, city: item.city, lat: item.lat, lon: item.lon })}
+              >
+                {item.resultType === "city" ? <FontAwesome6 name="city" size={24} color={COLORS.darkGray} /> : <FontAwesome6 name="location-dot" size={24} color={COLORS.darkGray} />}
+                <View>
+                  <Text style={styles.itemText}>{item.address_line1}</Text>
+                  <Text style={styles.itemSubtext}>{item.address_line2}</Text>
+                </View>
+              </TouchableOpacity>
+            )}
+            keyboardShouldPersistTaps="always"
+          />
           ) : (
             <Text style={styles.text}>Where are you going?</Text>
           )}
