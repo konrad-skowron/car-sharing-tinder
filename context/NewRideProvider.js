@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import app from "../firebaseConfig";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "@firebase/auth";
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { useAuthContext } from "../context/AuthProvider";
 
 const NewRideContext = createContext();
@@ -63,8 +62,6 @@ const NewRideProvider = ({ children }) => {
         throw new Error("User does not exist in the database");
       }
   
-      const userData = userSnapshot.data();
-  
       const newOffer = {
         startLocation,
         endLocation,
@@ -73,11 +70,11 @@ const NewRideProvider = ({ children }) => {
         carDetails,
       };
   
-      const updatedRides = [...(userData.rides || []), newOffer];
-  
-      await setDoc(userDocRef, { ...userData, rides: updatedRides });
+      await updateDoc(userDocRef, {
+        rides: arrayUnion(newOffer)
+      });
     } catch (error) {
-      throw new Error(error.message);
+        throw new Error(error.message);
     }
   };
 

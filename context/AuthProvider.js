@@ -53,6 +53,7 @@ const AuthProvider = ({ children }) => {
         firstName: firstName,
         lastName: lastName,
         phoneNumber: phoneNumber,
+        rides: []
       });
     } catch (error) {
       throw new Error(error.message);
