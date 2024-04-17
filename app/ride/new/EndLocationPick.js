@@ -46,11 +46,12 @@ export default function EndLocationPick() {
   };
 
   const handleEndLocationChange = (text) => {
-    setEndLocation(text);
+    setEndLocationText(text);
   };
 
   const handleSelectedEndLocation = (text) => {
     setSelectedEndLocation(text);
+    setEndLocationText(text.address_line1);
   }
 
   const handleSaveEndLocation = () => {

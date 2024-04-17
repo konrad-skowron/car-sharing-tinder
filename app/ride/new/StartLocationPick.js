@@ -51,6 +51,7 @@ export default function StartLocationPick() {
 
   const handleSelectedStartLocation = (text) => {
     setSelectedStartLocation(text);
+    setStartLocationText(text.address_line1);
   };
 
   const handleSaveStartLocation = () => {
@@ -106,7 +107,7 @@ export default function StartLocationPick() {
           )}
         </View>
       </View>      
-      <MainButton href="./EndLocationPick" content="Next" onPress={handleSaveStartLocation} />
+      <MainButton href="./EndLocationPick" content="Next" onPress={handleSaveStartLocation} disabled={!selectedStartLocation}/>
       <StatusBar style="auto" />
     </View>
   );

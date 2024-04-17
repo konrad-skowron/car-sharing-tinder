@@ -3,11 +3,11 @@ import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Link } from "expo-router";
 import { FONTS } from "../constants";
 
-const MainButton = ({ href, content, onPress }) => {
+const MainButton = ({ href, content, onPress, disabled }) => {
   return (
     <View style={styles.buttonEnv}>
       <Link href={href} asChild>
-        <TouchableOpacity style={styles.button} onPress={onPress}>
+        <TouchableOpacity style={styles.button} onPress={onPress} disabled={disabled}>
           <Text style={styles.buttonText}>{content}</Text>
         </TouchableOpacity>
       </Link>

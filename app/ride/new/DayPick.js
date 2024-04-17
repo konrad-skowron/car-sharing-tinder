@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS, FONTS } from "../../../constants";
 import { Link, Stack, useRouter } from "expo-router";
 import MainButton from "../../../components/MainButton";
+import { useNewRideContext } from "../../../context/NewRideProvider";
 
 export default function App() {
+  const { setDays } = useNewRideContext();
   const router = useRouter();
-  const [days, setDays] = useState([
+  const [daysD, setDaysD] = useState([
     { day: "Monday", pressed: false },
     { day: "Tuesday", pressed: false },
     { day: "Wednesday", pressed: false },
@@ -18,13 +20,19 @@ export default function App() {
     { day: "Sunday", pressed: false },
   ]);
 
+  useEffect(() => {
+    setDays(daysD.filter((day) => day.pressed).map((day) => day.day));
+  }, [daysD, setDays]);
+
   const handleDayPress = (index) => {
-    setDays((prevDays) => {
+    setDaysD((prevDays) => {
       const updatedDays = [...prevDays];
       updatedDays[index].pressed = !updatedDays[index].pressed;
       return updatedDays;
     });
   };
+
+  const isAnyDaySelected = daysD.some((day) => day.pressed);
 
   return (
     <View style={styles.container}>
@@ -57,7 +65,7 @@ export default function App() {
           gap: 8,
         }}
       >
-        {days.map((day, index) => (
+        {daysD.map((day, index) => (
           <TouchableOpacity
             key={day.day}
             style={
@@ -78,7 +86,7 @@ export default function App() {
         ))}
       </View>
       <Text style={styles.text}>Choose which days you will travel.</Text>
-      <MainButton href="./TimePick" content="Next" />
+      <MainButton href="./TimePick" content="Next" disabled={!isAnyDaySelected}/>
       <StatusBar style="auto" />
     </View>
   );

@@ -15,12 +15,15 @@ import {
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import NavBar from "../../../components/NavBar";
 import MainButton from "../../../components/MainButton";
+import NewRideProvider from "../../../context/NewRideProvider";
+import { useNewRideContext } from "../../../context/NewRideProvider";
 
 export default function App() {
   const router = useRouter();
   const [date, setDate] = useState(new Date(1598051730000));
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
+  const { setTime } = useNewRideContext();
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
@@ -35,6 +38,10 @@ export default function App() {
 
   const showTimepicker = () => {
     showMode("time");
+  };
+
+  const handleSaveTime = () => {
+    setTime(`${date.getHours()}:${date.getMinutes()}`);
   };
 
   return (
@@ -87,6 +94,7 @@ export default function App() {
       <MainButton
         href="./CarDetails"
         content="Next"
+        onPress={handleSaveTime}
       />
       <StatusBar style="auto" />
     </View>
