@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button, Image } from "react-native";
 import app from "../firebaseConfig";
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
-import { Link, Stack, useRouter } from "expo-router";
+import { Link, Stack, useRouter, useFocusEffect } from "expo-router";
 import { COLORS, FONTS } from "../constants";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -59,9 +59,15 @@ const Home = () => {
   const router = useRouter();
   const [rides, setRides] = useState([]);
 
-  useEffect(() => {
-    getRides();
-  }, []);
+  // useEffect(() => {
+  //   getRides();
+  // }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      getRides();
+    }, [])
+  );
 
   const getRides = async () => {
     try {

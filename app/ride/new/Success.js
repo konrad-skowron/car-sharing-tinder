@@ -19,8 +19,7 @@ const Success = () => {
           <Ionicons name="checkmark-outline" size={128} color={COLORS.white} />
         </View>
       </View>
-      <MainButton href="../../Home" content="Home" onPress={() => addOffer()} />
-      <StatusBar style="auto" />
+      <MainButton href="../../Home" content="Home" />
     </View>
   );
 };

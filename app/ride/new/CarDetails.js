@@ -1,11 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import NavBar from "../../../components/NavBar";
 import MainButton from "../../../components/MainButton";
@@ -16,6 +10,7 @@ import { useNewRideContext } from "../../../context/NewRideProvider";
 
 export default function App() {
   const router = useRouter();
+  const { setCarDetails, addOffer } = useNewRideContext();
   const [haveCar, setHaveCar] = useState(false);
   const [details, setDetails] = useState({
     brand: "",
@@ -23,11 +18,11 @@ export default function App() {
     color: "",
     freeSeats: "",
   });
-  const { setCarDetails } = useNewRideContext();
 
   const handleSaveCarDetails = () => {
     const detailsToSave = haveCar ? details : null;
     setCarDetails(detailsToSave);
+    addOffer();
   };
 
   return (
@@ -59,16 +54,8 @@ export default function App() {
               alignItems: "center",
             }}
           >
-            <TouchableOpacity
-              style={haveCar ? styles.buttonChecked : styles.buttonUnchecked}
-              onPress={() => setHaveCar(!haveCar)}
-            >
-              <AntDesign
-                name="check"
-                size={24}
-                color="#eee"
-                style={{ padding: 14 }}
-              />
+            <TouchableOpacity style={haveCar ? styles.buttonChecked : styles.buttonUnchecked} onPress={() => setHaveCar(!haveCar)}>
+              <AntDesign name="check" size={24} color="#eee" style={{ padding: 14 }} />
             </TouchableOpacity>
             <Text
               style={{
@@ -82,61 +69,59 @@ export default function App() {
           </View>
           {haveCar ? (
             <View style={{ gap: 4 }}>
-          <TextInput
-            placeholder="Brand"
-            style={styles.input}
-            value={details.brand}
-            onChangeText={(text) =>
-              setDetails((prevDetails) => ({
-                ...prevDetails,
-                brand: text,
-              }))
-            }
-          />
-          <TextInput
-            placeholder="Model"
-            style={styles.input}
-            value={details.model}
-            onChangeText={(text) =>
-              setDetails((prevDetails) => ({
-                ...prevDetails,
-                model: text,
-              }))
-            }
-          />
-          <TextInput
-            placeholder="Color"
-            style={styles.input}
-            value={details.color}
-            onChangeText={(text) =>
-              setDetails((prevDetails) => ({
-                ...prevDetails,
-                color: text,
-              }))
-            }
-          />
-          <TextInput
-            placeholder="Free seats"
-            style={styles.input}
-            value={details.freeSeats}
-            onChangeText={(text) =>
-              setDetails((prevDetails) => ({
-                ...prevDetails,
-                freeSeats: text,
-              }))
-            }
-            keyboardType="numeric"
-          />
+              <TextInput
+                placeholder="Brand"
+                style={styles.input}
+                value={details.brand}
+                onChangeText={(text) =>
+                  setDetails((prevDetails) => ({
+                    ...prevDetails,
+                    brand: text,
+                  }))
+                }
+              />
+              <TextInput
+                placeholder="Model"
+                style={styles.input}
+                value={details.model}
+                onChangeText={(text) =>
+                  setDetails((prevDetails) => ({
+                    ...prevDetails,
+                    model: text,
+                  }))
+                }
+              />
+              <TextInput
+                placeholder="Color"
+                style={styles.input}
+                value={details.color}
+                onChangeText={(text) =>
+                  setDetails((prevDetails) => ({
+                    ...prevDetails,
+                    color: text,
+                  }))
+                }
+              />
+              <TextInput
+                placeholder="Free seats"
+                style={styles.input}
+                value={details.freeSeats}
+                onChangeText={(text) =>
+                  setDetails((prevDetails) => ({
+                    ...prevDetails,
+                    freeSeats: text,
+                  }))
+                }
+                keyboardType="numeric"
+              />
               <Text style={styles.text}>Enter the details of your car.</Text>
             </View>
           ) : (
-            <Text style={styles.text}>
-              Check if you own a car and want to drive.
-            </Text>
+            <Text style={styles.text}>Check if you own a car and want to drive.</Text>
           )}
         </View>
       </View>
-      <MainButton href="./Success" content="Finish" onPress={handleSaveCarDetails}/>
+      <MainButton href="./Success" content="Finish" onPress={handleSaveCarDetails} disabled={Object.values(details).some((value) => value === "") && haveCar} />
 
       <StatusBar style="auto" />
     </View>
