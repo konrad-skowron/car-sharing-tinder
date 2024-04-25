@@ -59,10 +59,6 @@ const Home = () => {
   const router = useRouter();
   const [rides, setRides] = useState([]);
 
-  // useEffect(() => {
-  //   getRides();
-  // }, []);
-
   useFocusEffect(
     useCallback(() => {
       getRides();
@@ -103,7 +99,7 @@ const Home = () => {
               size={28}
               color={COLORS.darkGray}
               onPress={() => {
-                // router.navigate("/");
+                router.navigate("/user/matched");
               }}
             />
           ),

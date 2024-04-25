@@ -5,7 +5,7 @@ const RideTile = ({ ride }) => {
   return (
     <View style={styles.container}>
       <View style={{ maxWidth: "75%" }}>
-        <Text style={styles.name}>{`${ride.firstName} ${ride.lastName}`}</Text>
+        {ride.firstName && ride.lastName && <Text style={styles.name}>{`${ride.firstName} ${ride.lastName}`}</Text>}
         {Object.keys(ride.carDetails).length && ride.carDetails != null ? <Text style={styles.car}>{`${capitalizeFirstLetter(ride.carDetails.color)} ${ride.carDetails.brand} ${ride.carDetails.model}`}</Text> : ""}
         <Text numberOfLines={1} style={styles.location}>{`${ride.startLocation.address_line1} - ${ride.endLocation.address_line1}`}</Text>
       </View>

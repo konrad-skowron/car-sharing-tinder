@@ -22,6 +22,7 @@ const AuthProvider = ({ children }) => {
               firstName: data.firstName,
               lastName: data.lastName,
               phoneNumber: data.phoneNumber,
+              rides: data.rides,
             });
           });
           setIsLogged(true);
@@ -53,7 +54,7 @@ const AuthProvider = ({ children }) => {
         firstName: firstName,
         lastName: lastName,
         phoneNumber: phoneNumber,
-        rides: []
+        rides: [],
       });
     } catch (error) {
       throw new Error(error.message);
@@ -79,7 +80,7 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  return <AuthContext.Provider value={{ user, setUser, isLogged, setIsLogged, handleSignIn, handleSignUp, handleLogOut }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, setUser, isLogged, setIsLogged, handleSignIn, handleSignUp, handleLogOut, getUserData }}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

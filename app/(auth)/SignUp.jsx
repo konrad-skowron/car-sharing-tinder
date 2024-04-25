@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Image, Text, TextInput, ScrollView, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Image, Text, TextInput, ScrollView, TouchableOpacity, Keyboard } from "react-native";
 import { COLORS, FONTS } from "../../constants";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
@@ -9,6 +9,22 @@ import { useAuthContext } from "../../context/AuthProvider";
 const SignUp = () => {
   const { handleSignUp } = useAuthContext();
   const router = useRouter();
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardVisible(true);
+    });
+    const keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -37,7 +53,7 @@ const SignUp = () => {
             alignItems: "center",
           }}
         >
-          <Image style={styles.image} source={require("../../assets/Logo_car_sharing_tinder.png")} />
+          {!isKeyboardVisible && <Image style={styles.image} source={require("../../assets/Logo_car_sharing_tinder.png")} />}
           <View style={styles.formContainer}>
             <View style={styles.inputContainer}>
               <TextInput style={styles.input} value={form.firstName} onChangeText={(e) => setForm({ ...form, firstName: e })} placeholder="First name" />
@@ -79,8 +95,8 @@ const styles = {
     gap: 16,
   },
   image: {
-    width: "80%",
-    height: 190,
+    width: "60%",
+    height: 160,
   },
   inputContainer: {
     width: "100%",
