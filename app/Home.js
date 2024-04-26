@@ -1,59 +1,15 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button, Image, ScrollView } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from "react-native";
 import app from "../firebaseConfig";
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
 import { Link, Stack, useRouter, useFocusEffect } from "expo-router";
 import { COLORS, FONTS } from "../constants";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome6 } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 import RideTile from "../components/RideTile";
 import "./index.jsx";
-
-const sampleRides = [
-  {
-    id: 1,
-    user: {
-      firstName: "Janusz",
-      lastName: "Kowalski",
-    },
-    car: {
-      brand: "Toyota",
-      model: "Corolla",
-      color: "white",
-    },
-    startLocation: "Biskupin",
-    destination: "Oporów",
-  },
-  {
-    id: 2,
-    user: {
-      firstName: "Janusz",
-      lastName: "Kowalski",
-    },
-    car: {
-      brand: "Toyota",
-      model: "Corolla",
-      color: "white",
-    },
-    startLocation: "Biskupin",
-    destination: "Oporów",
-  },
-  {
-    id: 3,
-    user: {
-      firstName: "Janusz",
-      lastName: "Kowalski",
-    },
-    car: {
-      brand: "Toyota",
-      model: "Corolla",
-      color: "white",
-    },
-    startLocation: "Biskupin",
-    destination: "Oporów",
-  },
-];
 
 const Home = () => {
   const router = useRouter();
@@ -87,7 +43,7 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView style={{ paddingHorizontal: 24 }}>
         <Stack.Screen
           options={{
             headerShadowVisible: false,
@@ -125,36 +81,34 @@ const Home = () => {
             ),
           }}
         />
-        <View>
-          <Text
-            style={{
-              fontSize: 16,
-              fontFamily: FONTS.primaryRegular,
-              marginBottom: 4,
-            }}
-          >
-            Available:
-          </Text>
-          <View style={styles.tileContainer}>
-            {!rides.length ||
-              rides.map((ride, index) => (
-                <Link key={index} href={`ride/${ride.index}`} asChild>
-                  <TouchableOpacity>
-                    <RideTile ride={ride} />
-                  </TouchableOpacity>
-                </Link>
-              ))}
-          </View>
+        <Text
+          style={{
+            fontSize: 16,
+            fontFamily: FONTS.primaryRegular,
+            marginBottom: 4,
+          }}
+        >
+          Available:
+        </Text>
+        <View style={styles.tileContainer}>
+          {!rides.length ||
+            rides.map((ride, index) => (
+              <Link key={index} href={`ride/${ride.index}`} asChild>
+                <TouchableOpacity>
+                  <RideTile ride={ride} />
+                </TouchableOpacity>
+              </Link>
+            ))}
         </View>
-        </ScrollView>
-        <View style={{ position: "fixed", alignSelf: "flex-end", paddingTop: 16,}}>
-          <Link href="ride/new/StartLocationPick" asChild>
-            <TouchableOpacity style={styles.plusButton}>
-              <AntDesign name="plus" size={24} color="#eee" style={{ padding: 14 }} />
-            </TouchableOpacity>
-          </Link>
-        </View>
-        <StatusBar style="auto" />
+      </ScrollView>
+      <View style={{ position: "absolute", bottom: 32, right: 32, alignSelf: "flex-end" }}>
+        <Link href="ride/new/StartLocationPick" asChild>
+          <TouchableOpacity style={styles.plusButton}>
+            <AntDesign name="plus" size={24} color="#eee" style={{ padding: 14 }} />
+          </TouchableOpacity>
+        </Link>
+      </View>
+      <StatusBar style="auto" />
     </View>
   );
 };
@@ -166,17 +120,15 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
   container: {
+    marginBottom: "auto",
     flex: 1,
-    paddingHorizontal: 32,
-    paddingBottom: 16,
     backgroundColor: "#eee",
   },
   tileContainer: {
-    display: "flex",
+    paddingBottom: 24,
     gap: 8,
   },
   title: {
-    marginTop: 64,
     fontSize: 32,
     textAlign: "center",
   },

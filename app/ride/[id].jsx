@@ -1,9 +1,10 @@
+import React, { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, SafeAreaView, Text, Image } from "react-native";
 import PrevButton from "../../components/PrevButton";
 import MainButton from "../../components/MainButton";
 import { ForceTouchGestureHandler } from "react-native-gesture-handler";
-import { Stack } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { COLORS, FONTS } from "../../constants";
 
 const sampleUser = {
@@ -37,8 +38,6 @@ const sampleUser = {
 export default function App() {
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Text>text:{ride}</Text> */}
-      {/* <PrevButton prev="../../Home" /> */}
       <Stack.Screen
         options={{
           headerShadowVisible: false,
@@ -72,9 +71,7 @@ export default function App() {
               <Text style={styles.foontEighteen}>Start location</Text>
             </View>
             <View style={styles.center}>
-              <Text style={styles.fontSixteen}>
-                {sampleUser.advert.startLocation}
-              </Text>
+              <Text style={styles.fontSixteen}>{sampleUser.advert.startLocation}</Text>
             </View>
           </View>
           <View style={styles.row}>
@@ -82,9 +79,7 @@ export default function App() {
               <Text style={styles.foontEighteen}>Destination</Text>
             </View>
             <View style={styles.center}>
-              <Text style={styles.fontSixteen}>
-                {sampleUser.advert.destination}
-              </Text>
+              <Text style={styles.fontSixteen}>{sampleUser.advert.destination}</Text>
             </View>
           </View>
           <View style={styles.row}>
@@ -94,23 +89,8 @@ export default function App() {
             <View style={styles.days}>
               {/*TODO*/}
               {sampleUser.advert.days.map((day, index) => (
-                <View
-                  key={index}
-                  style={
-                    day.pressed
-                      ? styles.buttonDayChoosen
-                      : styles.buttonDayUnChoosen
-                  }
-                >
-                  <Text
-                    style={
-                      day.pressed
-                        ? styles.buttonDayTextUnChoosen
-                        : styles.buttonDayTextChoosen
-                    }
-                  >
-                    {day.day}
-                  </Text>
+                <View key={index} style={day.pressed ? styles.buttonDayChoosen : styles.buttonDayUnChoosen}>
+                  <Text style={day.pressed ? styles.buttonDayTextUnChoosen : styles.buttonDayTextChoosen}>{day.day}</Text>
                 </View>
               ))}
             </View>
@@ -156,9 +136,7 @@ export default function App() {
             <Text style={styles.foontEighteen}>About me</Text>
           </View>
           <View>
-            <Text style={styles.headerForSection}>
-              {sampleUser.user.aboutMe}
-            </Text>
+            <Text style={styles.headerForSection}>{sampleUser.user.aboutMe}</Text>
           </View>
         </View>
       </View>

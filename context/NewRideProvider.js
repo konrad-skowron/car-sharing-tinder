@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 import app from "../firebaseConfig";
 import { getFirestore, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { useAuthContext } from "../context/AuthProvider";
-import * as Crypto from 'expo-crypto';
+import * as Crypto from "expo-crypto";
 
 const NewRideContext = createContext();
 export const useNewRideContext = () => useContext(NewRideContext);
@@ -25,7 +25,7 @@ const NewRideProvider = ({ children }) => {
       const offerUid = Crypto.randomUUID();
       const db = getFirestore(app);
       const userDocRef = doc(db, "users", user.uid);
-      
+
       const userSnapshot = await getDoc(userDocRef);
       if (!userSnapshot.exists()) {
         throw new Error("User does not exist in the database");

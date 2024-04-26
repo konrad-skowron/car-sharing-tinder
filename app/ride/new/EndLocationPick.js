@@ -13,8 +13,6 @@ export default function EndLocationPick() {
   const [endLocationText, setEndLocationText] = useState("");
   const [selectedEndLocation, setSelectedEndLocation] = useState(null);
   const { setEndLocation } = useNewRideContext();
-  
-  // const [data, setData] = useState([]);
 
   //TO NA TESTA, ŻEBY NIE WYSŁAĆ CO CHWILĘ REQUESTÓW
   const [data, setData] = useState([
@@ -52,7 +50,7 @@ export default function EndLocationPick() {
   const handleSelectedEndLocation = (text) => {
     setSelectedEndLocation(text);
     setEndLocationText(text.address_line1);
-  }
+  };
 
   const handleSaveEndLocation = () => {
     setEndLocation(selectedEndLocation);
@@ -81,33 +79,37 @@ export default function EndLocationPick() {
         <View>
           <View style={{ flexDirection: "row", alignItems: "center", width: "100%" }}>
             <TextInput placeholder="Destination" style={styles.input} value={endLocationText} onChangeText={handleEndLocationChange} onSubmitEditing={handleFetchData} />
-            <TouchableOpacity onPress={handleFetchData} style={{ backgroundColor: "#D9D9D9", paddingVertical: 7.6, paddingHorizontal: 6, justifyContent: "center", borderTopRightRadius: 8, borderBottomRightRadius: 8 }}>
+            <TouchableOpacity
+              onPress={handleFetchData}
+              disabled={!endLocationText}
+              style={{ backgroundColor: "#D9D9D9", paddingVertical: 7.6, paddingHorizontal: 6, justifyContent: "center", borderTopRightRadius: 8, borderBottomRightRadius: 8 }}
+            >
               <AntDesign name="search1" size={24} color="black" />
             </TouchableOpacity>
           </View>
           {data.length ? (
             <FlatList
-            data={data}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={styles.item}
-                onPress={() => handleSelectedEndLocation({ address_line1: item.address_line1, address_line2: item.address_line2, street: item.street, postcode: item.postcode, city: item.city, lat: item.lat, lon: item.lon })}
-              >
-                {item.resultType === "city" ? <FontAwesome6 name="city" size={24} color={COLORS.darkGray} /> : <FontAwesome6 name="location-dot" size={24} color={COLORS.darkGray} />}
-                <View>
-                  <Text style={styles.itemText}>{item.address_line1}</Text>
-                  <Text style={styles.itemSubtext}>{item.address_line2}</Text>
-                </View>
-              </TouchableOpacity>
-            )}
-            keyboardShouldPersistTaps="always"
-          />
+              data={data}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  style={styles.item}
+                  onPress={() => handleSelectedEndLocation({ address_line1: item.address_line1, address_line2: item.address_line2, street: item.street, postcode: item.postcode, city: item.city, lat: item.lat, lon: item.lon })}
+                >
+                  {item.resultType === "city" ? <FontAwesome6 name="city" size={24} color={COLORS.darkGray} /> : <FontAwesome6 name="location-dot" size={24} color={COLORS.darkGray} />}
+                  <View>
+                    <Text style={styles.itemText}>{item.address_line1}</Text>
+                    <Text style={styles.itemSubtext}>{item.address_line2}</Text>
+                  </View>
+                </TouchableOpacity>
+              )}
+              keyboardShouldPersistTaps="always"
+            />
           ) : (
             <Text style={styles.text}>Where are you going?</Text>
           )}
         </View>
       </View>
-      <MainButton href="./DayPick" content="Next" onPress={handleSaveEndLocation} disabled={!selectedEndLocation}/>
+      <MainButton href="./DayPick" content="Next" onPress={handleSaveEndLocation} disabled={!selectedEndLocation} />
       <StatusBar style="auto" />
     </View>
   );

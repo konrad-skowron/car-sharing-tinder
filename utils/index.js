@@ -1,7 +1,7 @@
 export default fetchLocations = async (locationText) => {
   try {
     const apiKey = "aacfa879748e45b291751d430282f092";
-    const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(locationText)}&limit=3&apiKey=${apiKey}`;
+    const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(locationText)}&limit=5&filter=countrycode:pl&apiKey=${apiKey}`;
     const res = await fetch(url);
     const data = await res.json();
     currentItems = data.features;

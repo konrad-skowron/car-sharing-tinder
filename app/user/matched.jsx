@@ -88,7 +88,7 @@ const matched = () => {
               </Link>
             ))}
         </View>
-        <Text style={{ height: 32 }}></Text>
+        <Text style={{ height: 24 }}></Text>
       </ScrollView>
     </View>
   );
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
   container: {
-    paddingHorizontal: 32,
+    paddingHorizontal: 24,
     backgroundColor: "#eee",
   },
   tileContainer: {
