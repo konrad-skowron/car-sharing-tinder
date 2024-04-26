@@ -10,34 +10,23 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RideTile from "../components/RideTile";
 import "./index.jsx";
+import { useDataContext } from "../context/DataProvider.js";
 
 const Home = () => {
   const router = useRouter();
-  const [rides, setRides] = useState([]);
+  const { fetchData, rides } = useDataContext();
 
   useFocusEffect(
     useCallback(() => {
-      getRides();
+      getData();
     }, [])
   );
 
-  const getRides = async () => {
+  const getData = async () => {
     try {
-      const db = getFirestore(app);
-      const userRidesRef = collection(db, "users");
-      const q = query(userRidesRef, where("rides", "!=", "null"));
-      const querySnapshot = await getDocs(q);
-      const result = [];
-      querySnapshot.forEach((doc, index) => {
-        data = doc.data();
-        const { firstName, lastName } = data;
-        data.rides.forEach((ride) => {
-          result.push({ ...ride, firstName, lastName, index });
-        });
-      });
-      setRides(result);
+      const data = await fetchData();
     } catch (error) {
-      console.error("Get rides error: ", error.message);
+      console.error("Get data error: ", error.message);
     }
   };
 
@@ -93,7 +82,7 @@ const Home = () => {
         <View style={styles.tileContainer}>
           {!rides.length ||
             rides.map((ride, index) => (
-              <Link key={index} href={`ride/${ride.index}`} asChild>
+              <Link key={index} href={`ride/${ride.uid}`} asChild>
                 <TouchableOpacity>
                   <RideTile ride={ride} />
                 </TouchableOpacity>

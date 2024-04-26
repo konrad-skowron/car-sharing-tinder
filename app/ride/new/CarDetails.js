@@ -19,10 +19,9 @@ export default function App() {
     freeSeats: "",
   });
 
-  const handleSaveCarDetails = () => {
+  const handleSaveCarDetails = async () => {
     const detailsToSave = haveCar ? details : null;
     setCarDetails(detailsToSave);
-    addOffer();
   };
 
   return (
@@ -44,7 +43,6 @@ export default function App() {
           ),
         }}
       />
-      {/* <NavBar prev="../TimePick/TimePick" close="../../Home" /> */}
       <View style={styles.inputWrapper}>
         <View>
           <View

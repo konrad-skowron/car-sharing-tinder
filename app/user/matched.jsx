@@ -6,37 +6,12 @@ import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "fi
 import { COLORS, FONTS } from "../../constants";
 import RideTile from "../../components/RideTile";
 import { useAuthContext } from "../../context/AuthProvider";
+import { useDataContext } from "../../context/DataProvider";
 
 const matched = () => {
   const router = useRouter();
-  const [rides, setRides] = useState([]);
   const { user } = useAuthContext();
-
-  useFocusEffect(
-    useCallback(() => {
-      getRides();
-    }, [])
-  );
-
-  const getRides = async () => {
-    try {
-      const db = getFirestore(app);
-      const userRidesRef = collection(db, "users");
-      const q = query(userRidesRef, where("rides", "!=", "null"));
-      const querySnapshot = await getDocs(q);
-      const result = [];
-      querySnapshot.forEach((doc, index) => {
-        data = doc.data();
-        const { firstName, lastName } = data;
-        data.rides.forEach((ride) => {
-          result.push({ ...ride, firstName, lastName, index });
-        });
-      });
-      setRides(result);
-    } catch (error) {
-      console.error("Get rides error: ", error.message);
-    }
-  };
+  const { rides } = useDataContext();
 
   return (
     <View>
@@ -61,7 +36,7 @@ const matched = () => {
         <View style={styles.tileContainer}>
           {!rides.length ||
             rides.map((ride, index) => (
-              <Link key={index} href={`ride/${ride.index}`} asChild>
+              <Link key={index} href={`ride/${ride.uid}`} asChild>
                 <TouchableOpacity>
                   <RideTile ride={ride} />
                 </TouchableOpacity>
@@ -81,7 +56,7 @@ const matched = () => {
         <View style={styles.tileContainer}>
           {!user.rides.length ||
             user.rides.map((ride, index) => (
-              <Link key={index} href={`ride/${ride.index}`} asChild>
+              <Link key={index} href={`ride/${ride.uid}`} asChild>
                 <TouchableOpacity>
                   <RideTile ride={ride} />
                 </TouchableOpacity>

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import AuthProvider from "../context/AuthProvider";
+import DataProvider from "../context/DataProvider";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -34,11 +35,13 @@ const RootLayout = () => {
 
   return (
     <AuthProvider>
-      <Stack initialRouteName="home">
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="ride/new" options={{ headerShown: false }} />
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-      </Stack>
+      <DataProvider>
+        <Stack initialRouteName="home">
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="ride/new" options={{ headerShown: false }} />
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+        </Stack>
+      </DataProvider>
     </AuthProvider>
   );
 };

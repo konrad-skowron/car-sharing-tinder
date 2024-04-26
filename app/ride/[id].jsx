@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, SafeAreaView, Text, Image } from "react-native";
 import PrevButton from "../../components/PrevButton";
@@ -6,143 +6,145 @@ import MainButton from "../../components/MainButton";
 import { ForceTouchGestureHandler } from "react-native-gesture-handler";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { COLORS, FONTS } from "../../constants";
+import { useDataContext } from "../../context/DataProvider";
 
-const sampleUser = {
-  user: {
-    firstName: "Jan",
-    lastName: "Kowalski",
-    aboutMe: "Bad driver from Wroclaw",
-  },
-  car: {
-    brand: "Toyota",
-    model: "Corolla",
-    color: "white",
-    seats: 5,
-  },
-  advert: {
-    startLocation: "Biskupin",
-    destination: "Oporów",
-    time: "12:00",
-    days: [
-      { day: "M", pressed: false },
-      { day: "Tu", pressed: true },
-      { day: "W", pressed: false },
-      { day: "Th", pressed: true },
-      { day: "F", pressed: true },
-      { day: "Sa", pressed: false },
-      { day: "Su", pressed: false },
-    ],
-  },
+const days = {
+  Monday: "M",
+  Tuesday: "Tu",
+  Wednesday: "W",
+  Thursday: "Th",
+  Friday: "F",
+  Saturday: "Sa",
+  Sunday: "Su",
 };
 
 export default function App() {
+  const param = useLocalSearchParams();
+  const { getRideByUid } = useDataContext();
+  const [ride, setRide] = useState({});
+
+  useEffect(() => {
+    setRide(getRideByUid(param.id));
+  }, []);
+
   return (
-    <SafeAreaView style={styles.container}>
-      <Stack.Screen
-        options={{
-          headerShadowVisible: false,
-          headerTitle: "",
-          headerStyle: { backgroundColor: "#eee" },
-        }}
-      />
-      <View style={styles.row}>
-        <View>
-          <Text style={styles.nameSurnameText}>
-            {sampleUser.user.firstName} {sampleUser.user.lastName}
-          </Text>
+    ride && (
+      <SafeAreaView style={styles.container}>
+        <Stack.Screen
+          options={{
+            headerShadowVisible: false,
+            headerTitle: "",
+            headerStyle: { backgroundColor: "#eee" },
+          }}
+        />
+        <View style={styles.row}>
+          <View>
+            <Text style={styles.nameSurnameText}>
+              {ride.firstName} {ride.lastName}
+            </Text>
+          </View>
+          <View>
+            <Image
+              style={{
+                height: 64,
+                width: 64,
+                borderRadius: 64,
+              }}
+              source={{
+                uri: "https://picsum.photos/200",
+              }}
+            />
+          </View>
         </View>
         <View>
-          <Image
-            style={{
-              height: 64,
-              width: 64,
-              borderRadius: 64,
-            }}
-            source={{
-              uri: "https://picsum.photos/200",
-            }}
-          />
-        </View>
-      </View>
-      <View>
-        <View style={styles.column}>
-          <View style={styles.row}>
-            <View style={styles.center}>
-              <Text style={styles.foontEighteen}>Start location</Text>
-            </View>
-            <View style={styles.center}>
-              <Text style={styles.fontSixteen}>{sampleUser.advert.startLocation}</Text>
-            </View>
-          </View>
-          <View style={styles.row}>
-            <View style={styles.center}>
-              <Text style={styles.foontEighteen}>Destination</Text>
-            </View>
-            <View style={styles.center}>
-              <Text style={styles.fontSixteen}>{sampleUser.advert.destination}</Text>
-            </View>
-          </View>
-          <View style={styles.row}>
-            <View style={styles.center}>
-              <Text style={styles.foontEighteen}>Days</Text>
-            </View>
-            <View style={styles.days}>
-              {/*TODO*/}
-              {sampleUser.advert.days.map((day, index) => (
-                <View key={index} style={day.pressed ? styles.buttonDayChoosen : styles.buttonDayUnChoosen}>
-                  <Text style={day.pressed ? styles.buttonDayTextUnChoosen : styles.buttonDayTextChoosen}>{day.day}</Text>
+          <View style={styles.column}>
+            <View style={styles.row}>
+              <View style={styles.center}>
+                <Text style={styles.foontEighteen}>Start location</Text>
+              </View>
+              {ride.startLocation && (
+                <View style={styles.center}>
+                  <Text style={styles.fontSixteen}>{ride.startLocation.address_line1}</Text>
                 </View>
-              ))}
+              )}
+            </View>
+            <View style={styles.row}>
+              <View style={styles.center}>
+                <Text style={styles.foontEighteen}>Destination</Text>
+              </View>
+              {ride.endLocation && (
+                <View style={styles.center}>
+                  <Text style={styles.fontSixteen}>{ride.endLocation.address_line1}</Text>
+                </View>
+              )}
+            </View>
+            <View style={styles.row}>
+              <View style={styles.center}>
+                <Text style={styles.foontEighteen}>Days</Text>
+              </View>
+              {ride.days && (
+                <View style={styles.days}>
+                  {Object.entries(days).map(([k, v]) => (
+                    <View key={k} style={ride.days.includes(k) ? styles.buttonDayChoosen : styles.buttonDayUnChoosen}>
+                      <Text style={ride.days.includes(k) ? styles.buttonDayTextUnChoosen : styles.buttonDayTextChoosen}>{v}</Text>
+                    </View>
+                  ))}
+                </View>
+              )}
+            </View>
+            <View style={styles.row}>
+              <View style={styles.center}>
+                <Text style={styles.foontEighteen}>Hour</Text>
+              </View>
+              {ride.time && (
+                <View style={styles.center}>
+                  <Text style={styles.fontSixteen}>{ride.time}</Text>
+                </View>
+              )}
             </View>
           </View>
-          <View style={styles.row}>
-            <View style={styles.center}>
-              <Text style={styles.foontEighteen}>Hour</Text>
+          {ride.carDetails && Object.keys(ride.carDetails).length !== 0 && (
+            <View style={styles.column}>
+              <Text style={styles.headerForSection}>Car details</Text>
+              <View style={styles.row}>
+                <View style={styles.center}>
+                  <Text style={styles.foontEighteen}>Brand</Text>
+                </View>
+                <View style={styles.center}>
+                  <Text style={styles.fontSixteen}>{ride.carDetails.brand}</Text>
+                </View>
+              </View>
+              <View style={styles.row}>
+                <View style={styles.center}>
+                  <Text style={styles.foontEighteen}>Model</Text>
+                </View>
+                <View style={styles.center}>
+                  <Text style={styles.fontSixteen}>{ride.carDetails.model}</Text>
+                </View>
+              </View>
+              <View style={styles.row}>
+                <View style={styles.center}>
+                  <Text style={styles.foontEighteen}>Color</Text>
+                </View>
+                <View style={styles.center}>
+                  <Text style={styles.fontSixteen}>{ride.carDetails.color}</Text>
+                </View>
+              </View>
             </View>
-            <View style={styles.center}>
-              <Text style={styles.fontSixteen}>{sampleUser.advert.time}</Text>
+          )}
+          <View style={styles.column}>
+            <View>
+              <Text style={styles.foontEighteen}>About me</Text>
+            </View>
+            <View>
+              <Text style={styles.headerForSection}>TODO</Text>
             </View>
           </View>
         </View>
-        <View style={styles.column}>
-          <Text style={styles.headerForSection}>Car details</Text>
-          <View style={styles.row}>
-            <View style={styles.center}>
-              <Text style={styles.foontEighteen}>Brand</Text>
-            </View>
-            <View style={styles.center}>
-              <Text style={styles.fontSixteen}>{sampleUser.car.brand}</Text>
-            </View>
-          </View>
-          <View style={styles.row}>
-            <View style={styles.center}>
-              <Text style={styles.foontEighteen}>Model</Text>
-            </View>
-            <View style={styles.center}>
-              <Text style={styles.fontSixteen}>{sampleUser.car.model}</Text>
-            </View>
-          </View>
-          <View style={styles.row}>
-            <View style={styles.center}>
-              <Text style={styles.foontEighteen}>Color</Text>
-            </View>
-            <View style={styles.center}>
-              <Text style={styles.fontSixteen}>{sampleUser.car.color}</Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.column}>
-          <View>
-            <Text style={styles.foontEighteen}>About me</Text>
-          </View>
-          <View>
-            <Text style={styles.headerForSection}>{sampleUser.user.aboutMe}</Text>
-          </View>
-        </View>
-      </View>
-      <MainButton href="../../Home" content="Match" />
-      <StatusBar style="auto" />
-    </SafeAreaView>
+        <MainButton href="../../Home" content="Match" />
+        <StatusBar style="auto" />
+      </SafeAreaView>
+    )
   );
 }
 
