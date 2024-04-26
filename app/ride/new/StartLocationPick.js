@@ -75,6 +75,9 @@ export default function StartLocationPick() {
           ),
         }}
       />
+      <View style={{ borderColor: COLORS.darkGray, borderWidth: 1.5, borderRadius: 3, height: 12, width: "100%", position: "relative", overflow: "hidden" }}>
+        <View style={{ position: "absolute", width: "10%", height: "100%", backgroundColor: COLORS.primary }}></View>
+      </View>
       <View style={styles.inputWrapper}>
         <View>
           <View style={{ flexDirection: "row", alignItems: "center", width: "100%" }}>
@@ -139,8 +142,9 @@ const styles = StyleSheet.create({
     flex: 1,
     display: "flex",
     flexDirection: "column",
-    padding: 32,
-    rowGap: 32,
+    paddingHorizontal: 32,
+    paddingBottom: 32,
+    rowGap: 12,
     backgroundColor: "#eee",
   },
   item: {

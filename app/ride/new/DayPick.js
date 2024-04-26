@@ -53,6 +53,9 @@ export default function App() {
           ),
         }}
       />
+      <View style={{ borderColor: COLORS.darkGray, borderWidth: 1.5, borderRadius: 3, height: 12, width: "100%", position: "relative", overflow: "hidden" }}>
+        <View style={{ position: "absolute", width: "50%", height: "100%", backgroundColor: COLORS.primary }}></View>
+      </View>
       {/* <NavBar prev="ride/LocalizationPick" close="ride/LocalizationPick" /> */}
       <View
         style={{
@@ -121,8 +124,9 @@ const styles = StyleSheet.create({
     flex: 1,
     display: "flex",
     flexDirection: "column",
-    rowGap: 16,
-    padding: 32,
+    paddingHorizontal: 32,
+    paddingBottom: 32,
+    rowGap: 12,
     backgroundColor: "#eee",
   },
 });
