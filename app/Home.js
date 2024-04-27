@@ -14,7 +14,7 @@ import { useDataContext } from "../context/DataProvider.js";
 
 const Home = () => {
   const router = useRouter();
-  const { fetchData, rides } = useDataContext();
+  const { fetchData, rides, availableRides } = useDataContext();
 
   useFocusEffect(
     useCallback(() => {
@@ -80,8 +80,8 @@ const Home = () => {
           Available:
         </Text>
         <View style={styles.tileContainer}>
-          {!rides.length ||
-            rides.map((ride, index) => (
+          {!availableRides.length ||
+            availableRides.map((ride, index) => (
               <Link key={index} href={`ride/${ride.uid}`} asChild>
                 <TouchableOpacity>
                   <RideTile ride={ride} />

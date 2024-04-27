@@ -21,7 +21,9 @@ const DataProvider = ({ children }) => {
       const querySnapshot = await getDocs(q);
       const usersResult = [];
       querySnapshot.forEach((doc) => {
-        usersResult.push(doc.data());
+        if (doc.id != user.uid) {
+          usersResult.push(doc.data());
+        }
       });
       setUsers(usersResult);
 
@@ -29,7 +31,6 @@ const DataProvider = ({ children }) => {
       setRides(ridesResult);
 
       const availableRidesResult = await getAvailableRidesForCurrentUser(ridesResult);
-      console.log(availableRidesResult);
       setAvailableRides(availableRidesResult);
 
       return usersResult;
@@ -60,18 +61,16 @@ const DataProvider = ({ children }) => {
   const getAvailableRidesForCurrentUser = async (allRides) => {
     const rangeDistance = 0.5;
     const result = new Set();
-
     user.rides.forEach((userRide) => {
-      console.log("user ride: ", userRide);
       const { startLocation, endLocation } = userRide;
       const startLocationRange = getCoordinatesRange(startLocation.lat, startLocation.lon, rangeDistance);
       const endLocationRange = getCoordinatesRange(endLocation.lat, endLocation.lon, rangeDistance);
-      const filteredRides = allRides.filter((ride) => {
-        return isLocationInRange(ride.startLocation.lat, ride.startLocation.lon, startLocationRange) && isLocationInRange(ride.endLocation.lat, ride.endLocation.lon, endLocationRange);
-      });
-      result.add(...filteredRides);
+
+      const filteredRides = allRides.filter((ride) => isLocationInRange(ride.startLocation.lat, ride.startLocation.lon, startLocationRange) && isLocationInRange(ride.endLocation.lat, ride.endLocation.lon, endLocationRange));
+
+      filteredRides.forEach(result.add, result);
     });
-    return result;
+    return Array.from(result);
   };
 
   return <DataContext.Provider value={{ users, rides, availableRides, fetchData, getRideByUid }}>{children}</DataContext.Provider>;
