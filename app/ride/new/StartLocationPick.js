@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, Button, FlatList, 
 import { Link, Stack, useRouter } from "expo-router";
 import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import { COLORS, FONTS } from "../../../constants";
-import fetchLocations from "../../../utils";
+import { fetchLocations } from "../../../utils";
 import MainButton from "../../../components/MainButton";
 import { useNewRideContext } from "../../../context/NewRideProvider";
 
