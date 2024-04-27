@@ -15,6 +15,7 @@ import { useDataContext } from "../context/DataProvider.js";
 const Home = () => {
   const router = useRouter();
   const { fetchData, rides, availableRides } = useDataContext();
+  const [loading, setLoading] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -24,7 +25,9 @@ const Home = () => {
 
   const getData = async () => {
     try {
+      setLoading(true);
       const data = await fetchData();
+      setLoading(false);
     } catch (error) {
       console.error("Get data error: ", error.message);
     }
@@ -79,16 +82,20 @@ const Home = () => {
         >
           Available:
         </Text>
-        <View style={styles.tileContainer}>
-          {!availableRides.length ||
-            availableRides.map((ride, index) => (
-              <Link key={index} href={`ride/${ride.uid}`} asChild>
-                <TouchableOpacity>
-                  <RideTile ride={ride} />
-                </TouchableOpacity>
-              </Link>
-            ))}
-        </View>
+        {loading ? (
+          <Text>Loading...</Text>
+        ) : (
+          <View style={styles.tileContainer}>
+            {!availableRides.length ||
+              availableRides.map((ride, index) => (
+                <Link key={index} href={`ride/${ride.uid}`} asChild>
+                  <TouchableOpacity>
+                    <RideTile ride={ride} />
+                  </TouchableOpacity>
+                </Link>
+              ))}
+          </View>
+        )}
       </ScrollView>
       <View style={{ position: "absolute", bottom: 32, right: 32, alignSelf: "flex-end" }}>
         <Link href="ride/new/StartLocationPick" asChild>

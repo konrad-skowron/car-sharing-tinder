@@ -45,6 +45,10 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const getCurrentUser = async () => {
+    return auth.currentUser;
+  };
+
   const handleSignUp = async (email, password, firstName, lastName, phoneNumber) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -80,7 +84,7 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  return <AuthContext.Provider value={{ user, setUser, isLogged, setIsLogged, handleSignIn, handleSignUp, handleLogOut, getUserData }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, setUser, isLogged, setIsLogged, handleSignIn, handleSignUp, handleLogOut, getUserData, getCurrentUser }}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

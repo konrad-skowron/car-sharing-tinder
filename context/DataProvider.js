@@ -3,12 +3,13 @@ import app from "../firebaseConfig";
 import { getFirestore, collection, query, where, getDocs, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { getCoordinatesRange, isLocationInRange } from "../utils";
 import { useAuthContext } from "./AuthProvider";
+import { getAuth } from "firebase/auth";
 
 const DataContext = createContext();
 export const useDataContext = () => useContext(DataContext);
 
 const DataProvider = ({ children }) => {
-  const { user } = useAuthContext();
+  const { getCurrentUser, getUserData } = useAuthContext();
   const [users, setUsers] = useState([]);
   const [rides, setRides] = useState([]);
   const [availableRides, setAvailableRides] = useState([]);
@@ -20,6 +21,7 @@ const DataProvider = ({ children }) => {
       const q = query(usersRef, where("rides", "!=", "null"));
       const querySnapshot = await getDocs(q);
       const usersResult = [];
+      const user = await getCurrentUser();
       querySnapshot.forEach((doc) => {
         if (doc.id != user.uid) {
           usersResult.push(doc.data());
@@ -42,9 +44,9 @@ const DataProvider = ({ children }) => {
   const getRidesFromUsers = async (data) => {
     const result = [];
     if (data) {
-      data.forEach((user, index) => {
-        const { firstName, lastName } = user;
-        user.rides
+      data.forEach((userRecord, index) => {
+        const { firstName, lastName } = userRecord;
+        userRecord.rides
           .filter((ride) => ride.uid)
           .forEach((ride) => {
             result.push({ ...ride, firstName, lastName });
@@ -61,7 +63,9 @@ const DataProvider = ({ children }) => {
   const getAvailableRidesForCurrentUser = async (allRides) => {
     const rangeDistance = 0.5;
     const result = new Set();
-    user.rides.forEach((userRide) => {
+    const user = await getCurrentUser();
+    const userData = await getUserData(user.uid);
+    userData.rides.forEach((userRide) => {
       const { startLocation, endLocation } = userRide;
       const startLocationRange = getCoordinatesRange(startLocation.lat, startLocation.lon, rangeDistance);
       const endLocationRange = getCoordinatesRange(endLocation.lat, endLocation.lon, rangeDistance);
@@ -70,6 +74,7 @@ const DataProvider = ({ children }) => {
 
       filteredRides.forEach(result.add, result);
     });
+
     return Array.from(result);
   };
 
