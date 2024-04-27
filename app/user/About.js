@@ -163,7 +163,7 @@ export default function App() {
           </Modal>
         </View>
       </View>
-      <MainButton href="" content="Edit" />
+      <MainButton href="./edit" content="Edit" />
       <StatusBar style="auto" />
     </SafeAreaView>
   );
