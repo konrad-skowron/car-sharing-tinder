@@ -96,7 +96,7 @@ export default function StartLocationPick() {
               renderItem={({ item }) => (
                 <TouchableOpacity
                   style={styles.item}
-                  onPress={() => handleSelectedStartLocation({ address_line1: item.address_line1, address_line2: item.address_line2, street: item.street, postcode: item.postcode, city: item.city, lat: item.lat, lon: item.lon })}
+                  onPress={() => handleSelectedStartLocation({ address_line1: item.address_line1, address_line2: item.address_line2, street: item.street, city: item.city, lat: item.lat, lon: item.lon })}
                 >
                   {item.resultType === "city" ? <FontAwesome6 name="city" size={24} color={COLORS.darkGray} /> : <FontAwesome6 name="location-dot" size={24} color={COLORS.darkGray} />}
                   <View>

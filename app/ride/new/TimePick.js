@@ -34,7 +34,6 @@ export default function App() {
   };
 
   const handleSaveTime = () => {
-    console.log(date.getHours() + ":" + date.getMinutes());
     setTime(`${date.getHours()}:${date.getMinutes()}`);
   };
 
