@@ -34,6 +34,7 @@ export default function App() {
   };
 
   const handleSaveTime = () => {
+    console.log(date.getHours() + ":" + date.getMinutes());
     setTime(`${date.getHours()}:${date.getMinutes()}`);
   };
 
@@ -64,7 +65,7 @@ export default function App() {
         <View style={styles.buttonEnv}>
           <TouchableOpacity style={styles.button} onPress={showTimepicker}>
             <Text style={styles.buttonHourPicker}>
-              {date.getHours()} : {date.getMinutes()}
+              {date.getHours().toString().padStart(2, '0')} : {date.getMinutes().toString().padStart(2, '0')}
             </Text>
           </TouchableOpacity>
         </View>
