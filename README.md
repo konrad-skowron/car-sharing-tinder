@@ -4,7 +4,7 @@
 - [ ] Poprawić screen z wybieraniem i zapisywaniem godziny. Nie wyświetla zera gdy liczba minut jest jednocyfrowa. Powinno byc np. 23:05 a jest 23:5
 - [ ] Pomyśleć coś z wyświetlaniem adresów bo poki co wyświetlamy address_line1. Czasami ta nazwa nic nie mówi a czasami jest tak długa, że się nie mieści
 - [ ] Dodać screen edycji usera - żeby mógł dodać opis about me i zmienić nazwę swoją nazwę, numer, zdjęcie
-- [ ] Odfiltrować na home tylko przejazdy posiadające samochód
+- [X] Odfiltrować na home tylko przejazdy posiadające samochód
 - [ ] Matchowanie użytkowników:
   - [ ] Dodać nowego pola do obiektu użytkownika. Nazwa pola `matched`, typ pola array. Tablica będzie przechowywała uid przejazdów jakie zmatchował użytkownik
   - [ ] Dodać logikę związaną z dodawaniem i usuwaniem uid przejazdu do tej tablicy
