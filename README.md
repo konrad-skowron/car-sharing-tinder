@@ -1,5 +1,5 @@
 ## :construction_worker: Todo
-- [ ] Usunąć car details z `user/about` screen 
+- [X] Usunąć car details z `user/about` screen 
 - [ ] Usunąć/Pomyśleć coś z postcode zwracanym z API (nie każda lokalizacja posiada postcode co powoduje błąd przy zapisie do bazy danych)
 - [ ] Poprawić screen z wybieraniem i zapisywaniem godziny. Nie wyświetla zera gdy liczba minut jest jednocyfrowa. Powinno byc np. 23:05 a jest 23:5
 - [ ] Pomyśleć coś z wyświetlaniem adresów bo poki co wyświetlamy address_line1. Czasami ta nazwa nic nie mówi a czasami jest tak długa, że się nie mieści

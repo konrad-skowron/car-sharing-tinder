@@ -80,41 +80,7 @@ export default function App() {
             </View>
           </View>
         </View>
-        <View style={styles.column}>
-          <Text style={styles.headerForSection}>Car details</Text>
-          <View style={styles.row}>
-            <View style={styles.center}>
-              <Text style={styles.foontEighteen}>Brand</Text>
-            </View>
-            <View style={styles.center}>
-              <Text style={styles.fontSixteen}>{sampleUser.car.brand}</Text>
-            </View>
-          </View>
-          <View style={styles.row}>
-            <View style={styles.center}>
-              <Text style={styles.foontEighteen}>Model</Text>
-            </View>
-            <View style={styles.center}>
-              <Text style={styles.fontSixteen}>{sampleUser.car.model}</Text>
-            </View>
-          </View>
-          <View style={styles.row}>
-            <View style={styles.center}>
-              <Text style={styles.foontEighteen}>Color</Text>
-            </View>
-            <View style={styles.center}>
-              <Text style={styles.fontSixteen}>{sampleUser.car.color}</Text>
-            </View>
-          </View>
-          <View style={styles.row}>
-            <View style={styles.center}>
-              <Text style={styles.foontEighteen}>Seats</Text>
-            </View>
-            <View style={styles.center}>
-              <Text style={styles.fontSixteen}>{sampleUser.car.seats}</Text>
-            </View>
-          </View>
-        </View>
+       
         <View style={styles.column}>
           <View>
             <Text style={styles.foontEighteen}>About me</Text>
