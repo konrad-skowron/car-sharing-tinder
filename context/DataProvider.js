@@ -69,8 +69,8 @@ const DataProvider = ({ children }) => {
       const { startLocation, endLocation } = userRide;
       const startLocationRange = getCoordinatesRange(startLocation.lat, startLocation.lon, rangeDistance);
       const endLocationRange = getCoordinatesRange(endLocation.lat, endLocation.lon, rangeDistance);
-
-      const filteredRides = allRides.filter((ride) => isLocationInRange(ride.startLocation.lat, ride.startLocation.lon, startLocationRange) && isLocationInRange(ride.endLocation.lat, ride.endLocation.lon, endLocationRange));
+      
+      const filteredRides = allRides.filter((ride) => (ride.carDetails && Object.keys(ride.carDetails).length>0) && isLocationInRange(ride.startLocation.lat, ride.startLocation.lon, startLocationRange) && isLocationInRange(ride.endLocation.lat, ride.endLocation.lon, endLocationRange));
 
       filteredRides.forEach(result.add, result);
     });
