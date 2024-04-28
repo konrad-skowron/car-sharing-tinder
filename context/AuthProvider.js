@@ -22,6 +22,7 @@ const AuthProvider = ({ children }) => {
               firstName: data.firstName,
               lastName: data.lastName,
               phoneNumber: data.phoneNumber,
+              aboutMe: data.aboutMe,
               rides: data.rides,
             });
           });

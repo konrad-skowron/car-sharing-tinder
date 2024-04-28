@@ -3,7 +3,9 @@
 - [X] Usunąć/Pomyśleć coś z postcode zwracanym z API (nie każda lokalizacja posiada postcode co powoduje błąd przy zapisie do bazy danych)
 - [X] Poprawić screen z wybieraniem i zapisywaniem godziny. Nie wyświetla zera gdy liczba minut jest jednocyfrowa. Powinno byc np. 23:05 a jest 23:5
 - [ ] Pomyśleć coś z wyświetlaniem adresów bo poki co wyświetlamy address_line1. Czasami ta nazwa nic nie mówi a czasami jest tak długa, że się nie mieści
-- [ ] Dodać screen edycji usera - żeby mógł dodać opis about me i zmienić nazwę swoją nazwę, numer, zdjęcie
+- [X] Dodać screen edycji usera - żeby mógł dodać opis about me i zmienić nazwę swoją nazwę, numer, zdjęcie
+- [ ] Rozszerzyć screen edycji usera o przesyłanie zdjęcia (jestem w trakcie - Konrad)
+- [ ] Ściągać dane z serwera zawsze jak się wejdzie do home, nie tylko gdy przejdzie logowanie
 - [X] Odfiltrować na home tylko przejazdy posiadające samochód
 - [ ] Matchowanie użytkowników:
   - [ ] Dodać nowego pola do obiektu użytkownika. Nazwa pola `matched`, typ pola array. Tablica będzie przechowywała uid przejazdów jakie zmatchował użytkownik

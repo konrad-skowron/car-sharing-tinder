@@ -55,7 +55,8 @@ const Home = () => {
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => {
-                  router.navigate("./user/About");
+                  // router.navigate("./user/About");
+                  router.navigate("/user/edit");
                 }}
               >
                 <Image
