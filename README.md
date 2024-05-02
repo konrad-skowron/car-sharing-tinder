@@ -4,7 +4,9 @@
 - [X] Poprawić screen z wybieraniem i zapisywaniem godziny. Nie wyświetla zera gdy liczba minut jest jednocyfrowa. Powinno byc np. 23:05 a jest 23:5
 - [ ] Pomyśleć coś z wyświetlaniem adresów bo poki co wyświetlamy address_line1. Czasami ta nazwa nic nie mówi a czasami jest tak długa, że się nie mieści
 - [X] Dodać screen edycji usera - żeby mógł dodać opis about me i zmienić nazwę swoją nazwę, numer, zdjęcie
-- [ ] Rozszerzyć screen edycji usera o przesyłanie zdjęcia (jestem w trakcie - Konrad)
+- [X] Rozszerzyć screen edycji usera o przesyłanie zdjęcia 
+- [ ] Podczas tworzenia ogłoszenia dodać pole "imageUrl" i przypisać temu zdjęcie użytkownika, będzie to zdjęcie wyświetlane przy ogłoszeniu
+- [ ] Ogarnąć link do zdjęcia w home.js (pole user nie zdąży się załadować a jest do niego odwołanie przez co rzuca nullem i się wykłada, na ten moment ustawione, żeby działało)
 - [X] Ściągać dane z serwera zawsze jak się wejdzie do home, nie tylko gdy przejdzie logowanie
 - [X] Odfiltrować na home tylko przejazdy posiadające samochód
 - [ ] Matchowanie użytkowników:

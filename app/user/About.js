@@ -39,8 +39,7 @@ export default function App() {
   const router = useRouter();
   const [modalVisible, setModalVisible] = useState(false);
   const { user, isLogged, getUserData, handleLogOut } = useAuthContext();
-  const { email, firstName, lastName, phoneNumber } = user;
-
+  const { email, firstName, lastName, phoneNumber, imageUrl } = user;
   return (
     <SafeAreaView style={styles.container}>
       <Stack.Screen
@@ -64,7 +63,7 @@ export default function App() {
               borderRadius: 64,
             }}
             source={{
-              uri: "https://picsum.photos/200",
+              uri: user.imageUrl,
             }}
           />
         </View>

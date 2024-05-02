@@ -1,13 +1,5 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  TextInput,
-  Keyboard,
-  Alert,
-  Image,
-} from "react-native";
+import {StyleSheet, Text,  View, TouchableOpacity,
+  TextInput,  Keyboard,  Image} from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import { COLORS, FONTS } from "../../constants";
@@ -17,7 +9,6 @@ import { useAuthContext } from "../../context/AuthProvider";
 import MainButton from "../../components/MainButton";
 import app from "../../firebaseConfig";
 import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system";
 import {
   getFirestore,
   doc,
@@ -25,15 +16,13 @@ import {
   updateDoc,
   arrayUnion,
 } from "firebase/firestore";
-import { set } from "firebase/database";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const edit = () => {
   const router = useRouter();
-  const [image, setImage] = React.useState(null);
-  const { user, isLogged, getUserData, handleLogOut, fetchCurrentUser } =
-    useAuthContext();
-  const { email, firstName, lastName, phoneNumber, rides, aboutMe } = user;
+  const { user, isLogged, getUserData, handleLogOut, fetchCurrentUser } = useAuthContext();
+  const { email, firstName, lastName, phoneNumber, rides, aboutMe, imageUrl } = user;
+  const [image, setImage] = React.useState(imageUrl);
   const [firstNameText, setFirstNameText] = React.useState(firstName);
   const [lastNameText, setLastNameText] = React.useState(lastName);
   const [phoneNumberText, setPhoneNumberText] = React.useState(phoneNumber);
@@ -107,7 +96,6 @@ const edit = () => {
       throw new Error(error.message);
     }
   };
-  
   
   const changeData = async () => {
     try {

@@ -29,10 +29,12 @@ const AuthProvider = ({ children }) => {
               lastName: data.lastName,
               phoneNumber: data.phoneNumber,
               aboutMe: data.aboutMe,
+              imageUrl: data.imageUrl,
               rides: data.rides,
               matched: data.matched,
             });
           });
+          // console.log(user.imageUrl);
           setIsLogged(true);
         } catch (error) {
           console.error("Set user error", error.message);

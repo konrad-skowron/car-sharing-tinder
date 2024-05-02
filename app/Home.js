@@ -24,11 +24,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import RideTile from "../components/RideTile";
 import "./index.jsx";
 import { useDataContext } from "../context/DataProvider.js";
+import { useAuthContext } from "../context/AuthProvider";
 
 const Home = () => {
   const router = useRouter();
   const { fetchData, rides, availableRides } = useDataContext();
   const [loading, setLoading] = useState(false);
+  const { user } = useAuthContext();
 
   useFocusEffect(
     useCallback(() => {
@@ -79,7 +81,7 @@ const Home = () => {
                     marginRight: 16,
                   }}
                   source={{
-                    uri: "https://picsum.photos/200",
+                    uri: "https://via.placeholder.com/150",
                   }}
                 />
               </TouchableOpacity>
