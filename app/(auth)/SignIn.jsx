@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Image, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { COLORS, FONTS } from "../../constants";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
@@ -35,11 +42,26 @@ const SignIn = () => {
           }}
           keyboardShouldPersistTaps="handled"
         >
-          <Image style={styles.image} source={require("../../assets/Logo_car_sharing_tinder.png")} />
+          <Image
+            style={styles.image}
+            source={require("../../assets/Logo_car_sharing_tinder.png")}
+          />
           <View style={styles.formContainer}>
             <View style={styles.inputContainer}>
-              <TextInput style={styles.input} value={form.email} onChangeText={(e) => setForm({ ...form, email: e })} placeholder="Email" autoCapitalize="none" />
-              <TextInput style={styles.input} value={form.password} onChangeText={(e) => setForm({ ...form, password: e })} placeholder="Password" secureTextEntry />
+              <TextInput
+                style={styles.input}
+                value={form.email}
+                onChangeText={(e) => setForm({ ...form, email: e })}
+                placeholder="Email"
+                autoCapitalize="none"
+              />
+              <TextInput
+                style={styles.input}
+                value={form.password}
+                onChangeText={(e) => setForm({ ...form, password: e })}
+                placeholder="Password"
+                secureTextEntry
+              />
             </View>
             <View style={{ width: "100%", gap: 16 }}>
               <TouchableOpacity style={styles.button} onPress={() => submit()}>

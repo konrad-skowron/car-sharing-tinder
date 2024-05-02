@@ -1,8 +1,23 @@
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { Link, Stack, useRouter, useFocusEffect } from "expo-router";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import app from "../../firebaseConfig";
-import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import { COLORS, FONTS } from "../../constants";
 import RideTile from "../../components/RideTile";
 import { useAuthContext } from "../../context/AuthProvider";
@@ -11,7 +26,18 @@ import { useDataContext } from "../../context/DataProvider";
 const matched = () => {
   const router = useRouter();
   const { user } = useAuthContext();
-  const { rides } = useDataContext();
+  const { rides, getMatchedRides } = useDataContext();
+  const [matchedRides, setMathedRides] = useState([]);
+
+  // useEffect(() => {
+  //   setMathedRides(getMatchedRides());
+  // }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      setMathedRides(getMatchedRides());
+    }, [])
+  );
 
   return (
     <View>
@@ -34,14 +60,17 @@ const matched = () => {
           Matched:
         </Text>
         <View style={styles.tileContainer}>
-          {!rides.length ||
-            rides.map((ride, index) => (
+          {matchedRides.length ? (
+            matchedRides.map((ride, index) => (
               <Link key={index} href={`ride/${ride.uid}`} asChild>
                 <TouchableOpacity>
                   <RideTile ride={ride} />
                 </TouchableOpacity>
               </Link>
-            ))}
+            ))
+          ) : (
+            <Text>No matched rides :(</Text>
+          )}
         </View>
         <Text
           style={{

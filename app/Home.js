@@ -1,8 +1,21 @@
 import React, { useState, useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+} from "react-native";
 import app from "../firebaseConfig";
-import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { Link, Stack, useRouter, useFocusEffect } from "expo-router";
 import { COLORS, FONTS } from "../constants";
 import { AntDesign } from "@expo/vector-icons";
@@ -55,8 +68,7 @@ const Home = () => {
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => {
-                  // router.navigate("./user/About");
-                  router.navigate("/user/edit");
+                  router.navigate("./user/About");
                 }}
               >
                 <Image
@@ -87,21 +99,36 @@ const Home = () => {
           <Text>Loading...</Text>
         ) : (
           <View style={styles.tileContainer}>
-            {!availableRides.length ||
+            {availableRides.length ? (
               availableRides.map((ride, index) => (
                 <Link key={index} href={`ride/${ride.uid}`} asChild>
                   <TouchableOpacity>
                     <RideTile ride={ride} />
                   </TouchableOpacity>
                 </Link>
-              ))}
+              ))
+            ) : (
+              <Text>No rides available for you :(</Text>
+            )}
           </View>
         )}
       </ScrollView>
-      <View style={{ position: "absolute", bottom: 32, right: 32, alignSelf: "flex-end" }}>
+      <View
+        style={{
+          position: "absolute",
+          bottom: 32,
+          right: 32,
+          alignSelf: "flex-end",
+        }}
+      >
         <Link href="ride/new/StartLocationPick" asChild>
           <TouchableOpacity style={styles.plusButton}>
-            <AntDesign name="plus" size={24} color="#eee" style={{ padding: 14 }} />
+            <AntDesign
+              name="plus"
+              size={24}
+              color="#eee"
+              style={{ padding: 14 }}
+            />
           </TouchableOpacity>
         </Link>
       </View>

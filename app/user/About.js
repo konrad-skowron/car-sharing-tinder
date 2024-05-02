@@ -2,7 +2,16 @@ import React, { useEffect, useState } from "react";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { StatusBar } from "expo-status-bar";
 import { COLORS, FONTS } from "../../constants";
-import { StyleSheet, View, TouchableOpacity, SafeAreaView, Text, Image, Button, Modal } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  SafeAreaView,
+  Text,
+  Image,
+  Button,
+  Modal,
+} from "react-native";
 import PrevButton from "../../components/PrevButton";
 import MainButton from "../../components/MainButton";
 import "../Home";
@@ -41,7 +50,6 @@ export default function App() {
           headerStyle: { backgroundColor: "#eee" },
         }}
       />
-      {/* <PrevButton prev="../../Home"" /> */}
       <View style={styles.row}>
         <View>
           <Text style={styles.nameSurnameText}>
@@ -80,13 +88,15 @@ export default function App() {
             </View>
           </View>
         </View>
-       
+
         <View style={styles.column}>
           <View>
             <Text style={styles.foontEighteen}>About me</Text>
           </View>
           <View>
-            <Text style={styles.headerForSection}>{sampleUser.user.aboutMe}</Text>
+            <Text style={styles.headerForSection}>
+              {sampleUser.user.aboutMe}
+            </Text>
           </View>
         </View>
 
@@ -102,7 +112,13 @@ export default function App() {
         </View> */}
 
         <View style={styles.modalBand}>
-          <Modal visible={modalVisible} transparent={true} animationType="fade" hardwareAccelerated={true} presentationStyle="overFullScreen">
+          <Modal
+            visible={modalVisible}
+            transparent={true}
+            animationType="fade"
+            hardwareAccelerated={true}
+            presentationStyle="overFullScreen"
+          >
             <View style={styles.modalContainer}>
               <View style={styles.modal}>
                 <Text>Do you really want to logout?</Text>

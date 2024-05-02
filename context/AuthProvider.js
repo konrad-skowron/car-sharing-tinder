@@ -1,6 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import app from "../firebaseConfig";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "@firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "@firebase/auth";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
 const AuthContext = createContext();
@@ -24,6 +30,7 @@ const AuthProvider = ({ children }) => {
               phoneNumber: data.phoneNumber,
               aboutMe: data.aboutMe,
               rides: data.rides,
+              matched: data.matched,
             });
           });
           setIsLogged(true);
@@ -46,13 +53,29 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const fetchCurrentUser = async () => {
+    const { uid, email } = auth.currentUser;
+    const user = await getUserData(uid);
+    setUser({ uid: uid, email: email, ...user });
+  };
+
   const getCurrentUser = async () => {
     return auth.currentUser;
   };
 
-  const handleSignUp = async (email, password, firstName, lastName, phoneNumber) => {
+  const handleSignUp = async (
+    email,
+    password,
+    firstName,
+    lastName,
+    phoneNumber
+  ) => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const userUid = userCredential.user.uid;
       const db = getFirestore(app);
       await setDoc(doc(db, "users", userUid), {
@@ -60,6 +83,7 @@ const AuthProvider = ({ children }) => {
         lastName: lastName,
         phoneNumber: phoneNumber,
         rides: [],
+        matched: [],
       });
     } catch (error) {
       throw new Error(error.message);
@@ -85,7 +109,24 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  return <AuthContext.Provider value={{ user, setUser, isLogged, setIsLogged, handleSignIn, handleSignUp, handleLogOut, getUserData, getCurrentUser }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        isLogged,
+        setIsLogged,
+        handleSignIn,
+        handleSignUp,
+        handleLogOut,
+        getUserData,
+        getCurrentUser,
+        fetchCurrentUser,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;

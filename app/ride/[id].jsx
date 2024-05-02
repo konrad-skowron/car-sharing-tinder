@@ -1,12 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View, SafeAreaView, Text, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import PrevButton from "../../components/PrevButton";
 import MainButton from "../../components/MainButton";
 import { ForceTouchGestureHandler } from "react-native-gesture-handler";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { Stack, router, useLocalSearchParams } from "expo-router";
 import { COLORS, FONTS } from "../../constants";
 import { useDataContext } from "../../context/DataProvider";
+import { useAuthContext } from "../../context/AuthProvider";
+import app from "../../firebaseConfig";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  FieldValue,
+} from "firebase/firestore";
 
 const days = {
   Monday: "M",
@@ -20,12 +38,90 @@ const days = {
 
 export default function App() {
   const param = useLocalSearchParams();
+  const { user, fetchCurrentUser } = useAuthContext();
   const { getRideByUid } = useDataContext();
   const [ride, setRide] = useState({});
+  const [matching, setMatching] = useState(false);
 
   useEffect(() => {
     setRide(getRideByUid(param.id));
+    fetchCurrentUser();
   }, []);
+
+  const handleMatchRide = async () => {
+    try {
+      setMatching(true);
+      await fetchCurrentUser();
+      if (isAlreadyMatched(user.matched, param.id)) {
+        await removeFromMatched(param.id);
+      } else {
+        await addToMatched(param.id);
+      }
+    } catch (error) {
+      console.error(error.message);
+    } finally {
+      await fetchCurrentUser();
+      setMatching(false);
+    }
+  };
+
+  const handleDeleteRide = async () => {
+    try {
+      const db = getFirestore(app);
+      const userDocRef = doc(db, "users", user.uid);
+      const userSnapshot = await getDoc(userDocRef);
+      if (!userSnapshot.exists()) {
+        throw new Error("User does not exist in the database");
+      }
+      await updateDoc(userDocRef, {
+        rides: arrayRemove(ride),
+      });
+    } catch (error) {
+      throw new Error(error.message);
+    } finally {
+      await fetchCurrentUser();
+    }
+  };
+
+  const addToMatched = async (uid) => {
+    try {
+      const db = getFirestore(app);
+      const userDocRef = doc(db, "users", user.uid);
+      const userSnapshot = await getDoc(userDocRef);
+      if (!userSnapshot.exists()) {
+        throw new Error("User does not exist in the database");
+      }
+      await updateDoc(userDocRef, {
+        matched: arrayUnion(uid),
+      });
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
+  const removeFromMatched = async (uid) => {
+    try {
+      const db = getFirestore(app);
+      const userDocRef = doc(db, "users", user.uid);
+      const userSnapshot = await getDoc(userDocRef);
+      if (!userSnapshot.exists()) {
+        throw new Error("User does not exist in the database");
+      }
+      await updateDoc(userDocRef, {
+        matched: arrayRemove(uid),
+      });
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
+  const isAlreadyMatched = (matched, uid) => {
+    return matched.includes(uid);
+  };
+
+  const isRideBelongToCurrUser = () => {
+    return user.rides.some((ride) => ride.uid === param.id);
+  };
 
   return (
     ride && (
@@ -64,7 +160,9 @@ export default function App() {
               </View>
               {ride.startLocation && (
                 <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>{ride.startLocation.address_line1}</Text>
+                  <Text style={styles.fontSixteen}>
+                    {ride.startLocation.address_line1}
+                  </Text>
                 </View>
               )}
             </View>
@@ -74,7 +172,9 @@ export default function App() {
               </View>
               {ride.endLocation && (
                 <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>{ride.endLocation.address_line1}</Text>
+                  <Text style={styles.fontSixteen}>
+                    {ride.endLocation.address_line1}
+                  </Text>
                 </View>
               )}
             </View>
@@ -85,8 +185,23 @@ export default function App() {
               {ride.days && (
                 <View style={styles.days}>
                   {Object.entries(days).map(([k, v]) => (
-                    <View key={k} style={ride.days.includes(k) ? styles.buttonDayChoosen : styles.buttonDayUnChoosen}>
-                      <Text style={ride.days.includes(k) ? styles.buttonDayTextUnChoosen : styles.buttonDayTextChoosen}>{v}</Text>
+                    <View
+                      key={k}
+                      style={
+                        ride.days.includes(k)
+                          ? styles.buttonDayChoosen
+                          : styles.buttonDayUnChoosen
+                      }
+                    >
+                      <Text
+                        style={
+                          ride.days.includes(k)
+                            ? styles.buttonDayTextUnChoosen
+                            : styles.buttonDayTextChoosen
+                        }
+                      >
+                        {v}
+                      </Text>
                     </View>
                   ))}
                 </View>
@@ -111,7 +226,9 @@ export default function App() {
                   <Text style={styles.foontEighteen}>Brand</Text>
                 </View>
                 <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>{ride.carDetails.brand}</Text>
+                  <Text style={styles.fontSixteen}>
+                    {ride.carDetails.brand}
+                  </Text>
                 </View>
               </View>
               <View style={styles.row}>
@@ -119,7 +236,9 @@ export default function App() {
                   <Text style={styles.foontEighteen}>Model</Text>
                 </View>
                 <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>{ride.carDetails.model}</Text>
+                  <Text style={styles.fontSixteen}>
+                    {ride.carDetails.model}
+                  </Text>
                 </View>
               </View>
               <View style={styles.row}>
@@ -127,7 +246,9 @@ export default function App() {
                   <Text style={styles.foontEighteen}>Color</Text>
                 </View>
                 <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>{ride.carDetails.color}</Text>
+                  <Text style={styles.fontSixteen}>
+                    {ride.carDetails.color}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -141,7 +262,24 @@ export default function App() {
             </View>
           </View>
         </View>
-        <MainButton href="../../Home" content="Match" />
+        {isRideBelongToCurrUser() ? (
+          <MainButton
+            href="user/matched"
+            content="Delete"
+            onPress={handleDeleteRide}
+          />
+        ) : (
+          <TouchableOpacity style={styles.button} onPress={handleMatchRide}>
+            <Text style={styles.buttonText}>
+              {matching
+                ? "Matching..."
+                : isAlreadyMatched(user.matched, param.id)
+                ? "Unmatch"
+                : "Match"}
+            </Text>
+          </TouchableOpacity>
+        )}
+
         <StatusBar style="auto" />
       </SafeAreaView>
     )
@@ -149,6 +287,21 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  button: {
+    backgroundColor: "#222831",
+    borderRadius: 16,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: "auto",
+  },
+  buttonText: {
+    fontFamily: FONTS.primaryBold,
+    fontSize: 20,
+    color: "#eee",
+    margin: "auto",
+    padding: 16,
+  },
   days: {
     display: "flex",
     flexDirection: "row",
