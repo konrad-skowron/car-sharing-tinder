@@ -11,7 +11,7 @@ import {
   updateDoc,
   arrayUnion,
 } from "firebase/firestore";
-import { getCoordinatesRange, isLocationInRange } from "../utils";
+import { getCoordinatesRange, isLocationInRange, isLocationinZone } from "../utils";
 import { useAuthContext } from "./AuthProvider";
 import { getAuth } from "firebase/auth";
 
@@ -82,7 +82,7 @@ const DataProvider = ({ children }) => {
     const result = new Set();
     const user = await getCurrentUser();
     const userData = await getUserData(user.uid);
-    userData.rides.forEach((userRide) => {
+    const locationCheckPromises = userData.rides.map(async (userRide) => {
       const { startLocation, endLocation } = userRide;
       const startLocationRange = getCoordinatesRange(
         startLocation.lat,
@@ -112,12 +112,18 @@ const DataProvider = ({ children }) => {
               endLocationRange
             )
         );
-
-      filteredRides.forEach(result.add, result);
+      await Promise.all(filteredRides.map(async (ride) => {
+        const startLocationCheck = await isLocationinZone(startLocation.lat, startLocation.lon, ride.startLocation.lat, ride.startLocation.lon, rangeDistance);
+        const endLocationCheck = await isLocationinZone(endLocation.lat, endLocation.lon, ride.endLocation.lat, ride.endLocation.lon, rangeDistance);
+        if (startLocationCheck && endLocationCheck) {
+            result.add(ride);
+        }
+      }));
     });
-
+    await Promise.all(locationCheckPromises);
     return Array.from(result);
   };
+
 
   return (
     <DataContext.Provider
