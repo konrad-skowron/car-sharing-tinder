@@ -8,8 +8,8 @@
 - [ ] Ściągać dane z serwera zawsze jak się wejdzie do home, nie tylko gdy przejdzie logowanie
 - [X] Odfiltrować na home tylko przejazdy posiadające samochód
 - [ ] Matchowanie użytkowników:
-  - [ ] Dodać nowego pola do obiektu użytkownika. Nazwa pola `matched`, typ pola array. Tablica będzie przechowywała uid przejazdów jakie zmatchował użytkownik
-  - [ ] Dodać logikę związaną z dodawaniem i usuwaniem uid przejazdu do tej tablicy
+  - [X] Dodać nowe pole do obiektu użytkownika. Nazwa pola `matched`, typ pola array. Tablica będzie przechowywała uid przejazdów jakie zmatchował użytkownik
+  - [X] Dodać logikę związaną z dodawaniem i usuwaniem uid przejazdu do tej tablicy
   - [ ] Dodać nowe pole dla przejadów z samochodem, aby właściciel przejazdu wiedział o pasażerach. Nazwa pola `passengers`, typ pola array. Tablica będzie przechowywała uid użytkowników, którzy zmatchowali ten przejazd
   - [ ] Dodać logikę związaną z dodawaniem i usuwaniem uid użytkownika do tej tablicy
 - [ ] Przenieść ponownie dodawanie przejazdu ze screena `success` na `carDetail`. Dodanie przejazdu działo się zanim ustawił się obiekt carDetails, przez co nie dało się ustawić samochodu dla przejazdu
