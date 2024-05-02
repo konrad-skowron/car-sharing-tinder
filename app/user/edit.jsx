@@ -26,6 +26,8 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 import { set } from "firebase/database";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+import {storage} from "../../firebaseConfig";
 
 
 
@@ -54,6 +56,17 @@ const edit = () => {
     }
   };
 
+  const submitImage = async () => {
+    const storageRef = ref(storage, 'images/' + image);
+    console.log(storageRef);
+    uploadBytes(storageRef, image).then((snapshot) => {
+      console.log('Uploaded a blob or file!');
+    }).catch((error) => {
+      console.error('Error uploading a blob or file:', error);
+    });
+  };
+    
+
   const uploadImage = async () => {
     setUploading(true);
     try{
@@ -72,7 +85,7 @@ const edit = () => {
         xhr.send(null);
       });
       const filename = image.substring(image.lastIndexOf("/") + 1);
-      const ref = app.storage.ref().child(`images/${filename}`);
+      const ref = ref().child(`images/${filename}`);
 
       await ref.put(blob);
       setUploading(false);
@@ -144,6 +157,7 @@ const edit = () => {
     } finally {
       await fetchCurrentUser();
     }
+    submitImage();
   };
 
   return (
