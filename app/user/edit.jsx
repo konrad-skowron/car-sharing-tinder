@@ -26,15 +26,11 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 import { set } from "firebase/database";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
-import {storage} from "../../firebaseConfig";
-
-
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const edit = () => {
   const router = useRouter();
   const [image, setImage] = React.useState(null);
-  const [uploading, setUploading] = React.useState(false);
   const { user, isLogged, getUserData, handleLogOut, fetchCurrentUser } =
     useAuthContext();
   const { email, firstName, lastName, phoneNumber, rides, aboutMe } = user;
@@ -56,47 +52,8 @@ const edit = () => {
     }
   };
 
-  const submitImage = async () => {
-    const storageRef = ref(storage, 'images/' + image);
-    console.log(storageRef);
-    uploadBytes(storageRef, image).then((snapshot) => {
-      console.log('Uploaded a blob or file!');
-    }).catch((error) => {
-      console.error('Error uploading a blob or file:', error);
-    });
-  };
+  
     
-
-  const uploadImage = async () => {
-    setUploading(true);
-    try{
-      const { uri } = await FileSystem.getInfoAsync(image);
-      const blob = await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.onload = function(){
-          resolve(xhr.response);
-        };
-        xhr.onerror = function(e){
-          console.error(e);
-          reject(new TypeError("Network request failed"));
-        };
-        xhr.responseType = "blob";
-        xhr.open("GET", uri, true);
-        xhr.send(null);
-      });
-      const filename = image.substring(image.lastIndexOf("/") + 1);
-      const ref = ref().child(`images/${filename}`);
-
-      await ref.put(blob);
-      setUploading(false);
-      Alert.alert("Success", "Image uploaded successfully");
-      setImage(null);
-    }catch(error){
-      console.error(error);
-      setUploading(false);
-    }
-  };
-
   React.useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
@@ -136,9 +93,25 @@ const edit = () => {
   const handleChangeSave = () => {
     changeData();
   };
-
+  const submitImage = async () => {
+    try {
+      const storage = getStorage(app);
+      const storageRef = ref(storage, 'images/' + image);
+      const response = await fetch(image);
+      const blob = await response.blob();
+      const snapshot = await uploadBytes(storageRef, blob);
+      const url = await getDownloadURL(snapshot.ref);
+      return url;
+    } catch (error) {
+      console.error('Error uploading a blob or file:', error);
+      throw new Error(error.message);
+    }
+  };
+  
+  
   const changeData = async () => {
     try {
+      const imageUrl = await submitImage(); 
       const db = getFirestore(app);
       const userDocRef = doc(db, "users", user.uid);
       const userSnapshot = await getDoc(userDocRef);
@@ -151,15 +124,15 @@ const edit = () => {
         aboutMe: aboutMeText,
         lastName: lastNameText,
         phoneNumber: phoneNumberText,
+        imageUrl: imageUrl, 
       });
     } catch (error) {
       throw new Error(error.message);
     } finally {
       await fetchCurrentUser();
     }
-    submitImage();
   };
-
+  
   return (
     <View style={styles.container}>
       <Stack.Screen
@@ -169,7 +142,6 @@ const edit = () => {
           headerStyle: { backgroundColor: "#eee" },
         }}
       />
-      
       <View>
       <View style={{gap: 8}}>
         <Text style={styles.text}>Profile picture</Text>
@@ -178,14 +150,11 @@ const edit = () => {
           {image ? (
             <Image source={{ uri: image }} style={{ width: 150, height: 150, borderRadius: 10 }} />
           ) : (
-           
               <Text style={styles.text}>No profile picture, click to pick one!</Text>
-            
           )}
           </TouchableOpacity>
         </View>
       </View>
-      
       <View style={styles.inputWrapper}>
         <Text style={styles.text}>First name</Text>
         <TextInput
