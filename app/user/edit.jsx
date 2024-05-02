@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   TextInput,
   Keyboard,
+  Alert,
+  Image,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
@@ -14,6 +16,8 @@ import { Link, Stack, useRouter } from "expo-router";
 import { useAuthContext } from "../../context/AuthProvider";
 import MainButton from "../../components/MainButton";
 import app from "../../firebaseConfig";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 import {
   getFirestore,
   doc,
@@ -21,9 +25,14 @@ import {
   updateDoc,
   arrayUnion,
 } from "firebase/firestore";
+import { set } from "firebase/database";
+
+
 
 const edit = () => {
   const router = useRouter();
+  const [image, setImage] = React.useState(null);
+  const [uploading, setUploading] = React.useState(false);
   const { user, isLogged, getUserData, handleLogOut, fetchCurrentUser } =
     useAuthContext();
   const { email, firstName, lastName, phoneNumber, rides, aboutMe } = user;
@@ -32,6 +41,48 @@ const edit = () => {
   const [phoneNumberText, setPhoneNumberText] = React.useState(phoneNumber);
   const [aboutMeText, setAboutMeText] = React.useState(user.aboutMe);
   const [isKeyboardVisible, setKeyboardVisible] = React.useState(false);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if(!result.cancelled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  const uploadImage = async () => {
+    setUploading(true);
+    try{
+      const { uri } = await FileSystem.getInfoAsync(image);
+      const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function(){
+          resolve(xhr.response);
+        };
+        xhr.onerror = function(e){
+          console.error(e);
+          reject(new TypeError("Network request failed"));
+        };
+        xhr.responseType = "blob";
+        xhr.open("GET", uri, true);
+        xhr.send(null);
+      });
+      const filename = image.substring(image.lastIndexOf("/") + 1);
+      const ref = app.storage.ref().child(`images/${filename}`);
+
+      await ref.put(blob);
+      setUploading(false);
+      Alert.alert("Success", "Image uploaded successfully");
+      setImage(null);
+    }catch(error){
+      console.error(error);
+      setUploading(false);
+    }
+  };
 
   React.useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -104,7 +155,23 @@ const edit = () => {
           headerStyle: { backgroundColor: "#eee" },
         }}
       />
-
+      
+      <View>
+      <View style={{gap: 8}}>
+        <Text style={styles.text}>Profile picture</Text>
+        <View style={{justifyContent:"center", alignItems: "center"}}>
+        <TouchableOpacity onPress={pickImage}>
+          {image ? (
+            <Image source={{ uri: image }} style={{ width: 150, height: 150, borderRadius: 10 }} />
+          ) : (
+           
+              <Text style={styles.text}>No profile picture, click to pick one!</Text>
+            
+          )}
+          </TouchableOpacity>
+        </View>
+      </View>
+      
       <View style={styles.inputWrapper}>
         <Text style={styles.text}>First name</Text>
         <TextInput
@@ -135,6 +202,8 @@ const edit = () => {
           value={aboutMeText}
           onChangeText={handleSetAboutMe}
         />
+        
+      </View>
       </View>
       {!isKeyboardVisible && (
         <MainButton
@@ -155,6 +224,13 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
   },
 
+  container2:{
+    flex: 1,
+    backgroundColor: "#000",
+    justifyContent: "center",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   container: {
     flex: 1,
     display: "flex",
@@ -163,13 +239,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     paddingBottom: 32,
     backgroundColor: "#eee",
-  },
-
-  title: {
-    marginTop: 64,
-    fontSize: 42,
-    fontFamily: FONTS.secondaryBold,
-    textAlign: "center",
   },
   inputWrapper: {
     marginBottom: "auto",
