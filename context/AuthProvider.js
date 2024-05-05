@@ -1,12 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import app from "../firebaseConfig";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from "@firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "@firebase/auth";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
 const AuthContext = createContext();
@@ -18,23 +12,14 @@ const AuthProvider = ({ children }) => {
   const auth = getAuth(app);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         try {
-          getUserData(user.uid).then((data) => {
-            setUser({
-              uid: user.uid,
-              email: user.email,
-              firstName: data.firstName,
-              lastName: data.lastName,
-              phoneNumber: data.phoneNumber,
-              aboutMe: data.aboutMe,
-              imageUrl: data.imageUrl,
-              rides: data.rides,
-              matched: data.matched,
-            });
-          });
-          // console.log(user.imageUrl);
+          setIsLogged(false);
+
+          const data = await getUserData(user.uid);
+          setUser({ uid: user.uid, email: user.email, ...data });
+
           setIsLogged(true);
         } catch (error) {
           console.error("Set user error", error.message);
@@ -56,28 +41,25 @@ const AuthProvider = ({ children }) => {
   };
 
   const fetchCurrentUser = async () => {
-    const { uid, email } = auth.currentUser;
-    const user = await getUserData(uid);
-    setUser({ uid: uid, email: email, ...user });
+    try {
+      setIsLogged(false);
+      const { uid, email } = auth.currentUser;
+      const fetchedUser = await getUserData(uid);
+      setUser({ uid: uid, email: email, ...fetchedUser });
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setIsLogged(true);
+    }
   };
 
   const getCurrentUser = async () => {
     return auth.currentUser;
   };
 
-  const handleSignUp = async (
-    email,
-    password,
-    firstName,
-    lastName,
-    phoneNumber
-  ) => {
+  const handleSignUp = async (email, password, firstName, lastName, phoneNumber) => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const userUid = userCredential.user.uid;
       const db = getFirestore(app);
       await setDoc(doc(db, "users", userUid), {

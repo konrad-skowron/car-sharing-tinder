@@ -1,21 +1,8 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from "react-native";
 import app from "../firebaseConfig";
-import {
-  getFirestore,
-  collection,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
+import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
 import { Link, Stack, useRouter, useFocusEffect } from "expo-router";
 import { COLORS, FONTS } from "../constants";
 import { AntDesign } from "@expo/vector-icons";
@@ -28,25 +15,12 @@ import { useAuthContext } from "../context/AuthProvider";
 
 const Home = () => {
   const router = useRouter();
-  const { fetchData, rides, availableRides } = useDataContext();
-  const [loading, setLoading] = useState(false);
+  const { loading, reloadRides, allRides, availableRides } = useDataContext();
   const { user } = useAuthContext();
 
-  useFocusEffect(
-    useCallback(() => {
-      getData();
-    }, [])
-  );
-
-  const getData = async () => {
-    try {
-      setLoading(true);
-      const data = await fetchData();
-      setLoading(false);
-    } catch (error) {
-      console.error("Get data error: ", error.message);
-    }
-  };
+  useEffect(() => {
+    reloadRides();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -125,12 +99,7 @@ const Home = () => {
       >
         <Link href="ride/new/StartLocationPick" asChild>
           <TouchableOpacity style={styles.plusButton}>
-            <AntDesign
-              name="plus"
-              size={24}
-              color="#eee"
-              style={{ padding: 14 }}
-            />
+            <AntDesign name="plus" size={24} color="#eee" style={{ padding: 14 }} />
           </TouchableOpacity>
         </Link>
       </View>

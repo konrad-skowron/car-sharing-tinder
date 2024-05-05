@@ -1,30 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  View,
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  Image,
-} from "react-native";
-import PrevButton from "../../components/PrevButton";
+import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image } from "react-native";
 import MainButton from "../../components/MainButton";
-import { ForceTouchGestureHandler } from "react-native-gesture-handler";
 import { Stack, router, useLocalSearchParams } from "expo-router";
 import { COLORS, FONTS } from "../../constants";
 import { useDataContext } from "../../context/DataProvider";
 import { useAuthContext } from "../../context/AuthProvider";
-import app from "../../firebaseConfig";
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  updateDoc,
-  arrayUnion,
-  arrayRemove,
-  FieldValue,
-} from "firebase/firestore";
 
 const days = {
   Monday: "M",
@@ -39,26 +20,24 @@ const days = {
 export default function App() {
   const param = useLocalSearchParams();
   const { user, fetchCurrentUser } = useAuthContext();
-  const { getRideByUid } = useDataContext();
+  const { getRideByUid, getUserById, addRideToMatched, removeRideFromMatched, deleteRide } = useDataContext();
   const [ride, setRide] = useState({});
   const [matching, setMatching] = useState(false);
 
   useEffect(() => {
     setRide(getRideByUid(param.id));
-    fetchCurrentUser();
   }, []);
 
   const handleMatchRide = async () => {
     try {
       setMatching(true);
-      await fetchCurrentUser();
       if (isAlreadyMatched(user.matched, param.id)) {
-        await removeFromMatched(param.id);
+        await removeRideFromMatched(param.id);
       } else {
-        await addToMatched(param.id);
+        await addRideToMatched(param.id);
       }
     } catch (error) {
-      console.error(error.message);
+      console.log("Add/Remove ride to/from matched error: ", error.message);
     } finally {
       await fetchCurrentUser();
       setMatching(false);
@@ -67,51 +46,11 @@ export default function App() {
 
   const handleDeleteRide = async () => {
     try {
-      const db = getFirestore(app);
-      const userDocRef = doc(db, "users", user.uid);
-      const userSnapshot = await getDoc(userDocRef);
-      if (!userSnapshot.exists()) {
-        throw new Error("User does not exist in the database");
-      }
-      await updateDoc(userDocRef, {
-        rides: arrayRemove(ride),
-      });
+      await deleteRide(ride);
     } catch (error) {
-      throw new Error(error.message);
+      console.log("Delete ride error: ", error.message);
     } finally {
       await fetchCurrentUser();
-    }
-  };
-
-  const addToMatched = async (uid) => {
-    try {
-      const db = getFirestore(app);
-      const userDocRef = doc(db, "users", user.uid);
-      const userSnapshot = await getDoc(userDocRef);
-      if (!userSnapshot.exists()) {
-        throw new Error("User does not exist in the database");
-      }
-      await updateDoc(userDocRef, {
-        matched: arrayUnion(uid),
-      });
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  };
-
-  const removeFromMatched = async (uid) => {
-    try {
-      const db = getFirestore(app);
-      const userDocRef = doc(db, "users", user.uid);
-      const userSnapshot = await getDoc(userDocRef);
-      if (!userSnapshot.exists()) {
-        throw new Error("User does not exist in the database");
-      }
-      await updateDoc(userDocRef, {
-        matched: arrayRemove(uid),
-      });
-    } catch (error) {
-      throw new Error(error.message);
     }
   };
 
@@ -160,9 +99,7 @@ export default function App() {
               </View>
               {ride.startLocation && (
                 <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>
-                    {ride.startLocation.address_line1}
-                  </Text>
+                  <Text style={styles.fontSixteen}>{ride.startLocation.address_line1}</Text>
                 </View>
               )}
             </View>
@@ -172,9 +109,7 @@ export default function App() {
               </View>
               {ride.endLocation && (
                 <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>
-                    {ride.endLocation.address_line1}
-                  </Text>
+                  <Text style={styles.fontSixteen}>{ride.endLocation.address_line1}</Text>
                 </View>
               )}
             </View>
@@ -185,23 +120,8 @@ export default function App() {
               {ride.days && (
                 <View style={styles.days}>
                   {Object.entries(days).map(([k, v]) => (
-                    <View
-                      key={k}
-                      style={
-                        ride.days.includes(k)
-                          ? styles.buttonDayChoosen
-                          : styles.buttonDayUnChoosen
-                      }
-                    >
-                      <Text
-                        style={
-                          ride.days.includes(k)
-                            ? styles.buttonDayTextUnChoosen
-                            : styles.buttonDayTextChoosen
-                        }
-                      >
-                        {v}
-                      </Text>
+                    <View key={k} style={ride.days.includes(k) ? styles.buttonDayChoosen : styles.buttonDayUnChoosen}>
+                      <Text style={ride.days.includes(k) ? styles.buttonDayTextUnChoosen : styles.buttonDayTextChoosen}>{v}</Text>
                     </View>
                   ))}
                 </View>
@@ -226,9 +146,7 @@ export default function App() {
                   <Text style={styles.foontEighteen}>Brand</Text>
                 </View>
                 <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>
-                    {ride.carDetails.brand}
-                  </Text>
+                  <Text style={styles.fontSixteen}>{ride.carDetails.brand}</Text>
                 </View>
               </View>
               <View style={styles.row}>
@@ -236,9 +154,7 @@ export default function App() {
                   <Text style={styles.foontEighteen}>Model</Text>
                 </View>
                 <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>
-                    {ride.carDetails.model}
-                  </Text>
+                  <Text style={styles.fontSixteen}>{ride.carDetails.model}</Text>
                 </View>
               </View>
               <View style={styles.row}>
@@ -246,37 +162,34 @@ export default function App() {
                   <Text style={styles.foontEighteen}>Color</Text>
                 </View>
                 <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>
-                    {ride.carDetails.color}
-                  </Text>
+                  <Text style={styles.fontSixteen}>{ride.carDetails.color}</Text>
                 </View>
               </View>
             </View>
           )}
           <View style={styles.column}>
             <View>
-              <Text style={styles.foontEighteen}>About me</Text>
+              <Text style={styles.headerForSection}>About me</Text>
             </View>
             <View>
-              <Text style={styles.headerForSection}>TODO</Text>
+              <Text style={styles.fontSixteen}>TODO</Text>
             </View>
           </View>
+          {isRideBelongToCurrUser() && ride.passengers && (
+            <View>
+              <Text style={styles.headerForSection}>Passengers</Text>
+              {ride.passengers.map((passenger, index) => {
+                const u = getUserById(passenger);
+                return <Text key={passenger} style={styles.fontSixteen}>{`${index + 1}. ${u.firstName} ${u.lastName}`}</Text>;
+              })}
+            </View>
+          )}
         </View>
-        {isRideBelongToCurrUser() ? (
-          <MainButton
-            href="user/matched"
-            content="Delete"
-            onPress={handleDeleteRide}
-          />
+        {user && isRideBelongToCurrUser() ? (
+          <MainButton href="user/matched" content="Delete" onPress={handleDeleteRide} />
         ) : (
           <TouchableOpacity style={styles.button} onPress={handleMatchRide}>
-            <Text style={styles.buttonText}>
-              {matching
-                ? "Matching..."
-                : isAlreadyMatched(user.matched, param.id)
-                ? "Unmatch"
-                : "Match"}
-            </Text>
+            <Text style={styles.buttonText}>{matching ? "Matching..." : isAlreadyMatched(user.matched, param.id) ? "Unmatch" : "Match"}</Text>
           </TouchableOpacity>
         )}
 

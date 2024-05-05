@@ -71,9 +71,7 @@ const isLocationInRange = (lat, lon, range) => {
 
 const isLocationinZone = (latStart, lonStart, latEnd, lonEnd, distanceBetween) => {
   distanceBetween = distanceBetween * 1000;
-  return fetch(
-    `https://router.project-osrm.org/route/v1/driving/${lonStart},${latStart};${lonEnd},${latEnd}`
-  )
+  return fetch(`https://router.project-osrm.org/route/v1/driving/${lonStart},${latStart};${lonEnd},${latEnd}`)
     .then((response) => response.json())
     .then((data) => {
       if (data.routes[0].distance < distanceBetween) {
@@ -83,8 +81,8 @@ const isLocationinZone = (latStart, lonStart, latEnd, lonEnd, distanceBetween) =
       }
     })
     .catch((error) => {
-      console.error('Error occured during fetching distance between locations!:', error);
-      throw error; 
+      console.error("Error occured during fetching distance between locations!:", error);
+      throw error;
     });
 };
 

@@ -32,7 +32,7 @@ const NewRideProvider = ({ children }) => {
         throw new Error("User does not exist in the database");
       }
 
-      const newOffer = {
+      let newOffer = {
         uid: offerUid,
         imageUrl,
         startLocation,
@@ -41,6 +41,8 @@ const NewRideProvider = ({ children }) => {
         time,
         carDetails,
       };
+
+      newOffer = Object.keys(carDetails).length !== 0 ? { ...newOffer, passengers: [] } : newOffer;
 
       await updateDoc(userDocRef, {
         rides: arrayUnion(newOffer),
