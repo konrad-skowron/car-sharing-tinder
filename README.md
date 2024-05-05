@@ -9,13 +9,14 @@
 - [ ] Ogarnąć link do zdjęcia w home.js (pole user nie zdąży się załadować a jest do niego odwołanie przez co rzuca nullem i się wykłada, na ten moment ustawione, żeby działało)
 - [X] Ściągać dane z serwera zawsze jak się wejdzie do home, nie tylko gdy przejdzie logowanie
 - [X] Odfiltrować na home tylko przejazdy posiadające samochód
-- [ ] Matchowanie użytkowników:
+- [X] Matchowanie użytkowników:
   - [X] Dodać nowe pole do obiektu użytkownika. Nazwa pola `matched`, typ pola array. Tablica będzie przechowywała uid przejazdów jakie zmatchował użytkownik
   - [X] Dodać logikę związaną z dodawaniem i usuwaniem uid przejazdu do tej tablicy
-  - [ ] Dodać nowe pole dla przejadów z samochodem, aby właściciel przejazdu wiedział o pasażerach. Nazwa pola `passengers`, typ pola array. Tablica będzie przechowywała uid użytkowników, którzy zmatchowali ten przejazd
-  - [ ] Dodać logikę związaną z dodawaniem i usuwaniem uid użytkownika do tej tablicy
+  - [X] Dodać nowe pole dla przejadów z samochodem, aby właściciel przejazdu wiedział o pasażerach. Nazwa pola `passengers`, typ pola array. Tablica będzie przechowywała uid użytkowników, którzy zmatchowali ten przejazd
+  - [X] Dodać logikę związaną z dodawaniem i usuwaniem uid użytkownika do tej tablicy
 - [ ] Przenieść ponownie dodawanie przejazdu ze screena `success` na `carDetail`. Dodanie przejazdu działo się zanim ustawił się obiekt carDetails, przez co nie dało się ustawić samochodu dla przejazdu
 - [ ] Dodać mapę z wyznaczoną trasą do screena przejazdu (`[id].jsx`)
+- [ ] Zmienić bazę na relacyjną :skull:
      
 
 # Expo Router Example
