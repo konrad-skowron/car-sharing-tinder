@@ -95,7 +95,7 @@ const styles = {
     gap: 16,
   },
   image: {
-    width: "60%",
+    width: "70%",
     height: 160,
   },
   inputContainer: {

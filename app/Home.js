@@ -55,7 +55,7 @@ const Home = () => {
                     marginRight: 16,
                   }}
                   source={{
-                    uri: "https://via.placeholder.com/150",
+                    uri: user ? user.imageUrl : "https://via.placeholder.com/150",
                   }}
                 />
               </TouchableOpacity>
