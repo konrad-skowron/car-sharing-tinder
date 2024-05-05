@@ -6,7 +6,7 @@
 - [X] Dodać screen edycji usera - żeby mógł dodać opis about me i zmienić nazwę swoją nazwę, numer, zdjęcie
 - [X] Rozszerzyć screen edycji usera o przesyłanie zdjęcia 
 - [X] Podczas tworzenia ogłoszenia dodać pole "imageUrl" i przypisać temu zdjęcie użytkownika, będzie to zdjęcie wyświetlane przy ogłoszeniu
-- [ ] Ogarnąć link do zdjęcia w home.js (pole user nie zdąży się załadować a jest do niego odwołanie przez co rzuca nullem i się wykłada, na ten moment ustawione, żeby działało)
+- [X] Ogarnąć link do zdjęcia w home.js (pole user nie zdąży się załadować a jest do niego odwołanie przez co rzuca nullem i się wykłada, na ten moment ustawione, żeby działało)
 - [X] Ściągać dane z serwera zawsze jak się wejdzie do home, nie tylko gdy przejdzie logowanie
 - [X] Odfiltrować na home tylko przejazdy posiadające samochód
 - [X] Matchowanie użytkowników:
