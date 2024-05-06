@@ -62,7 +62,7 @@ const matched = () => {
             user.rides.map((ride, index) => (
               <Link key={index} href={`ride/${ride.uid}`} asChild>
                 <TouchableOpacity>
-                  <RideTile ride={ride} />
+                  <RideTile ride={{ ...ride, imageUrl: user.imageUrl, aboutMe: user.aboutMe }} />
                 </TouchableOpacity>
               </Link>
             ))}

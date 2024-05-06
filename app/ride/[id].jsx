@@ -86,7 +86,7 @@ export default function App() {
                 borderRadius: 64,
               }}
               source={{
-                uri: "https://picsum.photos/200",
+                uri: isRideBelongToCurrUser() ? user.imageUrl : ride.imageUrl,
               }}
             />
           </View>
@@ -172,7 +172,7 @@ export default function App() {
               <Text style={styles.headerForSection}>About me</Text>
             </View>
             <View>
-              <Text style={styles.fontSixteen}>TODO</Text>
+              <Text style={styles.fontSixteen}>{isRideBelongToCurrUser() ? user.aboutMe : ride.aboutMe}</Text>
             </View>
           </View>
           {isRideBelongToCurrUser() && ride.passengers && (

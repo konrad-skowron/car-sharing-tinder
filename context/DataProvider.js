@@ -64,11 +64,11 @@ const DataProvider = ({ children }) => {
   const extractRidesFromUsers = (users) => {
     const result = [];
     users.forEach((user, index) => {
-      const { id, firstName, lastName } = user;
+      const { id, firstName, lastName, imageUrl, aboutMe } = user;
       user.rides
         .filter((ride) => ride.uid)
         .forEach((ride) => {
-          result.push({ ...ride, firstName, lastName, userId: id });
+          result.push({ ...ride, firstName, lastName, imageUrl, aboutMe, userId: id });
         });
     });
 
