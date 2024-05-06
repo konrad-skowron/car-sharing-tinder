@@ -22,7 +22,6 @@ const NewRideProvider = ({ children }) => {
 
   const addOffer = async () => {
     try {
-      const imageUrl = user.imageUrl;
       const offerUid = Crypto.randomUUID();
       const db = getFirestore(app);
       const userDocRef = doc(db, "users", user.uid);
@@ -34,7 +33,6 @@ const NewRideProvider = ({ children }) => {
 
       let newOffer = {
         uid: offerUid,
-        imageUrl,
         startLocation,
         endLocation,
         days,
