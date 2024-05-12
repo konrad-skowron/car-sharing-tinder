@@ -1,5 +1,4 @@
-import {StyleSheet, Text,  View, TouchableOpacity,
-  TextInput,  Keyboard,  Image} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Keyboard, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import { COLORS, FONTS } from "../../constants";
@@ -9,13 +8,7 @@ import { useAuthContext } from "../../context/AuthProvider";
 import MainButton from "../../components/MainButton";
 import app from "../../firebaseConfig";
 import * as ImagePicker from "expo-image-picker";
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  updateDoc,
-  arrayUnion,
-} from "firebase/firestore";
+import { getFirestore, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const edit = () => {
@@ -36,26 +29,18 @@ const edit = () => {
       aspect: [4, 3],
       quality: 1,
     });
-    if(!result.cancelled) {
+    if (!result.cancelled) {
       setImage(result.assets[0].uri);
     }
   };
 
-  
-    
   React.useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      () => {
-        setKeyboardVisible(true);
-      }
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      () => {
-        setKeyboardVisible(false);
-      }
-    );
+    const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardVisible(true);
+    });
+    const keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardVisible(false);
+    });
 
     return () => {
       keyboardDidHideListener.remove();
@@ -85,34 +70,33 @@ const edit = () => {
   const submitImage = async () => {
     try {
       const storage = getStorage(app);
-      const storageRef = ref(storage, 'images/' + image);
+      const storageRef = ref(storage, "images/" + image);
       const response = await fetch(image);
       const blob = await response.blob();
       const snapshot = await uploadBytes(storageRef, blob);
       const url = await getDownloadURL(snapshot.ref);
       return url;
     } catch (error) {
-      console.error('Error uploading a blob or file:', error);
+      console.error("Error uploading a blob or file:", error);
       throw new Error(error.message);
     }
   };
-  
+
   const changeData = async () => {
     try {
-      const imageUrl = await submitImage(); 
+      const imageUrl = await submitImage();
       const db = getFirestore(app);
       const userDocRef = doc(db, "users", user.uid);
       const userSnapshot = await getDoc(userDocRef);
       if (!userSnapshot.exists()) {
         throw new Error("User does not exist in the database");
       }
-      print(firstNameText);
       await updateDoc(userDocRef, {
         firstName: firstNameText,
         aboutMe: aboutMeText,
         lastName: lastNameText,
         phoneNumber: phoneNumberText,
-        imageUrl: imageUrl, 
+        imageUrl: imageUrl,
       });
     } catch (error) {
       throw new Error(error.message);
@@ -120,7 +104,7 @@ const edit = () => {
       await fetchCurrentUser();
     }
   };
-  
+
   return (
     <View style={styles.container}>
       <Stack.Screen
@@ -131,58 +115,24 @@ const edit = () => {
         }}
       />
       <View>
-      <View style={{gap: 8}}>
-        <Text style={styles.text}>Profile picture</Text>
-        <View style={{justifyContent:"center", alignItems: "center"}}>
-        <TouchableOpacity onPress={pickImage}>
-          {image ? (
-            <Image source={{ uri: image }} style={{ width: 150, height: 150, borderRadius: 10 }} />
-          ) : (
-              <Text style={styles.text}>No profile picture, click to pick one!</Text>
-          )}
-          </TouchableOpacity>
+        <View style={{ gap: 8 }}>
+          <Text style={styles.text}>Profile picture</Text>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <TouchableOpacity onPress={pickImage}>{image ? <Image source={{ uri: image }} style={{ width: 150, height: 150, borderRadius: 10 }} /> : <Text style={styles.text}>No profile picture, click to pick one!</Text>}</TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.inputWrapper}>
+          <Text style={styles.text}>First name</Text>
+          <TextInput placeholder={email} style={styles.input} value={firstNameText} onChangeText={handleSetFirstName} />
+          <Text style={styles.text}>Last name</Text>
+          <TextInput placeholder={firstName} style={styles.input} value={lastNameText} onChangeText={handleSetLastName} />
+          <Text style={styles.text}>Phone number</Text>
+          <TextInput placeholder={phoneNumber} style={styles.input} value={phoneNumberText} onChangeText={handleSetPhoneNumber} />
+          <Text style={styles.text}>About me</Text>
+          <TextInput style={[styles.input, styles.multilineTextInput]} placeholder={aboutMe} multiline value={aboutMeText} onChangeText={handleSetAboutMe} />
         </View>
       </View>
-      <View style={styles.inputWrapper}>
-        <Text style={styles.text}>First name</Text>
-        <TextInput
-          placeholder={email}
-          style={styles.input}
-          value={firstNameText}
-          onChangeText={handleSetFirstName}
-        />
-        <Text style={styles.text}>Last name</Text>
-        <TextInput
-          placeholder={firstName}
-          style={styles.input}
-          value={lastNameText}
-          onChangeText={handleSetLastName}
-        />
-        <Text style={styles.text}>Phone number</Text>
-        <TextInput
-          placeholder={phoneNumber}
-          style={styles.input}
-          value={phoneNumberText}
-          onChangeText={handleSetPhoneNumber}
-        />
-        <Text style={styles.text}>About me</Text>
-        <TextInput
-          style={[styles.input, styles.multilineTextInput]}
-          placeholder={aboutMe}
-          multiline
-          value={aboutMeText}
-          onChangeText={handleSetAboutMe}
-        />
-        
-      </View>
-      </View>
-      {!isKeyboardVisible && (
-        <MainButton
-          href="../../Home"
-          content="Confirm"
-          onPress={handleChangeSave}
-        />
-      )}
+      {!isKeyboardVisible && <MainButton href="../../Home" content="Confirm" onPress={handleChangeSave} />}
 
       <StatusBar style="auto" />
     </View>
@@ -195,7 +145,7 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
   },
 
-  container2:{
+  container2: {
     flex: 1,
     backgroundColor: "#000",
     justifyContent: "center",

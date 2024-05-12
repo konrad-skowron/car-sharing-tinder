@@ -15,8 +15,6 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         try {
-          setIsLogged(false);
-
           const data = await getUserData(user.uid);
           setUser({ uid: user.uid, email: user.email, ...data });
 
