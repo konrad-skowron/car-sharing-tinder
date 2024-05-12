@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import app from "../firebaseConfig";
-import { getFirestore, collection, query, where, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { getFirestore, collection, query, where, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove, documentId } from "firebase/firestore";
 import { getCoordinatesRange, isLocationInRange, isLocationinZone } from "../utils";
 import { useAuthContext } from "./AuthProvider";
 import { getAuth } from "firebase/auth";
@@ -15,6 +15,7 @@ const DataProvider = ({ children }) => {
   const [allRides, setAllRides] = useState([]);
   const [availableRides, setAvailableRides] = useState([]);
   const [matchedRides, setMatchedRides] = useState([]);
+  const [userRides, setUserRides] = useState([]);
   const { user, isLogged } = useAuthContext();
 
   useEffect(() => {
@@ -28,6 +29,19 @@ const DataProvider = ({ children }) => {
       try {
         setLoading(true);
         const db = getFirestore(app);
+
+        const ridesRef = collection(db, "rides");
+        const qRides = query(ridesRef, where(documentId(), "in", user.rides));
+        const queryRidesSnapshot = await getDocs(qRides);
+
+        fetchedUserRides = [];
+        queryRidesSnapshot.forEach((doc) => {
+          fetchedUserRides.push(doc.data());
+        });
+        setUserRides(fetchedUserRides);
+
+        getAvailableRidesForCurrentUser(fetchedUserRides);
+
         const usersRef = collection(db, "users");
         const q = query(usersRef, where("rides", "!=", "null"));
         const querySnapshot = await getDocs(q);
@@ -59,6 +73,29 @@ const DataProvider = ({ children }) => {
         setLoading(false);
       }
     }
+  };
+
+  const getAvailableRidesForCurrentUser = (ur) => {
+    filteredAvailableRides = new Set();
+    console.log(ur);
+    ur.forEach((ride) => {
+      const { days, time } = ride;
+
+      const [hours, minutes] = time.split(":").map(Number);
+      const timeId = hours * 60 + minutes - (minutes % 5);
+
+      days.forEach(async (day) => {
+        const docSnapBefore = await getDoc(doc(db, day, (timeId - 5).toString()));
+        const docSnapCurr = await getDoc(doc(db, day, timeId.toString()));
+        const docSnapAfter = await getDoc(doc(db, day, (timeId + 5).toString()));
+
+        console.log(...docSnapBefore.data().rides);
+      });
+
+      // if (docSnap.exists()) {
+      //   return docSnap.data();
+      // }
+    });
   };
 
   const extractRidesFromUsers = (users) => {
@@ -187,21 +224,29 @@ const DataProvider = ({ children }) => {
   // };
 
   //BEZ API
-  const getAvailableRidesForCurrentUser = (userData, allRides) => {
-    const rangeDistance = 0.5;
-    const result = new Set();
-    userData.rides.forEach((userRide) => {
-      const { startLocation, endLocation } = userRide;
-      const startLocationRange = getCoordinatesRange(startLocation.lat, startLocation.lon, rangeDistance);
-      const endLocationRange = getCoordinatesRange(endLocation.lat, endLocation.lon, rangeDistance);
+  // const getAvailableRidesForCurrentUser = (userData, allRides) => {
+  //   const rangeDistance = 0.5;
+  //   const result = new Set();
+  //   userData.rides.forEach((userRide) => {
+  //     const { startLocation, endLocation } = userRide;
+  //     const startLocationRange = getCoordinatesRange(startLocation.lat, startLocation.lon, rangeDistance);
+  //     const endLocationRange = getCoordinatesRange(endLocation.lat, endLocation.lon, rangeDistance);
 
-      const filteredRides = allRides.filter((ride) => !userData.matched.includes(ride.uid)).filter((ride) => ride.carDetails && Object.keys(ride.carDetails).length > 0 && isLocationInRange(ride.startLocation.lat, ride.startLocation.lon, startLocationRange) && isLocationInRange(ride.endLocation.lat, ride.endLocation.lon, endLocationRange));
+  //     const filteredRides = allRides
+  //       .filter((ride) => !userData.matched.includes(ride.uid))
+  //       .filter(
+  //         (ride) =>
+  //           ride.carDetails &&
+  //           Object.keys(ride.carDetails).length > 0 &&
+  //           isLocationInRange(ride.startLocation.lat, ride.startLocation.lon, startLocationRange) &&
+  //           isLocationInRange(ride.endLocation.lat, ride.endLocation.lon, endLocationRange)
+  //       );
 
-      filteredRides.forEach(result.add, result);
-    });
+  //     filteredRides.forEach(result.add, result);
+  //   });
 
-    return Array.from(result);
-  };
+  //   return Array.from(result);
+  // };
 
   return (
     <DataContext.Provider

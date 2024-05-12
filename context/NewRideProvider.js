@@ -53,8 +53,6 @@ const NewRideProvider = ({ children }) => {
     const [hours, minutes] = time.split(":").map(Number);
     const timeId = hours * 60 + minutes - (minutes % 5);
 
-    console.log(timeId);
-
     days.forEach(async (day) => {
       console.log(day);
       const dayDocRef = doc(db, day, timeId.toString());
