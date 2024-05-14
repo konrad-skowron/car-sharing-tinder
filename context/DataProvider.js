@@ -34,37 +34,38 @@ const DataProvider = ({ children }) => {
         const qRides = query(ridesRef, where(documentId(), "in", user.rides));
         const queryRidesSnapshot = await getDocs(qRides);
 
-        fetchedUserRides = [];
+        const fetchedUserRides = [];
         queryRidesSnapshot.forEach((doc) => {
-          fetchedUserRides.push(doc.data());
+          fetchedUserRides.push({ id: doc.id, ...doc.data() });
         });
         setUserRides(fetchedUserRides);
 
-        getAvailableRidesForCurrentUser(fetchedUserRides);
+        const ar = await getAvailableRidesForCurrentUser(fetchedUserRides);
+        setAvailableRides(ar);
 
-        const usersRef = collection(db, "users");
-        const q = query(usersRef, where("rides", "!=", "null"));
-        const querySnapshot = await getDocs(q);
-        const users = [];
-        querySnapshot.forEach((doc) => {
-          if (doc.id != user.uid) {
-            users.push({ id: doc.id, ...doc.data() });
-          }
-        });
-        setUsers(users);
+        // const usersRef = collection(db, "users");
+        // const q = query(usersRef, where("rides", "!=", "null"));
+        // const querySnapshot = await getDocs(q);
+        // const users = [];
+        // querySnapshot.forEach((doc) => {
+        //   if (doc.id != user.uid) {
+        //     users.push({ id: doc.id, ...doc.data() });
+        //   }
+        // });
+        // setUsers(users);
 
-        const ar = extractRidesFromUsers(users);
-        setAllRides(ar);
+        // const ar = extractRidesFromUsers(users);
+        // setAllRides(ar);
 
-        //Z API
-        // const aa = await getAvailableRidesForCurrentUser(ar);
+        // //Z API
+        // // const aa = await getAvailableRidesForCurrentUser(ar);
 
-        //BEZ API
-        const aa = getAvailableRidesForCurrentUser(user, ar);
-        setAvailableRides(aa);
+        // //BEZ API
+        // const aa = getAvailableRidesForCurrentUser(user, ar);
+        // setAvailableRides(aa);
 
-        const am = getMatchedRides(ar);
-        setMatchedRides(am);
+        // const am = getMatchedRides(ar);
+        // setMatchedRides(am);
 
         setLoading(false);
       } catch (error) {
@@ -75,27 +76,34 @@ const DataProvider = ({ children }) => {
     }
   };
 
-  const getAvailableRidesForCurrentUser = (ur) => {
-    filteredAvailableRides = new Set();
-    console.log(ur);
-    ur.forEach((ride) => {
-      const { days, time } = ride;
+  const getAvailableRidesForCurrentUser = async (userRides) => {
+    const filteredAvailableRideIds = new Set();
+    let resultRides = [];
+    for (const ride of userRides) {
+      const { days, time, id } = ride;
 
       const [hours, minutes] = time.split(":").map(Number);
       const timeId = hours * 60 + minutes - (minutes % 5);
 
-      days.forEach(async (day) => {
+      for (const day of days) {
         const docSnapBefore = await getDoc(doc(db, day, (timeId - 5).toString()));
         const docSnapCurr = await getDoc(doc(db, day, timeId.toString()));
         const docSnapAfter = await getDoc(doc(db, day, (timeId + 5).toString()));
+        const resultRideIds = [...docSnapBefore.data().rides, ...docSnapCurr.data().rides, ...docSnapAfter.data().rides].filter((rideId) => rideId != id);
+        filteredAvailableRideIds.add(...resultRideIds);
+      }
 
-        console.log(...docSnapBefore.data().rides);
-      });
+      for (const rid of filteredAvailableRideIds) {
+        const docSnapRide = await getDoc(doc(db, "rides", rid));
+        resultRides.push({ id: rid, ...docSnapRide.data() });
+      }
 
       // if (docSnap.exists()) {
       //   return docSnap.data();
       // }
-    });
+    }
+
+    return resultRides;
   };
 
   const extractRidesFromUsers = (users) => {
