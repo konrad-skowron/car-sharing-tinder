@@ -5,7 +5,7 @@ const RideTile = ({ ride }) => {
   return (
     <View style={styles.container}>
       <View style={{ maxWidth: "75%" }}>
-        {ride.firstName && ride.lastName && <Text style={styles.name}>{`${ride.firstName} ${ride.lastName}`}</Text>}
+        {ride.user.firstName && ride.user.lastName && <Text style={styles.name}>{`${ride.user.firstName} ${ride.user.lastName}`}</Text>}
         {Object.keys(ride.carDetails).length && ride.carDetails != null ? <Text style={styles.car}>{`${capitalizeFirstLetter(ride.carDetails.color)} ${ride.carDetails.brand} ${ride.carDetails.model}`}</Text> : ""}
         <Text numberOfLines={1} style={styles.location}>{`${ride.startLocation.address_line1} - ${ride.endLocation.address_line1}`}</Text>
       </View>
@@ -20,7 +20,7 @@ const RideTile = ({ ride }) => {
             // borderColor: COLORS.darkGray,
           }}
           source={{
-            uri: ride.imageUrl ? ride.imageUrl : "https://via.placeholder.com/150",
+            uri: ride.user.imageUrl ? ride.user.imageUrl : "https://via.placeholder.com/150",
           }}
         />
       </View>

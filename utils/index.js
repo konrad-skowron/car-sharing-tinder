@@ -86,4 +86,10 @@ const isLocationinZone = (latStart, lonStart, latEnd, lonEnd, distanceBetween) =
     });
 };
 
-export { fetchLocations, getCoordinatesRange, isLocationInRange, isLocationinZone };
+const timeToTimeId = (time) => {
+  const [hours, minutes] = time.split(":").map(Number);
+  const timeId = hours * 60 + minutes - (minutes % 5);
+  return timeId.toString();
+};
+
+export { timeToTimeId, fetchLocations, getCoordinatesRange, isLocationInRange, isLocationinZone };

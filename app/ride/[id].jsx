@@ -20,7 +20,7 @@ const days = {
 export default function App() {
   const param = useLocalSearchParams();
   const { user, fetchCurrentUser } = useAuthContext();
-  const { getRideByUid, getUserById, addRideToMatched, removeRideFromMatched, deleteRide } = useDataContext();
+  const { getRideByUid, getUserById, addRideToMatched, removeRideFromMatched, deleteRide, loading } = useDataContext();
   const [ride, setRide] = useState({});
   const [matching, setMatching] = useState(false);
 
@@ -46,7 +46,7 @@ export default function App() {
 
   const handleDeleteRide = async () => {
     try {
-      await deleteRide(ride);
+      await deleteRide(param.id);
     } catch (error) {
       console.log("Delete ride error: ", error.message);
     } finally {
@@ -59,7 +59,7 @@ export default function App() {
   };
 
   const isRideBelongToCurrUser = () => {
-    return user.rides.some((ride) => ride.uid === param.id);
+    return user.rides.some((ride) => ride.id === param.id);
   };
 
   return (
@@ -72,119 +72,127 @@ export default function App() {
             headerStyle: { backgroundColor: "#eee" },
           }}
         />
-        <View style={styles.row}>
-          <View>
-            <Text style={styles.nameSurnameText}>
-              {ride.firstName} {ride.lastName}
-            </Text>
-          </View>
-          <View>
-            <Image
-              style={{
-                height: 64,
-                width: 64,
-                borderRadius: 64,
-              }}
-              source={{
-                uri: isRideBelongToCurrUser() ? user.imageUrl : ride.imageUrl,
-              }}
-            />
-          </View>
-        </View>
-        <View>
-          <View style={styles.column}>
+        {Object.keys(ride).length === 0 ? (
+          <Text>Loading...</Text>
+        ) : (
+          <>
             <View style={styles.row}>
-              <View style={styles.center}>
-                <Text style={styles.foontEighteen}>Start location</Text>
+              <View>
+                <Text style={styles.nameSurnameText}>
+                  {ride.user.firstName} {ride.user.lastName}
+                </Text>
               </View>
-              {ride.startLocation && (
-                <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>{ride.startLocation.address_line1}</Text>
-                </View>
-              )}
+              <View>
+                <Image
+                  style={{
+                    height: 64,
+                    width: 64,
+                    borderRadius: 64,
+                  }}
+                  source={{
+                    uri: ride.user.imageUrl,
+                  }}
+                />
+              </View>
             </View>
-            <View style={styles.row}>
-              <View style={styles.center}>
-                <Text style={styles.foontEighteen}>Destination</Text>
-              </View>
-              {ride.endLocation && (
-                <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>{ride.endLocation.address_line1}</Text>
-                </View>
-              )}
-            </View>
-            <View style={styles.row}>
-              <View style={styles.center}>
-                <Text style={styles.foontEighteen}>Days</Text>
-              </View>
-              {ride.days && (
-                <View style={styles.days}>
-                  {Object.entries(days).map(([k, v]) => (
-                    <View key={k} style={ride.days.includes(k) ? styles.buttonDayChoosen : styles.buttonDayUnChoosen}>
-                      <Text style={ride.days.includes(k) ? styles.buttonDayTextUnChoosen : styles.buttonDayTextChoosen}>{v}</Text>
+
+            <View>
+              <View style={styles.column}>
+                <View style={styles.row}>
+                  <View style={styles.center}>
+                    <Text style={styles.foontEighteen}>Start location</Text>
+                  </View>
+                  {ride.startLocation && (
+                    <View style={styles.center}>
+                      <Text style={styles.fontSixteen}>{ride.startLocation.address_line1}</Text>
                     </View>
-                  ))}
+                  )}
+                </View>
+                <View style={styles.row}>
+                  <View style={styles.center}>
+                    <Text style={styles.foontEighteen}>Destination</Text>
+                  </View>
+                  {ride.endLocation && (
+                    <View style={styles.center}>
+                      <Text style={styles.fontSixteen}>{ride.endLocation.address_line1}</Text>
+                    </View>
+                  )}
+                </View>
+                <View style={styles.row}>
+                  <View style={styles.center}>
+                    <Text style={styles.foontEighteen}>Days</Text>
+                  </View>
+                  {ride.days && (
+                    <View style={styles.days}>
+                      {Object.entries(days).map(([k, v]) => (
+                        <View key={k} style={ride.days.includes(k) ? styles.buttonDayChoosen : styles.buttonDayUnChoosen}>
+                          <Text style={ride.days.includes(k) ? styles.buttonDayTextUnChoosen : styles.buttonDayTextChoosen}>{v}</Text>
+                        </View>
+                      ))}
+                    </View>
+                  )}
+                </View>
+                <View style={styles.row}>
+                  <View style={styles.center}>
+                    <Text style={styles.foontEighteen}>Hour</Text>
+                  </View>
+                  {ride.time && (
+                    <View style={styles.center}>
+                      <Text style={styles.fontSixteen}>{ride.time}</Text>
+                    </View>
+                  )}
+                </View>
+              </View>
+              {ride.carDetails && Object.keys(ride.carDetails).length !== 0 && (
+                <View style={styles.column}>
+                  <Text style={styles.headerForSection}>Car details</Text>
+                  <View style={styles.row}>
+                    <View style={styles.center}>
+                      <Text style={styles.foontEighteen}>Brand</Text>
+                    </View>
+                    <View style={styles.center}>
+                      <Text style={styles.fontSixteen}>{ride.carDetails.brand}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.row}>
+                    <View style={styles.center}>
+                      <Text style={styles.foontEighteen}>Model</Text>
+                    </View>
+                    <View style={styles.center}>
+                      <Text style={styles.fontSixteen}>{ride.carDetails.model}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.row}>
+                    <View style={styles.center}>
+                      <Text style={styles.foontEighteen}>Color</Text>
+                    </View>
+                    <View style={styles.center}>
+                      <Text style={styles.fontSixteen}>{ride.carDetails.color}</Text>
+                    </View>
+                  </View>
                 </View>
               )}
-            </View>
-            <View style={styles.row}>
-              <View style={styles.center}>
-                <Text style={styles.foontEighteen}>Hour</Text>
-              </View>
-              {ride.time && (
-                <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>{ride.time}</Text>
+              <View style={styles.column}>
+                <View>
+                  <Text style={styles.headerForSection}>About me</Text>
                 </View>
-              )}
-            </View>
-          </View>
-          {ride.carDetails && Object.keys(ride.carDetails).length !== 0 && (
-            <View style={styles.column}>
-              <Text style={styles.headerForSection}>Car details</Text>
-              <View style={styles.row}>
-                <View style={styles.center}>
-                  <Text style={styles.foontEighteen}>Brand</Text>
-                </View>
-                <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>{ride.carDetails.brand}</Text>
+                <View>
+                  <Text style={styles.fontSixteen}>{ride.user.aboutMe}</Text>
                 </View>
               </View>
-              <View style={styles.row}>
-                <View style={styles.center}>
-                  <Text style={styles.foontEighteen}>Model</Text>
-                </View>
-                <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>{ride.carDetails.model}</Text>
-                </View>
+              {/* {isRideBelongToCurrUser() && ride.passengers && (
+              <View>
+                <Text style={styles.headerForSection}>Passengers</Text>
+                {ride.passengers.map((passenger, index) => {
+                  const u = getUserById(passenger);
+                  return <Text key={passenger} style={styles.fontSixteen}>{`${index + 1}. ${u.firstName} ${u.lastName}`}</Text>;
+                })}
               </View>
-              <View style={styles.row}>
-                <View style={styles.center}>
-                  <Text style={styles.foontEighteen}>Color</Text>
-                </View>
-                <View style={styles.center}>
-                  <Text style={styles.fontSixteen}>{ride.carDetails.color}</Text>
-                </View>
-              </View>
+            )} */}
             </View>
-          )}
-          <View style={styles.column}>
-            <View>
-              <Text style={styles.headerForSection}>About me</Text>
-            </View>
-            <View>
-              <Text style={styles.fontSixteen}>{isRideBelongToCurrUser() ? user.aboutMe : ride.aboutMe}</Text>
-            </View>
-          </View>
-          {isRideBelongToCurrUser() && ride.passengers && (
-            <View>
-              <Text style={styles.headerForSection}>Passengers</Text>
-              {ride.passengers.map((passenger, index) => {
-                const u = getUserById(passenger);
-                return <Text key={passenger} style={styles.fontSixteen}>{`${index + 1}. ${u.firstName} ${u.lastName}`}</Text>;
-              })}
-            </View>
-          )}
-        </View>
+          </>
+        )}
+
         {user && isRideBelongToCurrUser() ? (
           <MainButton href="user/matched" content="Delete" onPress={handleDeleteRide} />
         ) : (

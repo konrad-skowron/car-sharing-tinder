@@ -11,7 +11,7 @@ import { useDataContext } from "../../context/DataProvider";
 const matched = () => {
   const router = useRouter();
   const { user } = useAuthContext();
-  const { loading, matchedRides } = useDataContext();
+  const { loading, userRides, matchedRides } = useDataContext();
 
   return (
     <View>
@@ -37,7 +37,7 @@ const matched = () => {
           <Text>Loading...</Text>
         ) : matchedRides.length ? (
           matchedRides.map((ride, index) => (
-            <Link key={index} href={`ride/${ride.uid}`} asChild>
+            <Link key={index} href={`ride/${ride.id}`} asChild>
               <TouchableOpacity>
                 <RideTile ride={ride} />
               </TouchableOpacity>
@@ -58,11 +58,12 @@ const matched = () => {
           Own:
         </Text>
         <View style={styles.tileContainer}>
-          {!user.rides.length ||
-            user.rides.map((ride, index) => (
-              <Link key={index} href={`ride/${ride.uid}`} asChild>
+          {!userRides.length ||
+            userRides.map((ride, index) => (
+              <Link key={index} href={`ride/${ride.id}`} asChild>
                 <TouchableOpacity>
-                  <RideTile ride={{ ...ride, imageUrl: user.imageUrl, aboutMe: user.aboutMe }} />
+                  {/* <RideTile ride={{ ...ride, imageUrl: user.imageUrl, aboutMe: user.aboutMe }} /> */}
+                  <RideTile ride={ride} />
                 </TouchableOpacity>
               </Link>
             ))}

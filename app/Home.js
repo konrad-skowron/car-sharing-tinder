@@ -77,7 +77,7 @@ const Home = () => {
           <View style={styles.tileContainer}>
             {availableRides.length ? (
               availableRides.map((ride, index) => (
-                <Link key={index} href={`ride/${ride.uid}`} asChild>
+                <Link key={index} href={`ride/${ride.id}`} asChild>
                   <TouchableOpacity>
                     <RideTile ride={ride} />
                   </TouchableOpacity>

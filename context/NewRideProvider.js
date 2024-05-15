@@ -30,12 +30,15 @@ const NewRideProvider = ({ children }) => {
       }
 
       const newOffer = {
+        userId: user.uid,
         startLocation,
         endLocation,
         days,
         time,
         carDetails,
       };
+
+      newOffer = Object.keys(carDetails).length !== 0 ? { ...newOffer, passengers: [] } : newOffer;
 
       const res = await addDoc(collection(db, "rides"), newOffer);
       await updateDoc(userDocRef, {
@@ -60,10 +63,6 @@ const NewRideProvider = ({ children }) => {
       await updateDoc(dayDocRef, {
         rides: arrayUnion(rideId),
       });
-
-      // for (let index = 0; index <= 1435; index += 5) {
-      //   await setDoc(doc(db, day, index.toString()), { rides: [] });
-      // }
     });
   };
 

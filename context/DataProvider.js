@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import app from "../firebaseConfig";
-import { getFirestore, collection, query, where, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove, documentId } from "firebase/firestore";
+import { getFirestore, collection, query, where, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove, deleteDoc, documentId } from "firebase/firestore";
 import { getCoordinatesRange, isLocationInRange, isLocationinZone } from "../utils";
 import { useAuthContext } from "./AuthProvider";
 import { getAuth } from "firebase/auth";
@@ -10,9 +10,7 @@ export const useDataContext = () => useContext(DataContext);
 
 const DataProvider = ({ children }) => {
   const db = getFirestore(app);
-  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [allRides, setAllRides] = useState([]);
   const [availableRides, setAvailableRides] = useState([]);
   const [matchedRides, setMatchedRides] = useState([]);
   const [userRides, setUserRides] = useState([]);
@@ -36,36 +34,15 @@ const DataProvider = ({ children }) => {
 
         const fetchedUserRides = [];
         queryRidesSnapshot.forEach((doc) => {
-          fetchedUserRides.push({ id: doc.id, ...doc.data() });
+          fetchedUserRides.push({ id: doc.id, ...doc.data(), user: user });
         });
         setUserRides(fetchedUserRides);
 
         const ar = await getAvailableRidesForCurrentUser(fetchedUserRides);
         setAvailableRides(ar);
 
-        // const usersRef = collection(db, "users");
-        // const q = query(usersRef, where("rides", "!=", "null"));
-        // const querySnapshot = await getDocs(q);
-        // const users = [];
-        // querySnapshot.forEach((doc) => {
-        //   if (doc.id != user.uid) {
-        //     users.push({ id: doc.id, ...doc.data() });
-        //   }
-        // });
-        // setUsers(users);
-
-        // const ar = extractRidesFromUsers(users);
-        // setAllRides(ar);
-
-        // //Z API
-        // // const aa = await getAvailableRidesForCurrentUser(ar);
-
-        // //BEZ API
-        // const aa = getAvailableRidesForCurrentUser(user, ar);
-        // setAvailableRides(aa);
-
-        // const am = getMatchedRides(ar);
-        // setMatchedRides(am);
+        const mr = await getMatchedRides(user.matched);
+        setMatchedRides(mr);
 
         setLoading(false);
       } catch (error) {
@@ -89,117 +66,77 @@ const DataProvider = ({ children }) => {
         const docSnapBefore = await getDoc(doc(db, day, (timeId - 5).toString()));
         const docSnapCurr = await getDoc(doc(db, day, timeId.toString()));
         const docSnapAfter = await getDoc(doc(db, day, (timeId + 5).toString()));
-        const resultRideIds = [...docSnapBefore.data().rides, ...docSnapCurr.data().rides, ...docSnapAfter.data().rides].filter((rideId) => rideId != id);
-        filteredAvailableRideIds.add(...resultRideIds);
+        let resultRideIds = [...docSnapBefore.data().rides, ...docSnapCurr.data().rides, ...docSnapAfter.data().rides].filter((rideId) => rideId != id);
+        resultRideIds = resultRideIds.filter((rideId) => !user.matched.includes(rideId));
+        if (resultRideIds.length > 0) {
+          filteredAvailableRideIds.add(...resultRideIds);
+        }
       }
 
       for (const rid of filteredAvailableRideIds) {
         const docSnapRide = await getDoc(doc(db, "rides", rid));
-        resultRides.push({ id: rid, ...docSnapRide.data() });
+        const ride = docSnapRide.data();
+        const docSnapUser = await getDoc(doc(db, "users", ride.userId));
+        resultRides.push({ id: rid, ...ride, user: docSnapUser.data() });
       }
-
-      // if (docSnap.exists()) {
-      //   return docSnap.data();
-      // }
     }
 
     return resultRides;
   };
 
-  const extractRidesFromUsers = (users) => {
-    const result = [];
-    users.forEach((user, index) => {
-      const { id, firstName, lastName, imageUrl, aboutMe } = user;
-      user.rides
-        .filter((ride) => ride.uid)
-        .forEach((ride) => {
-          result.push({ ...ride, firstName, lastName, imageUrl, aboutMe, userId: id });
-        });
-    });
-
-    return result;
-  };
-
-  const addRideToMatched = async (uid) => {
+  const addRideToMatched = async (rideId) => {
     try {
-      const passengerUserDocRef = doc(db, "users", user.uid);
-      const ownerUserDocRef = doc(db, "users", getRideByUid(uid).userId);
-      const passengerUserSnapshot = await getDoc(passengerUserDocRef);
-      const ownerUserSnapshot = await getDoc(ownerUserDocRef);
-
-      const rides = ownerUserSnapshot.data().rides;
-      const index = rides.findIndex((ride) => ride.uid === uid);
-      const rideToReplace = rides[index];
-      if (!rideToReplace.passengers) {
-        rideToReplace.passengers = new Array();
-      }
-      rideToReplace.passengers.push(user.uid);
-      rides[index] = rideToReplace;
-
-      if (!passengerUserSnapshot.exists() || !ownerUserSnapshot.exists()) {
-        throw new Error("User does not exist in the database");
-      }
-      await updateDoc(passengerUserDocRef, {
-        matched: arrayUnion(uid),
+      await updateDoc(doc(db, "rides", rideId), {
+        passengers: arrayUnion(user.uid),
       });
-      await updateDoc(ownerUserDocRef, {
-        rides: rides,
+
+      await updateDoc(doc(db, "users", user.uid), {
+        matched: arrayUnion(rideId),
       });
     } catch (error) {
       throw new Error(error.message);
     }
   };
 
-  const removeRideFromMatched = async (uid) => {
+  const removeRideFromMatched = async (rideId) => {
     try {
-      const passengerUserDocRef = doc(db, "users", user.uid);
-      const ownerUserDocRef = doc(db, "users", getRideByUid(uid).userId);
-      const passengerUserSnapshot = await getDoc(passengerUserDocRef);
-      const ownerUserSnapshot = await getDoc(ownerUserDocRef);
-
-      const rides = ownerUserSnapshot.data().rides;
-      const index = rides.findIndex((ride) => ride.uid === uid);
-      const rideToReplace = rides[index];
-      rideToReplace.passengers = rideToReplace.passengers.filter((passenger) => passenger !== user.uid);
-      rides[index] = rideToReplace;
-
-      if (!passengerUserSnapshot.exists() || !ownerUserSnapshot.exists()) {
-        throw new Error("User does not exist in the database");
-      }
-      await updateDoc(passengerUserDocRef, {
-        matched: arrayRemove(uid),
+      await updateDoc(doc(db, "rides", rideId), {
+        passengers: arrayRemove(user.uid),
       });
 
-      await updateDoc(ownerUserDocRef, {
-        rides: rides,
+      await updateDoc(doc(db, "users", user.uid), {
+        matched: arrayRemove(rideId),
       });
     } catch (error) {
       throw new Error(error.message);
     }
   };
 
-  const deleteRide = async (rideToDelete) => {
+  const deleteRide = async (rideId) => {
     try {
-      const userDocRef = doc(db, "users", user.uid);
-      const userSnapshot = await getDoc(userDocRef);
-      if (!userSnapshot.exists()) {
-        throw new Error("User does not exist in the database");
-      }
-      await updateDoc(userDocRef, {
-        rides: arrayRemove(rideToDelete),
+      await deleteDoc(doc(db, "rides", rideId));
+      await updateDoc(doc(db, "users", user.uid), {
+        rides: arrayRemove(rideId),
       });
     } catch (error) {
       throw new Error(error.message);
     }
   };
 
-  const getMatchedRides = (allRides) => {
-    return allRides.filter((ride) => user.matched.includes(ride.uid));
+  const getMatchedRides = async (matchedRideIds) => {
+    const resultRides = [];
+    for (const matchedRideId of matchedRideIds) {
+      const docSnapRide = await getDoc(doc(db, "rides", matchedRideId));
+      const ride = docSnapRide.data();
+      const docSnapUser = await getDoc(doc(db, "users", ride.userId));
+      resultRides.push({ id: matchedRideId, ...ride, user: docSnapUser.data() });
+    }
+
+    return resultRides;
   };
 
-  const getRideByUid = (uid) => {
-    const ar = [...allRides, ...user.rides];
-    return ar.filter((ride) => ride.uid == uid)[0];
+  const getRideByUid = (rideId) => {
+    return [...userRides, ...availableRides, ...matchedRides].filter((ride) => ride.id == rideId)[0];
   };
 
   const getUserById = (id) => {
@@ -259,7 +196,6 @@ const DataProvider = ({ children }) => {
   return (
     <DataContext.Provider
       value={{
-        allRides,
         availableRides,
         reloadRides,
         getRideByUid,
@@ -270,6 +206,7 @@ const DataProvider = ({ children }) => {
         addRideToMatched,
         removeRideFromMatched,
         deleteRide,
+        userRides,
       }}
     >
       {children}
