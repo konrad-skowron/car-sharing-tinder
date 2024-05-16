@@ -6,7 +6,7 @@ import { Stack, router, useLocalSearchParams } from "expo-router";
 import { COLORS, FONTS } from "../../constants";
 import { useDataContext } from "../../context/DataProvider";
 import { useAuthContext } from "../../context/AuthProvider";
-
+import MapScreen from '../../utils/map';
 const days = {
   Monday: "M",
   Tuesday: "Tu",
@@ -76,7 +76,7 @@ export default function App() {
           <Text>Loading...</Text>
         ) : (
           <>
-            <View style={styles.row}>
+            <View style={styles.row}>           
               <View>
                 <Text style={styles.nameSurnameText}>
                   {ride.user.firstName} {ride.user.lastName}
@@ -190,6 +190,7 @@ export default function App() {
               </View>
             )} */}
             </View>
+            <MapScreen  x1={ride.startLocation.lat} y1={ride.startLocation.lon} x2={ride.endLocation.lat} y2={ride.endLocation.lon}/>
           </>
         )}
 
@@ -312,3 +313,4 @@ const styles = StyleSheet.create({
     color: "#76ABAE",
   },
 });
+
