@@ -15,7 +15,7 @@
   - [X] Dodać nowe pole dla przejadów z samochodem, aby właściciel przejazdu wiedział o pasażerach. Nazwa pola `passengers`, typ pola array. Tablica będzie przechowywała uid użytkowników, którzy zmatchowali ten przejazd
   - [X] Dodać logikę związaną z dodawaniem i usuwaniem uid użytkownika do tej tablicy
 - [ ] Przenieść ponownie dodawanie przejazdu ze screena `success` na `carDetail`. Dodanie przejazdu działo się zanim ustawił się obiekt carDetails, przez co nie dało się ustawić samochodu dla przejazdu
-- [ ] Dodać mapę z wyznaczoną trasą do screena przejazdu (`[id].jsx`)
+- [X\/X ] Dodać mapę z wyznaczoną trasą do screena przejazdu (`[id].jsx`) - dodano bez trasy, tylko markery, dla tego co teraz jest w bazie działa ale punkty się nakładają więc jest tylko jeden marker (trasa z c 15 do c 15)
 - [ ] Zmienić bazę na relacyjną :skull:
      
 
