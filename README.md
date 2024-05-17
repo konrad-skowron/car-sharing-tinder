@@ -1,7 +1,7 @@
 ## :construction_worker: Todo
 - [X] Usunąć car details z `user/about` screen 
 - [X] Usunąć/Pomyśleć coś z postcode zwracanym z API (nie każda lokalizacja posiada postcode co powoduje błąd przy zapisie do bazy danych)
-- [X] Poprawić screen z wybieraniem i zapisywaniem godziny. Nie wyświetla zera gdy liczba minut jest jednocyfrowa. Powinno byc np. 23:05 a jest 23:5
+- [ ] Znowu poprawić screen z wybieraniem i zapisywaniem godziny. Nie wyświetla zera gdy liczba minut jest jednocyfrowa. Powinno byc np. 23:05 a jest 23:5
 - [ ] Pomyśleć coś z wyświetlaniem adresów bo poki co wyświetlamy address_line1. Czasami ta nazwa nic nie mówi a czasami jest tak długa, że się nie mieści
 - [X] Dodać screen edycji usera - żeby mógł dodać opis about me i zmienić nazwę swoją nazwę, numer, zdjęcie
 - [X] Rozszerzyć screen edycji usera o przesyłanie zdjęcia 
@@ -15,8 +15,8 @@
   - [X] Dodać nowe pole dla przejadów z samochodem, aby właściciel przejazdu wiedział o pasażerach. Nazwa pola `passengers`, typ pola array. Tablica będzie przechowywała uid użytkowników, którzy zmatchowali ten przejazd
   - [X] Dodać logikę związaną z dodawaniem i usuwaniem uid użytkownika do tej tablicy
 - [ ] Przenieść ponownie dodawanie przejazdu ze screena `success` na `carDetail`. Dodanie przejazdu działo się zanim ustawił się obiekt carDetails, przez co nie dało się ustawić samochodu dla przejazdu
-- [X\/X ] Dodać mapę z wyznaczoną trasą do screena przejazdu (`[id].jsx`) - dodano bez trasy, tylko markery, dla tego co teraz jest w bazie działa ale punkty się nakładają więc jest tylko jeden marker (trasa z c 15 do c 15)
-- [ ] Zmienić bazę na relacyjną :skull:
+- [X] Dodać mapę z wyznaczoną trasą do screena przejazdu (`[id].jsx`)
+- [ ] Dobieranie dostępnych przejazdów dla użytkownika na podstawie lokalizacji (teraz mamy tylko dni i godziny)
      
 
 # Expo Router Example
