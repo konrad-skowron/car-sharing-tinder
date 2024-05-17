@@ -40,7 +40,6 @@ const DataProvider = ({ children }) => {
 
         const ar = await getAvailableRidesForCurrentUser(fetchedUserRides);
         setAvailableRides(ar);
-
         const mr = await getMatchedRides(user.matched);
         setMatchedRides(mr);
 
@@ -54,7 +53,7 @@ const DataProvider = ({ children }) => {
   };
 
   const getAvailableRidesForCurrentUser = async (userRides) => {
-    const filteredAvailableRideIds = new Set();
+    let filteredRideIds = [];
     let resultRides = [];
     for (const ride of userRides) {
       const { days, time, id } = ride;
@@ -67,18 +66,19 @@ const DataProvider = ({ children }) => {
         const docSnapCurr = await getDoc(doc(db, day, timeId.toString()));
         const docSnapAfter = await getDoc(doc(db, day, (timeId + 5).toString()));
         let resultRideIds = [...docSnapBefore.data().rides, ...docSnapCurr.data().rides, ...docSnapAfter.data().rides].filter((rideId) => rideId != id);
-        resultRideIds = resultRideIds.filter((rideId) => !user.matched.includes(rideId));
+        resultRideIds = resultRideIds.filter((rideId) => !user.matched.includes(rideId) && !user.rides.includes(rideId));
+
         if (resultRideIds.length > 0) {
-          filteredAvailableRideIds.add(...resultRideIds);
+          filteredRideIds = Array.from(new Set(resultRideIds));
         }
       }
+    }
 
-      for (const rid of filteredAvailableRideIds) {
-        const docSnapRide = await getDoc(doc(db, "rides", rid));
-        const ride = docSnapRide.data();
-        const docSnapUser = await getDoc(doc(db, "users", ride.userId));
-        resultRides.push({ id: rid, ...ride, user: docSnapUser.data() });
-      }
+    for (const rid of filteredRideIds) {
+      const docSnapRide = await getDoc(doc(db, "rides", rid));
+      const ride = docSnapRide.data();
+      const docSnapUser = await getDoc(doc(db, "users", ride.userId));
+      resultRides.push({ id: rid, ...ride, user: docSnapUser.data() });
     }
 
     return resultRides;

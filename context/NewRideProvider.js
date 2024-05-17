@@ -29,7 +29,7 @@ const NewRideProvider = ({ children }) => {
         throw new Error("User does not exist in the database");
       }
 
-      const newOffer = {
+      let newOffer = {
         userId: user.uid,
         startLocation,
         endLocation,
@@ -57,7 +57,6 @@ const NewRideProvider = ({ children }) => {
     const timeId = hours * 60 + minutes - (minutes % 5);
 
     days.forEach(async (day) => {
-      console.log(day);
       const dayDocRef = doc(db, day, timeId.toString());
 
       await updateDoc(dayDocRef, {
