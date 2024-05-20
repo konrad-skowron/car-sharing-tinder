@@ -14,7 +14,7 @@
   - [X] Dodać logikę związaną z dodawaniem i usuwaniem uid przejazdu do tej tablicy
   - [X] Dodać nowe pole dla przejadów z samochodem, aby właściciel przejazdu wiedział o pasażerach. Nazwa pola `passengers`, typ pola array. Tablica będzie przechowywała uid użytkowników, którzy zmatchowali ten przejazd
   - [X] Dodać logikę związaną z dodawaniem i usuwaniem uid użytkownika do tej tablicy
-- [ ] Przenieść ponownie dodawanie przejazdu ze screena `success` na `carDetail`. Dodanie przejazdu działo się zanim ustawił się obiekt carDetails, przez co nie dało się ustawić samochodu dla przejazdu
+- [x] Przenieść ponownie dodawanie przejazdu ze screena `success` na `carDetail`. Dodanie przejazdu działo się zanim ustawił się obiekt carDetails, przez co nie dało się ustawić samochodu dla przejazdu
 - [X] Dodać mapę z wyznaczoną trasą do screena przejazdu (`[id].jsx`)
 - [ ] Dobieranie dostępnych przejazdów dla użytkownika na podstawie lokalizacji (teraz mamy tylko dni i godziny)
      
