@@ -28,6 +28,10 @@ const DataProvider = ({ children }) => {
         setLoading(true);
         const db = getFirestore(app);
 
+        if(user.rides.length === 0){
+          return
+        }
+
         const ridesRef = collection(db, "rides");
         const qRides = query(ridesRef, where(documentId(), "in", user.rides));
         const queryRidesSnapshot = await getDocs(qRides);
@@ -123,11 +127,11 @@ const DataProvider = ({ children }) => {
         rides: arrayRemove(rideId),
       });
 
-      rideToDelete.days.forEach(async (day) => {
-        await updateDoc(doc(db, day, timeId), {
+      for (const day of rideToDelete.days) {
+        await updateDoc(doc(db, day, timeId.toString()), {
           rides: arrayRemove(rideId),
         });
-      });
+      }
     } catch (error) {
       throw new Error(error.message);
     }
