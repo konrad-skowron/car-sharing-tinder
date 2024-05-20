@@ -1,25 +1,23 @@
+import React from 'react';
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import MainButton from "../../../components/MainButton";
 import { COLORS, FONTS } from "../../../constants";
-import { AntDesign } from "@expo/vector-icons";
 import { Stack } from "expo-router";
 import { useNewRideContext } from "../../../context/NewRideProvider";
 
-const Failed = () => {
+const LoadingStatus = () => {
   const { addOffer } = useNewRideContext();
 
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
-      <Text style={styles.title}>Something went wrong :c</Text>
+      <Text style={styles.title}>Waiting...</Text>
       <View style={styles.outer}>
         <View style={styles.inner}>
-          <Ionicons name="checkmark-outline" size={128} color={COLORS.white} />
+        <ActivityIndicator size="large" color={COLORS.white} style={styles.loader} />
         </View>
       </View>
-      <MainButton href="../../Home" content="Home"/>
     </View>
   );
 };
@@ -64,6 +62,9 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.secondaryBold,
     textAlign: "center",
   },
+  loader: {
+    transform: [{ scale: 4 }],
+  },
 });
 
-export default Failed;
+export default LoadingStatus;

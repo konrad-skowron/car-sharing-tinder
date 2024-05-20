@@ -4,13 +4,21 @@ import { Link } from "expo-router";
 import { FONTS } from "../constants";
 
 const MainButton = ({ href, content, onPress, disabled }) => {
+  const buttonContent = (
+    <TouchableOpacity style={styles.button} onPress={onPress} disabled={disabled}>
+      <Text style={styles.buttonText}>{content}</Text>
+    </TouchableOpacity>
+  );
+
   return (
     <View style={styles.buttonEnv}>
-      <Link href={href} asChild>
-        <TouchableOpacity style={styles.button} onPress={onPress} disabled={disabled}>
-          <Text style={styles.buttonText}>{content}</Text>
-        </TouchableOpacity>
-      </Link>
+      {href ? (
+        <Link href={href} asChild>
+          {buttonContent}
+        </Link>
+      ) : (
+        buttonContent
+      )}
     </View>
   );
 };

@@ -101,7 +101,7 @@ const DataProvider = ({ children }) => {
         matched: arrayUnion(rideId),
       });
     } catch (error) {
-      throw new Error("AddRideToMatched: ", error.message);
+      throw new Error(error.message);
     }
   };
 
@@ -130,24 +130,26 @@ const DataProvider = ({ children }) => {
         rides: arrayRemove(rideId),
       });
 
-      for (const userId of rideToDelete.passengers) {
-        const docSnapUser = await getDoc(doc(db, "users", userId));
-        const userData = docSnapUser.data();
-  
-        if (userData?.matched?.includes(rideId)) {
-          await updateDoc(doc(db, "users", userId), {
-            matched: arrayRemove(rideId)
-          });
-        }
-      }
-
       for (const day of rideToDelete.days) {
         await updateDoc(doc(db, day, timeId.toString()), {
           rides: arrayRemove(rideId),
         });
       }
+
+      if(rideToDelete.passengers){
+        for (const userId of rideToDelete.passengers) {
+          const docSnapUser = await getDoc(doc(db, "users", userId));
+          const userData = docSnapUser.data();
+    
+          if (userData?.matched?.includes(rideId)) {
+            await updateDoc(doc(db, "users", userId), {
+              matched: arrayRemove(rideId)
+            });
+          }
+        }
+      }
     } catch (error) {
-      throw new Error("DeleteRide: ", error.message);
+      throw new Error(error.message);
     }
   };
 

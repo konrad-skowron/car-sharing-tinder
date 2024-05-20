@@ -22,6 +22,14 @@ export default function App() {
   const handleSaveCarDetails = async () => {
     const detailsToSave = haveCar ? details : {};
     setCarDetails(detailsToSave);
+
+    try {
+      await addOffer();
+      router.navigate("./Success");
+    } catch (error) {
+      console.error("addOffer: ", error.message);
+      router.navigate("./Failed");
+    }
   };
 
   return (
@@ -122,7 +130,7 @@ export default function App() {
           )}
         </View>
       </View>
-      <MainButton href="./Success" content="Finish" onPress={handleSaveCarDetails} disabled={Object.values(details).some((value) => value === "") && haveCar} />
+      <MainButton content="Finish" onPress={handleSaveCarDetails} disabled={Object.values(details).some((value) => value === "") && haveCar} />
 
       <StatusBar style="auto" />
     </View>
