@@ -114,9 +114,19 @@ const DataProvider = ({ children }) => {
 
   const deleteRide = async (rideId) => {
     try {
+      const rideToDelete = getRideByUid(rideId);
+      const [hours, minutes] = rideToDelete.time.split(":").map(Number);
+      const timeId = hours * 60 + minutes - (minutes % 5);
+
       await deleteDoc(doc(db, "rides", rideId));
       await updateDoc(doc(db, "users", user.uid), {
         rides: arrayRemove(rideId),
+      });
+
+      rideToDelete.days.forEach(async (day) => {
+        await updateDoc(doc(db, day, timeId), {
+          rides: arrayRemove(rideId),
+        });
       });
     } catch (error) {
       throw new Error(error.message);

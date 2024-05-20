@@ -60,7 +60,7 @@ export default function App() {
   };
 
   const isRideBelongToCurrUser = () => {
-    return user.rides.some((ride) => ride.id === param.id);
+    return user.rides.some((rideId) => rideId === param.id);
   };
 
   return (
@@ -272,7 +272,8 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     rowGap: 25,
-    padding: 32,
+    paddingHorizontal: 32,
+    paddingBottom: 32,
     backgroundColor: "#eee",
   },
   textEnv: {
