@@ -11,7 +11,11 @@ import { useDataContext } from "../../context/DataProvider";
 const matched = () => {
   const router = useRouter();
   const { user } = useAuthContext();
-  const { loading, userRides, matchedRides } = useDataContext();
+  const { loading, reloadRides, userRides, matchedRides } = useDataContext();
+
+  useEffect(() => {
+    reloadRides();
+  }, []);
 
   return (
     <View>
@@ -57,17 +61,24 @@ const matched = () => {
         >
           Own:
         </Text>
-        <View style={styles.tileContainer}>
-          {!userRides.length ||
-            userRides.map((ride, index) => (
-              <Link key={index} href={`ride/${ride.id}`} asChild>
-                <TouchableOpacity>
-                  {/* <RideTile ride={{ ...ride, imageUrl: user.imageUrl, aboutMe: user.aboutMe }} /> */}
-                  <RideTile ride={ride} />
-                </TouchableOpacity>
-              </Link>
-            ))}
-        </View>
+        {loading ? (
+          <Text>Loading...</Text>
+        ) : (
+          <View style={styles.tileContainer}>
+            {userRides.length ? (
+              userRides.map((ride, index) => (
+                <Link key={index} href={`ride/${ride.id}`} asChild>
+                  <TouchableOpacity>
+                    {/* <RideTile ride={{ ...ride, imageUrl: user.imageUrl, aboutMe: user.aboutMe }} /> */}
+                    <RideTile ride={ride} />
+                  </TouchableOpacity>
+                </Link>
+              ))
+            ) : (
+              <Text>You don't have your own rides :(</Text>
+            )}
+          </View>
+        )}
         <Text style={{ height: 24 }}></Text>
       </ScrollView>
     </View>

@@ -47,7 +47,7 @@ const NewRideProvider = ({ children }) => {
 
       insertRideId(res.id, newOffer.days, newOffer.time);
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error("InsertRide: ", error.message);
     }
   };
 

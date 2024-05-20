@@ -31,7 +31,7 @@ const MapScreen = ({ x1, y1, x2, y2 }) => {
         }));
         setRouteCoordinates(decodedCoordinates);
       } catch (error) {
-        console.error(error);
+        console.error("MapScreen: ", error);
       }
     };
 

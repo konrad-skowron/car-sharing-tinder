@@ -99,7 +99,7 @@ const edit = () => {
         imageUrl: imageUrl,
       });
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error("ChangeData: ", error.message);
     } finally {
       await fetchCurrentUser();
     }

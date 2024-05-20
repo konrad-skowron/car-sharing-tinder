@@ -49,7 +49,7 @@ const DataProvider = ({ children }) => {
 
         setLoading(false);
       } catch (error) {
-        console.error(error.message);
+        console.error("ReloadRides: ", error.message);
       } finally {
         setLoading(false);
       }
@@ -81,8 +81,11 @@ const DataProvider = ({ children }) => {
     for (const rid of filteredRideIds) {
       const docSnapRide = await getDoc(doc(db, "rides", rid));
       const ride = docSnapRide.data();
-      const docSnapUser = await getDoc(doc(db, "users", ride.userId));
-      resultRides.push({ id: rid, ...ride, user: docSnapUser.data() });
+
+      if(ride){
+        const docSnapUser = await getDoc(doc(db, "users", ride.userId));
+        resultRides.push({ id: rid, ...ride, user: docSnapUser.data() });
+      }
     }
 
     return resultRides;
@@ -98,7 +101,7 @@ const DataProvider = ({ children }) => {
         matched: arrayUnion(rideId),
       });
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error("AddRideToMatched: ", error.message);
     }
   };
 
@@ -112,7 +115,7 @@ const DataProvider = ({ children }) => {
         matched: arrayRemove(rideId),
       });
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error("RemoveRideFromMatched: ", error.message);
     }
   };
 
@@ -133,7 +136,7 @@ const DataProvider = ({ children }) => {
         });
       }
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error("DeleteRide: ", error.message);
     }
   };
 
@@ -142,10 +145,12 @@ const DataProvider = ({ children }) => {
     for (const matchedRideId of matchedRideIds) {
       const docSnapRide = await getDoc(doc(db, "rides", matchedRideId));
       const ride = docSnapRide.data();
-      const docSnapUser = await getDoc(doc(db, "users", ride.userId));
-      resultRides.push({ id: matchedRideId, ...ride, user: docSnapUser.data() });
-    }
 
+      if(ride){
+        const docSnapUser = await getDoc(doc(db, "users", ride.userId));
+        resultRides.push({ id: matchedRideId, ...ride, user: docSnapUser.data() });
+      }
+    }
     return resultRides;
   };
 

@@ -35,7 +35,7 @@ const AuthProvider = ({ children }) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error("SingIn: ",error.message);
     }
   };
 
@@ -46,7 +46,7 @@ const AuthProvider = ({ children }) => {
       const fetchedUser = await getUserData(uid);
       setUser({ uid: uid, email: email, ...fetchedUser });
     } catch (error) {
-      console.log(error.message);
+      console.log("FetchingCurrentUSer", error.message);
     } finally {
       setIsLogged(true);
     }
@@ -69,7 +69,7 @@ const AuthProvider = ({ children }) => {
         matched: [],
       });
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error("SingUp: ",error.message);
     }
   };
 
@@ -78,7 +78,7 @@ const AuthProvider = ({ children }) => {
       await signOut(auth);
       setUser(null);
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error("Logout:", error.message);
     }
   };
 
