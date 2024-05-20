@@ -19,10 +19,19 @@ export default function App() {
     freeSeats: "",
   });
 
-  const handleSaveCarDetails = async () => {
-    const detailsToSave = haveCar ? details : {};
-    setCarDetails(detailsToSave);
+  const handleChange = (key, value) => {
+    setDetails((prevDetails) => ({
+      ...prevDetails,
+      [key]: value,
+    }));
 
+    setCarDetails((prevCarDetails) => ({
+      ...prevCarDetails,
+      [key]: value,
+    }));
+  };
+
+  const handleSaveCarDetails = async () => {
     try {
       await addOffer();
       router.navigate("./Success");
@@ -32,25 +41,18 @@ export default function App() {
     }
   };
 
+  const handleHaveCarChange = (value) => {
+    setHaveCar(value);
+    if (!value) {
+      setCarDetails({});
+    }
+    else{
+      setCarDetails(details);
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Stack.Screen
-        options={{
-          headerShadowVisible: false,
-          headerTitle: "",
-          headerStyle: { backgroundColor: "#eee" },
-          headerRight: () => (
-            <AntDesign
-              name="close"
-              size={24}
-              color={COLORS.darkGray}
-              onPress={() => {
-                router.navigate("/");
-              }}
-            />
-          ),
-        }}
-      />
       <View style={{ borderColor: COLORS.darkGray, borderWidth: 1.5, borderRadius: 3, height: 12, width: "100%", position: "relative", overflow: "hidden" }}>
         <View style={{ position: "absolute", width: "90%", height: "100%", backgroundColor: COLORS.primary }}></View>
       </View>
@@ -63,7 +65,7 @@ export default function App() {
               alignItems: "center",
             }}
           >
-            <TouchableOpacity style={haveCar ? styles.buttonChecked : styles.buttonUnchecked} onPress={() => setHaveCar(!haveCar)}>
+            <TouchableOpacity style={haveCar ? styles.buttonChecked : styles.buttonUnchecked} onPress={() => handleHaveCarChange(!haveCar)}>
               <AntDesign name="check" size={24} color="#eee" style={{ padding: 14 }} />
             </TouchableOpacity>
             <Text
@@ -76,62 +78,39 @@ export default function App() {
               Have a car?
             </Text>
           </View>
-          {haveCar ? (
+          {haveCar && (
             <View style={{ gap: 4 }}>
               <TextInput
                 placeholder="Brand"
                 style={styles.input}
                 value={details.brand}
-                onChangeText={(text) =>
-                  setDetails((prevDetails) => ({
-                    ...prevDetails,
-                    brand: text,
-                  }))
-                }
+                onChangeText={(text) => handleChange("brand", text)}
               />
               <TextInput
                 placeholder="Model"
                 style={styles.input}
                 value={details.model}
-                onChangeText={(text) =>
-                  setDetails((prevDetails) => ({
-                    ...prevDetails,
-                    model: text,
-                  }))
-                }
+                onChangeText={(text) => handleChange("model", text)}
               />
               <TextInput
                 placeholder="Color"
                 style={styles.input}
                 value={details.color}
-                onChangeText={(text) =>
-                  setDetails((prevDetails) => ({
-                    ...prevDetails,
-                    color: text,
-                  }))
-                }
+                onChangeText={(text) => handleChange("color", text)}
               />
               <TextInput
                 placeholder="Free seats"
                 style={styles.input}
                 value={details.freeSeats}
-                onChangeText={(text) =>
-                  setDetails((prevDetails) => ({
-                    ...prevDetails,
-                    freeSeats: text,
-                  }))
-                }
+                onChangeText={(text) => handleChange("freeSeats", text)}
                 keyboardType="numeric"
               />
               <Text style={styles.text}>Enter the details of your car.</Text>
             </View>
-          ) : (
-            <Text style={styles.text}>Check if you own a car and want to drive.</Text>
           )}
         </View>
       </View>
       <MainButton content="Finish" onPress={handleSaveCarDetails} disabled={Object.values(details).some((value) => value === "") && haveCar} />
-
       <StatusBar style="auto" />
     </View>
   );
