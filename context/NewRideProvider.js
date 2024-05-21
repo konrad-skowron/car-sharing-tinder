@@ -2,12 +2,14 @@ import React, { createContext, useContext, useState } from "react";
 import app from "../firebaseConfig";
 import { getFirestore, doc, getDoc, updateDoc, arrayUnion, addDoc, setDoc, collection } from "firebase/firestore";
 import { useAuthContext } from "../context/AuthProvider";
+import { useDataContext } from "./DataProvider";
 
 const NewRideContext = createContext();
 export const useNewRideContext = () => useContext(NewRideContext);
 
 const NewRideProvider = ({ children }) => {
-  const { user } = useAuthContext();
+  const { user, fetchCurrentUser } = useAuthContext();
+  const { reloadRides } = useDataContext();
 
   const [startLocation, setStartLocation] = useState({});
 
@@ -48,6 +50,8 @@ const NewRideProvider = ({ children }) => {
       insertRideId(res.id, newOffer.days, newOffer.time);
     } catch (error) {
       throw new Error("InsertRide: ", error.message);
+    } finally {
+      await fetchCurrentUser();
     }
   };
 

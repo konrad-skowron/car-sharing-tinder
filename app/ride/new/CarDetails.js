@@ -45,14 +45,30 @@ export default function App() {
     setHaveCar(value);
     if (!value) {
       setCarDetails({});
-    }
-    else{
+    } else {
       setCarDetails(details);
     }
   };
 
   return (
     <View style={styles.container}>
+      <Stack.Screen
+        options={{
+          headerShadowVisible: false,
+          headerTitle: "",
+          headerStyle: { backgroundColor: "#eee" },
+          headerRight: () => (
+            <AntDesign
+              name="close"
+              size={24}
+              color={COLORS.darkGray}
+              onPress={() => {
+                router.navigate("/");
+              }}
+            />
+          ),
+        }}
+      />
       <View style={{ borderColor: COLORS.darkGray, borderWidth: 1.5, borderRadius: 3, height: 12, width: "100%", position: "relative", overflow: "hidden" }}>
         <View style={{ position: "absolute", width: "90%", height: "100%", backgroundColor: COLORS.primary }}></View>
       </View>
@@ -78,35 +94,16 @@ export default function App() {
               Have a car?
             </Text>
           </View>
-          {haveCar && (
+          {haveCar ? (
             <View style={{ gap: 4 }}>
-              <TextInput
-                placeholder="Brand"
-                style={styles.input}
-                value={details.brand}
-                onChangeText={(text) => handleChange("brand", text)}
-              />
-              <TextInput
-                placeholder="Model"
-                style={styles.input}
-                value={details.model}
-                onChangeText={(text) => handleChange("model", text)}
-              />
-              <TextInput
-                placeholder="Color"
-                style={styles.input}
-                value={details.color}
-                onChangeText={(text) => handleChange("color", text)}
-              />
-              <TextInput
-                placeholder="Free seats"
-                style={styles.input}
-                value={details.freeSeats}
-                onChangeText={(text) => handleChange("freeSeats", text)}
-                keyboardType="numeric"
-              />
+              <TextInput placeholder="Brand" style={styles.input} value={details.brand} onChangeText={(text) => handleChange("brand", text)} />
+              <TextInput placeholder="Model" style={styles.input} value={details.model} onChangeText={(text) => handleChange("model", text)} />
+              <TextInput placeholder="Color" style={styles.input} value={details.color} onChangeText={(text) => handleChange("color", text)} />
+              <TextInput placeholder="Free seats" style={styles.input} value={details.freeSeats} onChangeText={(text) => handleChange("freeSeats", text)} keyboardType="numeric" />
               <Text style={styles.text}>Enter the details of your car.</Text>
             </View>
+          ) : (
+            <Text style={styles.text}>Check if you own a car and want to drive.</Text>
           )}
         </View>
       </View>

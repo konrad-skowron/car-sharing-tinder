@@ -28,8 +28,8 @@ const DataProvider = ({ children }) => {
         setLoading(true);
         const db = getFirestore(app);
 
-        if(user.rides.length === 0){
-          return
+        if (user.rides.length === 0) {
+          return;
         }
 
         const ridesRef = collection(db, "rides");
@@ -44,6 +44,7 @@ const DataProvider = ({ children }) => {
 
         const ar = await getAvailableRidesForCurrentUser(fetchedUserRides);
         setAvailableRides(ar);
+
         const mr = await getMatchedRides(user.matched);
         setMatchedRides(mr);
 
@@ -59,6 +60,7 @@ const DataProvider = ({ children }) => {
   const getAvailableRidesForCurrentUser = async (userRides) => {
     let filteredRideIds = [];
     let resultRides = [];
+
     for (const ride of userRides) {
       const { days, time, id } = ride;
 
@@ -69,8 +71,11 @@ const DataProvider = ({ children }) => {
         const docSnapBefore = await getDoc(doc(db, day, (timeId - 5).toString()));
         const docSnapCurr = await getDoc(doc(db, day, timeId.toString()));
         const docSnapAfter = await getDoc(doc(db, day, (timeId + 5).toString()));
-        let resultRideIds = [...docSnapBefore.data().rides, ...docSnapCurr.data().rides, ...docSnapAfter.data().rides].filter((rideId) => rideId != id);
-        resultRideIds = resultRideIds.filter((rideId) => !user.matched.includes(rideId) && !user.rides.includes(rideId));
+        let resultRideIds = [];
+        if (docSnapBefore.exists() && docSnapCurr.exists() && docSnapAfter.exists()) {
+          resultRideIds = [...docSnapBefore.data().rides, ...docSnapCurr.data().rides, ...docSnapAfter.data().rides].filter((rideId) => rideId != id);
+          resultRideIds = resultRideIds.filter((rideId) => !user.matched.includes(rideId) && !user.rides.includes(rideId));
+        }
 
         if (resultRideIds.length > 0) {
           filteredRideIds = Array.from(new Set(resultRideIds));
@@ -82,11 +87,15 @@ const DataProvider = ({ children }) => {
       const docSnapRide = await getDoc(doc(db, "rides", rid));
       const ride = docSnapRide.data();
 
-      if(ride){
+      if (ride) {
         const docSnapUser = await getDoc(doc(db, "users", ride.userId));
         resultRides.push({ id: rid, ...ride, user: docSnapUser.data() });
       }
     }
+
+    //Bez api filtrowanie
+
+    //Z api filtrowanie
 
     return resultRides;
   };
@@ -136,14 +145,14 @@ const DataProvider = ({ children }) => {
         });
       }
 
-      if(rideToDelete.passengers){
+      if (rideToDelete.passengers) {
         for (const userId of rideToDelete.passengers) {
           const docSnapUser = await getDoc(doc(db, "users", userId));
           const userData = docSnapUser.data();
-    
+
           if (userData?.matched?.includes(rideId)) {
             await updateDoc(doc(db, "users", userId), {
-              matched: arrayRemove(rideId)
+              matched: arrayRemove(rideId),
             });
           }
         }
@@ -159,7 +168,7 @@ const DataProvider = ({ children }) => {
       const docSnapRide = await getDoc(doc(db, "rides", matchedRideId));
       const ride = docSnapRide.data();
 
-      if(ride){
+      if (ride) {
         const docSnapUser = await getDoc(doc(db, "users", ride.userId));
         resultRides.push({ id: matchedRideId, ...ride, user: docSnapUser.data() });
       }

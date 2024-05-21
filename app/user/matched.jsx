@@ -18,7 +18,7 @@ const matched = () => {
   }, []);
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <ScrollView style={styles.container}>
         <Stack.Screen
           options={{
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingHorizontal: 24,
+    minHeight: "100vh",
     backgroundColor: "#eee",
   },
   tileContainer: {

@@ -16,10 +16,10 @@ const Failed = () => {
       <Text style={styles.title}>Something went wrong :c</Text>
       <View style={styles.outer}>
         <View style={styles.inner}>
-          <Ionicons name="checkmark-outline" size={128} color={COLORS.white} />
+          <Ionicons name="close-outline" size={128} color={COLORS.white} />
         </View>
       </View>
-      <MainButton href="../../Home" content="Home"/>
+      <MainButton href="../../Home" content="Home" />
     </View>
   );
 };
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     width: 256,
     height: 256,
     borderRadius: 256,
-    backgroundColor: 'red',
+    backgroundColor: "red",
   },
   inner: {
     display: "flex",
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     borderRadius: 208,
     borderWidth: 5,
     borderColor: COLORS.white,
-    backgroundColor: 'red',
+    backgroundColor: "red",
   },
   title: {
     marginTop: 64,
