@@ -17,7 +17,7 @@
 - [x] Przenieść ponownie dodawanie przejazdu ze screena `success` na `carDetail`. Dodanie przejazdu działo się zanim ustawił się obiekt carDetails, przez co nie dało się ustawić samochodu dla przejazdu
 - [X] Dodać mapę z wyznaczoną trasą do screena przejazdu (`[id].jsx`)
 - [ ] Zmienić strukture obiektu nowego przejazdu, active boolean, full boolean, passengers array dla dni, które wybrał użytkownik
-  - [ ] Dodać modal z wyborem dni na screenie przejazdu
+  - [X] Dodać modal z wyborem dni na screenie przejazdu
   - [ ] Uzupełnić filtrowanie o zajęte przejazdy
 - [ ] Dobieranie dostępnych przejazdów dla użytkownika na podstawie lokalizacji (teraz mamy tylko dni i godziny)
      
