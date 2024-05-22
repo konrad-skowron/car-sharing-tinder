@@ -7,6 +7,7 @@ import { COLORS, FONTS } from "../../constants";
 import { useDataContext } from "../../context/DataProvider";
 import { useAuthContext } from "../../context/AuthProvider";
 import MapScreen from "../../components/MapScreen";
+import DaysPicker from "../../components/daysPicker";
 
 const days = {
   Monday: "M",
@@ -24,6 +25,8 @@ export default function App() {
   const { getRideByUid, getUserById, addRideToMatched, removeRideFromMatched, deleteRide, loading } = useDataContext();
   const [ride, setRide] = useState({});
   const [matching, setMatching] = useState(false);
+  const [showDaysPicker, setShowDaysPicker] = useState(true);
+  const [pickedDays, setPickedDays] = useState([]);
 
   useEffect(() => {
     setRide(getRideByUid(param.id));
@@ -198,11 +201,20 @@ export default function App() {
         {user && isRideBelongToCurrUser() ? (
           <MainButton href="user/matched" content="Delete" onPress={handleDeleteRide} />
         ) : (
-          <TouchableOpacity style={styles.button} onPress={handleMatchRide}>
+          <TouchableOpacity style={styles.button} onPress={() => setShowDaysPicker(true)}>
             <Text style={styles.buttonText}>{matching ? "Matching..." : isAlreadyMatched(user.matched, param.id) ? "Unmatch" : "Match"}</Text>
           </TouchableOpacity>
         )}
-
+        <DaysPicker
+          availableDays={ride.days}
+          isVisible={showDaysPicker}
+          onDiscard={() => setShowDaysPicker(false)}
+          onConfirm={() => {
+            console.log(pickedDays);
+          }}
+          pickedDays={pickedDays}
+          setPickedDays={setPickedDays}
+        />
         <StatusBar style="auto" />
       </SafeAreaView>
     )

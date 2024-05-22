@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Keyboard, Image } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Keyboard, Image, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import { COLORS, FONTS } from "../../constants";
@@ -67,6 +67,7 @@ const edit = () => {
   const handleChangeSave = () => {
     changeData();
   };
+
   const submitImage = async () => {
     try {
       const storage = getStorage(app);
@@ -114,7 +115,7 @@ const edit = () => {
           headerStyle: { backgroundColor: "#eee" },
         }}
       />
-      <View>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ gap: 8 }}>
           <Text style={styles.text}>Profile picture</Text>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
@@ -131,9 +132,8 @@ const edit = () => {
           <Text style={styles.text}>About me</Text>
           <TextInput style={[styles.input, styles.multilineTextInput]} placeholder={aboutMe} multiline value={aboutMeText} onChangeText={handleSetAboutMe} />
         </View>
-      </View>
-      {!isKeyboardVisible && <MainButton href="../../Home" content="Confirm" onPress={handleChangeSave} />}
-
+        {!isKeyboardVisible && <MainButton href="../../Home" content="Confirm" onPress={handleChangeSave} />}
+      </ScrollView>
       <StatusBar style="auto" />
     </View>
   );
@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
   inputWrapper: {
     marginBottom: "auto",
     gap: 8,
+    marginBottom: 16,
   },
   input: {
     width: "100%",
