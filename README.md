@@ -19,7 +19,7 @@
 - [ ] Zmienić strukture obiektu nowego przejazdu, active boolean, full boolean, passengers array dla dni, które wybrał użytkownik
   - [X] Dodać modal z wyborem dni na screenie przejazdu
   - [ ] Uzupełnić filtrowanie o zajęte przejazdy
-- [ ] Dobieranie dostępnych przejazdów dla użytkownika na podstawie lokalizacji (teraz mamy tylko dni i godziny)
+- [X] Dobieranie dostępnych przejazdów dla użytkownika na podstawie lokalizacji (teraz mamy tylko dni i godziny)
      
 
 # Expo Router Example

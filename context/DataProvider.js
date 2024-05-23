@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import app from "../firebaseConfig";
-import { getFirestore, collection, query, where, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove, deleteDoc, documentId } from "firebase/firestore";
+import { getFirestore, collection, query, where, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove, deleteDoc, documentId, count } from "firebase/firestore";
 import { getCoordinatesRange, isLocationInRange, isLocationinZone } from "../utils";
 import { useAuthContext } from "./AuthProvider";
 import { getAuth } from "firebase/auth";
@@ -41,9 +41,18 @@ const DataProvider = ({ children }) => {
           fetchedUserRides.push({ id: doc.id, ...doc.data(), user: user });
         });
         setUserRides(fetchedUserRides);
+        const rangeDistance = 0.5;
+        const ar = await getAvailableRidesForCurrentUser(fetchedUserRides, rangeDistance);
+        setAvailableRides(ar.filteredByLocation);
 
-        const ar = await getAvailableRidesForCurrentUser(fetchedUserRides);
-        setAvailableRides(ar);
+        const getBetterRides = async () => {
+            const betterRides = await getAvaibleRidesByAcurateLocation(ar.pairs, rangeDistance);
+            if (betterRides) {
+                setAvailableRides(betterRides);
+            }
+        };
+        getBetterRides();
+       
 
         const mr = await getMatchedRides(user.matched);
         setMatchedRides(mr);
@@ -57,7 +66,31 @@ const DataProvider = ({ children }) => {
     }
   };
 
-  const getAvailableRidesForCurrentUser = async (userRides) => {
+  const getAvaibleRidesByAcurateLocation = async (pairRides, rangeDistance) => {
+    let acurateRides = [];
+    console.log(pairRides.length);
+    for(const ride of pairRides) {
+      const [ownRide, potentialRide] = ride;
+      const ownStartLocation = ownRide.startLocation;
+      const ownEndLocation = ownRide.endLocation;
+      const potentialStartLocation = potentialRide.startLocation;
+      const potentialEndLocation = potentialRide.endLocation;
+      const startLocationCheck = await isLocationinZone(ownStartLocation.lat, ownStartLocation.lon, 
+        potentialStartLocation.lat, potentialStartLocation.lon, rangeDistance);
+       const endLocationCheck = await isLocationinZone(ownEndLocation.lat, ownEndLocation.lon,
+         potentialEndLocation.lat, potentialEndLocation.lon, rangeDistance);
+      if (startLocationCheck && endLocationCheck ) {
+        acurateRides.push(potentialRide);
+      };      
+    }
+    console.log(acurateRides.length);
+   
+    
+    return acurateRides;
+
+  };
+
+  const getAvailableRidesForCurrentUser = async (userRides, rangeDistance) => {
     let filteredRideIds = [];
     let resultRides = [];
 
@@ -93,8 +126,8 @@ const DataProvider = ({ children }) => {
       }
     }
     let filteredByLocation = [];
+    let pairs = [];
     for (const ownRide of userRides) {
-      rangeDistance = 0.001;
       const startLocationRange = getCoordinatesRange(ownRide.startLocation.lat, ownRide.startLocation.lon, rangeDistance);
       const endLocationRange = getCoordinatesRange(ownRide.endLocation.lat, ownRide.endLocation.lon, rangeDistance);
       for (const potentialRide of resultRides) {
@@ -105,33 +138,18 @@ const DataProvider = ({ children }) => {
           && isLocationInRange(potentialRide.endLocation.lat, potentialRide.endLocation.lon, endLocationRange)
         ) {
           filteredByLocation.push(potentialRide);
-          // resultRides = resultRides.filter((ride) => ride.id !== potentialRide.id);
+          const pair = [ownRide, potentialRide];
+          pairs.push(pair);
         }
       }
-
-    
     }
-    
-  //     const startLocationRange = getCoordinatesRange(startLocation.lat, startLocation.lon, rangeDistance);
-  //     const endLocationRange = getCoordinatesRange(endLocation.lat, endLocation.lon, rangeDistance);
 
-  //     const filteredRides = allRides
-  //       .filter((ride) => !userData.matched.includes(ride.uid))
-  //       .filter(
-  //         (ride) =>
-  //           ride.carDetails &&
-  //           Object.keys(ride.carDetails).length > 0 &&
-  //           isLocationInRange(ride.startLocation.lat, ride.startLocation.lon, startLocationRange) &&
-  //           isLocationInRange(ride.endLocation.lat, ride.endLocation.lon, endLocationRange)
-  //       );
-    console.log(resultRides.length);
+    const lists = {
+      filteredByLocation,
+      pairs
+    }
 
-    //Bez api filtrowanie
-
-    //Z api filtrowanie
-
-    // return resultRides;
-    return filteredByLocation;
+    return lists;
   };
 
   const addRideToMatched = async (rideId) => {
