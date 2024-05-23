@@ -25,7 +25,7 @@ export default function App() {
   const { getRideByUid, getUserById, addRideToMatched, removeRideFromMatched, deleteRide, loading } = useDataContext();
   const [ride, setRide] = useState({});
   const [matching, setMatching] = useState(false);
-  const [showDaysPicker, setShowDaysPicker] = useState(true);
+  const [showDaysPicker, setShowDaysPicker] = useState(false);
   const [pickedDays, setPickedDays] = useState([]);
 
   useEffect(() => {
@@ -201,7 +201,16 @@ export default function App() {
         {user && isRideBelongToCurrUser() ? (
           <MainButton href="user/matched" content="Delete" onPress={handleDeleteRide} />
         ) : (
-          <TouchableOpacity style={styles.button} onPress={() => setShowDaysPicker(true)}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              if (isAlreadyMatched(user.matched, param.id)) {
+                handleMatchRide();
+              } else {
+                setShowDaysPicker(true);
+              }
+            }}
+          >
             <Text style={styles.buttonText}>{matching ? "Matching..." : isAlreadyMatched(user.matched, param.id) ? "Unmatch" : "Match"}</Text>
           </TouchableOpacity>
         )}
@@ -210,7 +219,8 @@ export default function App() {
           isVisible={showDaysPicker}
           onDiscard={() => setShowDaysPicker(false)}
           onConfirm={() => {
-            console.log(pickedDays);
+            handleMatchRide();
+            setShowDaysPicker(false);
           }}
           pickedDays={pickedDays}
           setPickedDays={setPickedDays}

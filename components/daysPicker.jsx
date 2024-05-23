@@ -1,5 +1,4 @@
 import { Modal, View, Text, Pressable, StyleSheet } from "react-native";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { COLORS, FONTS } from "../constants";
 import React from "react";
 
@@ -42,7 +41,7 @@ const DaysPicker = ({ availableDays, isVisible, onDiscard, onConfirm, pickedDays
             <Pressable onPress={onDiscard} style={{ flex: 1, padding: 10, backgroundColor: COLORS.white, borderColor: COLORS.darkGray, borderWidth: 3, justifyContent: "center", alignItems: "center", borderRadius: 8 }}>
               <Text style={{ fontFamily: FONTS.primaryBold, color: COLORS.darkGray, fontSize: 16 }}>Discard</Text>
             </Pressable>
-            <Pressable onPress={onConfirm} style={{ flex: 1, padding: 10, backgroundColor: COLORS.darkGray, justifyContent: "center", alignItems: "center", borderRadius: 8 }}>
+            <Pressable onPress={onConfirm} disabled={!pickedDays.length} style={{ flex: 1, padding: 10, backgroundColor: COLORS.darkGray, justifyContent: "center", alignItems: "center", borderRadius: 8 }}>
               <Text style={{ fontFamily: FONTS.primaryBold, color: "#eee", fontSize: 16 }}>Confirm</Text>
             </Pressable>
           </View>

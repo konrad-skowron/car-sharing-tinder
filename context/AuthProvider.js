@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import app from "../firebaseConfig";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "@firebase/auth";
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "firebase/firestore";
 
 const AuthContext = createContext();
 export const useAuthContext = () => useContext(AuthContext);
@@ -31,11 +31,27 @@ const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, [auth]);
 
+  useEffect(() => {
+    if (!user?.uid) return;
+
+    const db = getFirestore(app);
+    const unsubscribeFirestore = onSnapshot(doc(db, "users", user.uid), (doc) => {
+      if (doc.exists) {
+        setUser((prevUser) => ({
+          ...prevUser,
+          ...doc.data(),
+        }));
+      }
+    });
+
+    return () => unsubscribeFirestore();
+  }, [user?.uid]);
+
   const handleSignIn = async (email, password) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
-      throw new Error("SingIn: ",error.message);
+      throw new Error("SingIn: ", error.message);
     }
   };
 
@@ -69,7 +85,7 @@ const AuthProvider = ({ children }) => {
         matched: [],
       });
     } catch (error) {
-      throw new Error("SingUp: ",error.message);
+      throw new Error("SingUp: ", error.message);
     }
   };
 
