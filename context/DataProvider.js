@@ -92,12 +92,46 @@ const DataProvider = ({ children }) => {
         resultRides.push({ id: rid, ...ride, user: docSnapUser.data() });
       }
     }
+    let filteredByLocation = [];
+    for (const ownRide of userRides) {
+      rangeDistance = 0.001;
+      const startLocationRange = getCoordinatesRange(ownRide.startLocation.lat, ownRide.startLocation.lon, rangeDistance);
+      const endLocationRange = getCoordinatesRange(ownRide.endLocation.lat, ownRide.endLocation.lon, rangeDistance);
+      for (const potentialRide of resultRides) {
+        if (
+          potentialRide.carDetails && Object.keys(potentialRide.carDetails).length > 0 
+          && filteredByLocation.includes(potentialRide) == false 
+          && isLocationInRange(potentialRide.startLocation.lat, potentialRide.startLocation.lon, startLocationRange) 
+          && isLocationInRange(potentialRide.endLocation.lat, potentialRide.endLocation.lon, endLocationRange)
+        ) {
+          filteredByLocation.push(potentialRide);
+          // resultRides = resultRides.filter((ride) => ride.id !== potentialRide.id);
+        }
+      }
+
+    
+    }
+    
+  //     const startLocationRange = getCoordinatesRange(startLocation.lat, startLocation.lon, rangeDistance);
+  //     const endLocationRange = getCoordinatesRange(endLocation.lat, endLocation.lon, rangeDistance);
+
+  //     const filteredRides = allRides
+  //       .filter((ride) => !userData.matched.includes(ride.uid))
+  //       .filter(
+  //         (ride) =>
+  //           ride.carDetails &&
+  //           Object.keys(ride.carDetails).length > 0 &&
+  //           isLocationInRange(ride.startLocation.lat, ride.startLocation.lon, startLocationRange) &&
+  //           isLocationInRange(ride.endLocation.lat, ride.endLocation.lon, endLocationRange)
+  //       );
+    console.log(resultRides.length);
 
     //Bez api filtrowanie
 
     //Z api filtrowanie
 
-    return resultRides;
+    // return resultRides;
+    return filteredByLocation;
   };
 
   const addRideToMatched = async (rideId) => {
