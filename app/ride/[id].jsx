@@ -129,8 +129,8 @@ export default function App() {
                   {ride.days && (
                     <View style={styles.days}>
                       {Object.entries(days).map(([k, v]) => (
-                        <View key={k} style={ride.days.includes(k) ? styles.buttonDayChoosen : styles.buttonDayUnChoosen}>
-                          <Text style={ride.days.includes(k) ? styles.buttonDayTextUnChoosen : styles.buttonDayTextChoosen}>{v}</Text>
+                        <View key={k} style={ride.days.some(day => day.day === k && day.active) ? styles.buttonDayChoosen : styles.buttonDayUnChoosen}>
+                          <Text style={ride.days.some(day => day.day === k && day.active) ? styles.buttonDayTextUnChoosen : styles.buttonDayTextChoosen}>{v}</Text>
                         </View>
                       ))}
                     </View>
@@ -214,8 +214,9 @@ export default function App() {
             <Text style={styles.buttonText}>{matching ? "Matching..." : isAlreadyMatched(user.matched, param.id) ? "Unmatch" : "Match"}</Text>
           </TouchableOpacity>
         )}
+        {ride.days && (
         <DaysPicker
-          availableDays={ride.days}
+          availableDays={ride.days.map(d => (d.day))}
           isVisible={showDaysPicker}
           onDiscard={() => setShowDaysPicker(false)}
           onConfirm={() => {
@@ -224,7 +225,7 @@ export default function App() {
           }}
           pickedDays={pickedDays}
           setPickedDays={setPickedDays}
-        />
+        />)}
         <StatusBar style="auto" />
       </SafeAreaView>
     )

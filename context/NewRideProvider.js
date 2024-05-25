@@ -33,12 +33,12 @@ const NewRideProvider = ({ children }) => {
         userId: user.uid,
         startLocation,
         endLocation,
-        days,
+        days: days.map(day => ({
+          ...day,
+          passengers: new Array()})),
         time,
         carDetails,
       };
-
-      newOffer = Object.keys(carDetails).length !== 0 ? { ...newOffer, passengers: [] } : newOffer;
 
       const res = await addDoc(collection(db, "rides"), newOffer);
       await updateDoc(userDocRef, {
@@ -47,7 +47,7 @@ const NewRideProvider = ({ children }) => {
 
       insertRideId(res.id, newOffer.days, newOffer.time);
     } catch (error) {
-      throw new Error("InsertRide: ", error.message);
+      throw new Error(error.message);
     }
   };
 
@@ -56,8 +56,8 @@ const NewRideProvider = ({ children }) => {
     const [hours, minutes] = time.split(":").map(Number);
     const timeId = hours * 60 + minutes - (minutes % 5);
 
-    days.forEach(async (day) => {
-      const dayDocRef = doc(db, day, timeId.toString());
+    days.forEach(async (dayObject) => {
+      const dayDocRef = doc(db, dayObject.day, timeId.toString());
 
       await updateDoc(dayDocRef, {
         rides: arrayUnion(rideId),

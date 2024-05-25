@@ -8,9 +8,7 @@ import { Stack } from "expo-router";
 import { useNewRideContext } from "../../../context/NewRideProvider";
 
 const Failed = () => {
-  const { addOffer } = useNewRideContext();
-
-  return (
+ return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
       <Text style={styles.title}>Something went wrong :c</Text>

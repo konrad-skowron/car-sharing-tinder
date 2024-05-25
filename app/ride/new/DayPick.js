@@ -21,7 +21,7 @@ export default function App() {
   ]);
 
   useEffect(() => {
-    setDays(daysD.filter((day) => day.pressed).map((day) => day.day));
+    setDays(daysD.filter((day) => day.pressed).map((day) => ({ day: day.day, active: true, full: false })));
   }, [daysD]);
 
   const handleDayPress = (index) => {

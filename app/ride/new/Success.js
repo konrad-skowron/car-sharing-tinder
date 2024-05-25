@@ -8,8 +8,6 @@ import { Stack } from "expo-router";
 import { useNewRideContext } from "../../../context/NewRideProvider";
 
 const Success = () => {
-  const { addOffer } = useNewRideContext();
-
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />

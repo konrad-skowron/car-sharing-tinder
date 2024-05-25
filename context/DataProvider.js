@@ -100,10 +100,10 @@ const DataProvider = ({ children }) => {
       const [hours, minutes] = time.split(":").map(Number);
       const timeId = hours * 60 + minutes - (minutes % 5);
 
-      for (const day of days) {
-        const docSnapBefore = await getDoc(doc(db, day, (timeId - 5).toString()));
-        const docSnapCurr = await getDoc(doc(db, day, timeId.toString()));
-        const docSnapAfter = await getDoc(doc(db, day, (timeId + 5).toString()));
+      for (const dayObject of days) {
+        const docSnapBefore = await getDoc(doc(db, dayObject.day, (timeId - 5).toString()));
+        const docSnapCurr = await getDoc(doc(db, dayObject.day, timeId.toString()));
+        const docSnapAfter = await getDoc(doc(db, dayObject.day, (timeId + 5).toString()));
         let resultRideIds = [];
         if (docSnapBefore.exists() && docSnapCurr.exists() && docSnapAfter.exists()) {
           resultRideIds = [...docSnapBefore.data().rides, ...docSnapCurr.data().rides, ...docSnapAfter.data().rides].filter((rideId) => rideId != id);
@@ -152,7 +152,7 @@ const DataProvider = ({ children }) => {
     return lists;
   };
 
-  const addRideToMatched = async (rideId) => {
+  const addRideToMatched = async (rideId, daysArray) => {
     try {
       await updateDoc(doc(db, "rides", rideId), {
         passengers: arrayUnion(user.uid),
@@ -191,8 +191,8 @@ const DataProvider = ({ children }) => {
         rides: arrayRemove(rideId),
       });
 
-      for (const day of rideToDelete.days) {
-        await updateDoc(doc(db, day, timeId.toString()), {
+      for (const dayObject of rideToDelete.days) {
+        await updateDoc(doc(db, dayObject.day, timeId.toString()), {
           rides: arrayRemove(rideId),
         });
       }
