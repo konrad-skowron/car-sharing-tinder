@@ -152,11 +152,30 @@ const DataProvider = ({ children }) => {
     return lists;
   };
 
-  const addRideToMatched = async (rideId, daysArray) => {
+  const addRideToMatched = async (rideId, newPassengerId, pickedDays) => {
     try {
-      await updateDoc(doc(db, "rides", rideId), {
-        passengers: arrayUnion(user.uid),
+      const docRef = doc(db, 'rides', rideId);
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists()) {
+        console.log('No such document!');
+        return;
+      }
+  
+      const data = docSnap.data();
+      const days = data.days;
+  
+      const updatedDays = days.map(day => {
+        if (pickedDays.includes(day.day)) {
+          return {
+            ...day,
+            passengers: [...day.passengers, newPassengerId]
+          };
+        }
+        return day;
       });
+  
+      await updateDoc(docRef, { days: updatedDays });
+      console.log('Passenger added successfully!');
 
       await updateDoc(doc(db, "users", user.uid), {
         matched: arrayUnion(rideId),
@@ -166,17 +185,33 @@ const DataProvider = ({ children }) => {
     }
   };
 
-  const removeRideFromMatched = async (rideId) => {
+  const removeRideFromMatched = async (rideId, newPassengerId) => {
     try {
-      await updateDoc(doc(db, "rides", rideId), {
-        passengers: arrayRemove(user.uid),
+      const docRef = doc(db, 'rides', rideId);
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists()) {
+        console.log('No such document!');
+        return;
+      }
+  
+      const data = docSnap.data();
+      const days = data.days;
+  
+      const updatedDays = days.map(day => {
+          return {
+            ...day,
+            passengers: day.passengers.filter(p => p !== newPassengerId)
+          };
       });
+  
+      await updateDoc(docRef, { days: updatedDays });
+      console.log('Passenger removed successfully!');
 
       await updateDoc(doc(db, "users", user.uid), {
         matched: arrayRemove(rideId),
       });
     } catch (error) {
-      throw new Error("RemoveRideFromMatched: ", error.message);
+      throw new Error(error.message);
     }
   };
 

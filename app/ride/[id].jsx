@@ -36,9 +36,9 @@ export default function App() {
     try {
       setMatching(true);
       if (isAlreadyMatched(user.matched, param.id)) {
-        await removeRideFromMatched(param.id);
+        await removeRideFromMatched(param.id, user.uid);
       } else {
-        await addRideToMatched(param.id);
+        await addRideToMatched(param.id, user.uid, pickedDays);
       }
     } catch (error) {
       console.log("Add/Remove ride to/from matched error: ", error.message);
