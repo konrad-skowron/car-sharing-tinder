@@ -126,14 +126,26 @@ export default function App() {
                   <View style={styles.center}>
                     <Text style={styles.foontEighteen}>Days</Text>
                   </View>
-                  {ride.days && (
-                    <View style={styles.days}>
-                      {Object.entries(days).map(([k, v]) => (
-                        <View key={k} style={ride.days.some(day => day.day === k && day.active) ? styles.buttonDayChoosen : styles.buttonDayUnChoosen}>
-                          <Text style={ride.days.some(day => day.day === k && day.active) ? styles.buttonDayTextUnChoosen : styles.buttonDayTextChoosen}>{v}</Text>
-                        </View>
-                      ))}
-                    </View>
+                  {user.matched.includes(param.id) ? (
+                    ride.days && (
+                      <View style={styles.days}>
+                        {Object.entries(days).map(([k, v]) => (
+                          <View key={k} style={ride.days.some(day => day.day === k && day.passengers.includes(user.uid)) ? styles.buttonDayChoosen : styles.buttonDayUnChoosen}>
+                            <Text style={ride.days.some(day => day.day === k && day.passengers.includes(user.uid)) ? styles.buttonDayTextUnChoosen : styles.buttonDayTextChoosen}>{v}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    )
+                  ) : (
+                    ride.days && (
+                      <View style={styles.days}>
+                        {Object.entries(days).map(([k, v]) => (
+                          <View key={k} style={ride.days.some(day => day.day === k && day.active ) ? styles.buttonDayChoosen : styles.buttonDayUnChoosen}>
+                            <Text style={ride.days.some(day => day.day === k && day.active ) ? styles.buttonDayTextUnChoosen : styles.buttonDayTextChoosen}>{v}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    )
                   )}
                 </View>
                 <View style={styles.row}>

@@ -21,7 +21,7 @@
   - [x] Dodać modal z wyborem dni na screenie przejazdu
   - [ ] Uzupełnić filtrowanie o zajęte przejazdy
   - [ ] Dodać pasażerów na screenie właściciela przejazdu
-  - [ ] Dodać wyświetlanie dni na ktore zapisał sie user
+  - [ ] Dodać wyświetlanie dni na ktore zapisał sie user - W TEORI ZROBIONE ALE CIULOWO SIĘ ODŚWIEŻA
 - [x] Dobieranie dostępnych przejazdów dla użytkownika na podstawie lokalizacji (teraz mamy tylko dni i godziny)
 - [ ] Dodać powiadomienia
 
