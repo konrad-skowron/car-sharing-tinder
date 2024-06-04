@@ -126,7 +126,7 @@ export default function App() {
                   <View style={styles.center}>
                     <Text style={styles.foontEighteen}>Days</Text>
                   </View>
-                  {user.matched.includes(param.id) ? (
+                  {isAlreadyMatched(user.matched, param.id) ? (
                     ride.days && (
                       <View style={styles.days}>
                         {Object.entries(days).map(([k, v]) => (
@@ -228,7 +228,7 @@ export default function App() {
         )}
         {ride.days && (
         <DaysPicker
-          availableDays={ride.days.map(d => (d.day))}
+          availableDays={ride.days.filter(d => d.active).map(d => (d.day))}
           isVisible={showDaysPicker}
           onDiscard={() => setShowDaysPicker(false)}
           onConfirm={() => {
