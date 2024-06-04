@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, ActivityIndicator } from "react-native";
 import app from "../firebaseConfig";
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
 import { Link, Stack, useRouter, useFocusEffect } from "expo-router";
@@ -72,7 +72,7 @@ const Home = () => {
           Available:
         </Text>
         {loading ? (
-          <Text>Loading...</Text>
+          <ActivityIndicator size="large"/>
         ) : (
           <View style={styles.tileContainer}>
             {availableRides.length ? (

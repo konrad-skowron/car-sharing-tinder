@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     width: 256,
     height: 256,
     borderRadius: 256,
-    backgroundColor: 'red',
+    backgroundColor: COLORS.primary,
   },
   inner: {
     display: "flex",
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     borderRadius: 208,
     borderWidth: 5,
     borderColor: COLORS.white,
-    backgroundColor: 'red',
+    backgroundColor: COLORS.primary,
   },
   title: {
     marginTop: 64,

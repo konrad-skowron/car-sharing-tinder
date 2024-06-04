@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image, ActivityIndicator } from "react-native";
 import MainButton from "../../components/MainButton";
 import { Stack, router, useLocalSearchParams } from "expo-router";
 import { COLORS, FONTS } from "../../constants";
@@ -77,7 +77,7 @@ export default function App() {
           }}
         />
         {Object.keys(ride).length === 0 ? (
-          <Text>Loading...</Text>
+          <ActivityIndicator size="large"/>
         ) : (
           <>
             <View style={styles.row}>

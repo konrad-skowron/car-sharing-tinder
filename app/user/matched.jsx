@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView, ActivityIndicator } from "react-native";
 import { Link, Stack, useRouter, useFocusEffect } from "expo-router";
 import React, { useState, useCallback, useEffect } from "react";
 import app from "../../firebaseConfig";
@@ -38,7 +38,7 @@ const matched = () => {
           Matched:
         </Text>
         {loading ? (
-          <Text>Loading...</Text>
+          <ActivityIndicator size="large"/>
         ) : matchedRides.length ? (
           matchedRides.map((ride, index) => (
             <Link key={index} href={`ride/${ride.id}`} asChild>
@@ -62,7 +62,7 @@ const matched = () => {
           Own:
         </Text>
         {loading ? (
-          <Text>Loading...</Text>
+          <ActivityIndicator size="large"/>
         ) : (
           <View style={styles.tileContainer}>
             {userRides.length ? (
