@@ -103,19 +103,20 @@ const DataProvider = ({ children }) => {
       for (const dayObject of days) {
         const docSnapBefore = await getDoc(doc(db, dayObject.day, Math.max(0, timeId - 5).toString()));
         const docSnapCurr = await getDoc(doc(db, dayObject.day, timeId.toString()));
-        const docSnapAfter = await getDoc(doc(db, dayObject.day, Math.min(1440, timeId + 5).toString()));
+        const docSnapAfter = await getDoc(doc(db, dayObject.day, Math.min(1435, timeId + 5).toString()));
         let resultRideIds = [];
         if (docSnapBefore.exists() && docSnapCurr.exists() && docSnapAfter.exists()) {
           resultRideIds = [...docSnapBefore.data().rides, ...docSnapCurr.data().rides, ...docSnapAfter.data().rides].filter((rideId) => rideId != id);
           resultRideIds = resultRideIds.filter((rideId) => !user.matched.includes(rideId) && !user.rides.includes(rideId));
         }
-
+        
         if (resultRideIds.length > 0) {
-          filteredRideIds = Array.from(new Set(resultRideIds));
+          filteredRideIds = [...Array.from(new Set(resultRideIds)), ...filteredRideIds];
         }
       }
     }
-
+    
+    filteredRideIds = Array.from(new Set(filteredRideIds))
     for (const rid of filteredRideIds) {
       const docSnapRide = await getDoc(doc(db, "rides", rid));
       const ride = docSnapRide.data();
@@ -125,8 +126,6 @@ const DataProvider = ({ children }) => {
         resultRides.push({ id: rid, ...ride, user: docSnapUser.data() });
       }
     }
-
-    console.log(resultRides);
 
     resultRides = resultRides.filter(obj => {
       return obj.days.some(day => day.active === true && day.full === false);
