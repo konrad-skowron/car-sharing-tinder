@@ -252,6 +252,56 @@ const DataProvider = ({ children }) => {
   
       const data = docSnap.data();
       const days = data.days;
+
+      const userDays = [];
+      days.forEach(day => {
+        if (day.passengers.includes(newPassengerId) && !userDays.includes(day.day)) {
+          userDays.push(day.day);
+        }
+      });
+
+      const time = data.time;
+
+      const [hours, minutes] = time.split(":").map(Number);
+      const timeId = hours * 60 + minutes - (minutes % 5);
+
+      let filteredRideIdsToActivation = [];
+      for (const dayObject of days) {
+        const docSnapBefore = await getDoc(doc(db, dayObject.day, Math.max(0, timeId - 5).toString()));
+        const docSnapCurr = await getDoc(doc(db, dayObject.day, timeId.toString()));
+        const docSnapAfter = await getDoc(doc(db, dayObject.day, Math.min(1435, timeId + 5).toString()));
+        let resultRideIds = [];
+        if (docSnapBefore.exists() && docSnapCurr.exists() && docSnapAfter.exists()) {
+          resultRideIds = [...docSnapBefore.data().rides, ...docSnapCurr.data().rides, ...docSnapAfter.data().rides].filter((rId) => rId != rideId);
+          resultRideIds = resultRideIds.filter((rId) => user.rides.includes(rId));
+        }
+        
+        if (resultRideIds.length > 0) {
+          filteredRideIdsToActivation = [...Array.from(new Set(resultRideIds)), ...filteredRideIdsToActivation];
+        }
+      }
+
+      filteredRideIdsToActivation = Array.from(new Set(filteredRideIdsToActivation))
+
+      console.log(filteredRideIdsToActivation);
+
+      for (const rideId of filteredRideIdsToActivation) {
+        const insideDocRef = doc(db, 'rides', rideId);
+        const insideDocSnap = await getDoc(insideDocRef);
+
+        const deactiveDays = insideDocSnap.data().days.map(day => {
+          if (userDays.includes(day.day)){
+            day.active = true;
+            return {
+              ...day
+            };
+          }
+          return day;
+        })
+
+        await updateDoc(insideDocRef, { days: deactiveDays });
+        console.log('Activate!');
+      }
   
       const updatedDays = days.map(day => {
 
