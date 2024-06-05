@@ -89,7 +89,7 @@ const DataProvider = ({ children }) => {
     return acurateRides;
 
   };
-
+  
   const getAvailableRidesForCurrentUser = async (userRides, rangeDistance) => {
     let filteredRideIds = [];
     let resultRides = [];
@@ -125,6 +125,16 @@ const DataProvider = ({ children }) => {
         resultRides.push({ id: rid, ...ride, user: docSnapUser.data() });
       }
     }
+
+    console.log(resultRides);
+
+    resultRides = resultRides.filter(obj => {
+      return obj.days.some(day => day.active === true && day.full === false);
+    });
+
+    console.log("esras");
+    console.log(resultRides);
+
     let filteredByLocation = [];
     let pairs = [];
     for (const ownRide of userRides) {
