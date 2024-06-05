@@ -169,6 +169,38 @@ const DataProvider = ({ children }) => {
   
       const data = docSnap.data();
       const days = data.days;
+
+      const time = data.time;
+
+      const [hours, minutes] = time.split(":").map(Number);
+      const timeId = hours * 60 + minutes - (minutes % 5);
+
+      let filteredRideIdsToDeactivation = [];
+      for (const dayObject of days) {
+        const docSnapBefore = await getDoc(doc(db, dayObject.day, Math.max(0, timeId - 5).toString()));
+        const docSnapCurr = await getDoc(doc(db, dayObject.day, timeId.toString()));
+        const docSnapAfter = await getDoc(doc(db, dayObject.day, Math.min(1435, timeId + 5).toString()));
+        let resultRideIds = [];
+        if (docSnapBefore.exists() && docSnapCurr.exists() && docSnapAfter.exists()) {
+          resultRideIds = [...docSnapBefore.data().rides, ...docSnapCurr.data().rides, ...docSnapAfter.data().rides].filter((rId) => rId != rideId);
+          resultRideIds = resultRideIds.filter((rId) => user.rides.includes(rId));
+        }
+        
+        if (resultRideIds.length > 0) {
+          filteredRideIdsToDeactivation = [...Array.from(new Set(resultRideIds)), ...filteredRideIdsToDeactivation];
+        }
+      }
+
+      filteredRideIdsToDeactivation = Array.from(new Set(filteredRideIdsToDeactivation))
+
+      console.log(filteredRideIdsToDeactivation);
+
+      for (const rideId of filteredRideIdsToDeactivation) {
+        const insideDocRef = doc(db, 'rides', rideId);
+        const insideDocSnap = await getDoc(insideDocRef);
+
+        console.log(insideDocSnap.data());
+      }
   
       const updatedDays = days.map(day => {
         if (pickedDays.includes(day.day)) {
