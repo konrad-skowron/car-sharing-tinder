@@ -68,7 +68,6 @@ const DataProvider = ({ children }) => {
 
   const getAvaibleRidesByAcurateLocation = async (pairRides, rangeDistance) => {
     let acurateRides = [];
-    console.log(pairRides.length);
     for(const ride of pairRides) {
       const [ownRide, potentialRide] = ride;
       const ownStartLocation = ownRide.startLocation;
@@ -83,8 +82,6 @@ const DataProvider = ({ children }) => {
         acurateRides.push(potentialRide);
       };      
     }
-    console.log(acurateRides.length);
-   
     
     return acurateRides;
 
@@ -193,8 +190,6 @@ const DataProvider = ({ children }) => {
 
       filteredRideIdsToDeactivation = Array.from(new Set(filteredRideIdsToDeactivation))
 
-      console.log(filteredRideIdsToDeactivation);
-
       for (const rideId of filteredRideIdsToDeactivation) {
         const insideDocRef = doc(db, 'rides', rideId);
         const insideDocSnap = await getDoc(insideDocRef);
@@ -283,8 +278,6 @@ const DataProvider = ({ children }) => {
 
       filteredRideIdsToActivation = Array.from(new Set(filteredRideIdsToActivation))
 
-      console.log(filteredRideIdsToActivation);
-
       for (const rideId of filteredRideIdsToActivation) {
         const insideDocRef = doc(db, 'rides', rideId);
         const insideDocSnap = await getDoc(insideDocRef);
@@ -333,23 +326,74 @@ const DataProvider = ({ children }) => {
       const rideToDelete = getRideByUid(rideId);
       const [hours, minutes] = rideToDelete.time.split(":").map(Number);
       const timeId = hours * 60 + minutes - (minutes % 5);
+  
+      for (const day of rideToDelete.days) {
+        for (const passenger of day.passengers) {
 
+          const userDays = [];
+          rideToDelete.days.forEach(day => {
+            if (day.passengers.includes(passenger) && !userDays.includes(day.day)) {
+              userDays.push(day.day);
+            }
+          });
+
+          const docSnapUser = await getDoc(doc(db, "users", passenger));
+          const userToActivate = docSnapUser.data();
+  
+          let filteredRideIdsToActivation = [];
+          for (const dayObject of rideToDelete.days) {
+            const docSnapBefore = await getDoc(doc(db, dayObject.day, Math.max(0, timeId - 5).toString()));
+            const docSnapCurr = await getDoc(doc(db, dayObject.day, timeId.toString()));
+            const docSnapAfter = await getDoc(doc(db, dayObject.day, Math.min(1435, timeId + 5).toString()));
+            let resultRideIds = [];
+            if (docSnapBefore.exists() && docSnapCurr.exists() && docSnapAfter.exists()) {
+              resultRideIds = [...docSnapBefore.data().rides, ...docSnapCurr.data().rides, ...docSnapAfter.data().rides].filter((rId) => rId != rideId);
+              resultRideIds = resultRideIds.filter((rId) => userToActivate.rides.includes(rId));
+            }
+  
+            if (resultRideIds.length > 0) {
+              filteredRideIdsToActivation = [...Array.from(new Set(resultRideIds)), ...filteredRideIdsToActivation];
+            }
+          }
+  
+          filteredRideIdsToActivation = Array.from(new Set(filteredRideIdsToActivation))
+  
+          for (const rideId of filteredRideIdsToActivation) {
+            const insideDocRef = doc(db, 'rides', rideId);
+            const insideDocSnap = await getDoc(insideDocRef);
+  
+            const deactiveDays = insideDocSnap.data().days.map(day => {
+              if (userDays.includes(day.day)) {
+                day.active = true;
+                return {
+                  ...day
+                };
+              }
+              return day;
+            })
+  
+            await updateDoc(insideDocRef, { days: deactiveDays });
+            console.log('Activate!');
+          }
+        }
+      }
+  
       await deleteDoc(doc(db, "rides", rideId));
       await updateDoc(doc(db, "users", user.uid), {
         rides: arrayRemove(rideId),
       });
-
+  
       for (const dayObject of rideToDelete.days) {
         await updateDoc(doc(db, dayObject.day, timeId.toString()), {
           rides: arrayRemove(rideId),
         });
       }
-
+  
       if (rideToDelete.passengers) {
         for (const userId of rideToDelete.passengers) {
           const docSnapUser = await getDoc(doc(db, "users", userId));
           const userData = docSnapUser.data();
-
+  
           if (userData?.matched?.includes(rideId)) {
             await updateDoc(doc(db, "users", userId), {
               matched: arrayRemove(rideId),
