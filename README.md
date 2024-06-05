@@ -19,7 +19,7 @@
 - [x] Dodać mapę z wyznaczoną trasą do screena przejazdu (`[id].jsx`)
 - [x] Zmienić strukture obiektu nowego przejazdu, active boolean, full boolean, passengers array dla dni, które wybrał użytkownik
   - [x] Dodać modal z wyborem dni na screenie przejazdu
-  - [ ] Uzupełnić filtrowanie o zajęte przejazdy
+  - [x] Uzupełnić filtrowanie o zajęte przejazdy
   - [ ] Dodać pasażerów na screenie właściciela przejazdu
   - [ ] Dodać wyświetlanie dni na ktore zapisał sie user - W TEORI ZROBIONE ALE CIULOWO SIĘ ODŚWIEŻA
 - [x] Dobieranie dostępnych przejazdów dla użytkownika na podstawie lokalizacji (teraz mamy tylko dni i godziny)

@@ -176,6 +176,13 @@ const DataProvider = ({ children }) => {
   
       const updatedDays = days.map(day => {
         if (pickedDays.includes(day.day)) {
+
+          const isFull = parseInt(day.passengers.length + 1) >= parseInt(data.carDetails.freeSeats);
+
+          if (isFull) {
+            day.full = true;
+          }
+
           return {
             ...day,
             passengers: [...day.passengers, newPassengerId]
@@ -208,6 +215,13 @@ const DataProvider = ({ children }) => {
       const days = data.days;
   
       const updatedDays = days.map(day => {
+
+        const isNotFull = parseInt(day.passengers.length - 1) <= parseInt(data.carDetails.freeSeats);
+
+        if (isNotFull) {
+          day.full = false;
+        }
+
           return {
             ...day,
             passengers: day.passengers.filter(p => p !== newPassengerId)
