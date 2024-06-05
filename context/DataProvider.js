@@ -199,7 +199,18 @@ const DataProvider = ({ children }) => {
         const insideDocRef = doc(db, 'rides', rideId);
         const insideDocSnap = await getDoc(insideDocRef);
 
-        console.log(insideDocSnap.data());
+        const deactiveDays = insideDocSnap.data().days.map(day => {
+          if (pickedDays.includes(day.day)){
+            day.active = false;
+            return {
+              ...day
+            };
+          }
+          return day;
+        })
+
+        await updateDoc(insideDocRef, { days: deactiveDays });
+        console.log('Deactivate!');
       }
   
       const updatedDays = days.map(day => {
