@@ -101,9 +101,9 @@ const DataProvider = ({ children }) => {
       const timeId = hours * 60 + minutes - (minutes % 5);
 
       for (const dayObject of days) {
-        const docSnapBefore = await getDoc(doc(db, dayObject.day, (timeId - 5).toString()));
+        const docSnapBefore = await getDoc(doc(db, dayObject.day, Math.max(0, timeId - 5).toString()));
         const docSnapCurr = await getDoc(doc(db, dayObject.day, timeId.toString()));
-        const docSnapAfter = await getDoc(doc(db, dayObject.day, (timeId + 5).toString()));
+        const docSnapAfter = await getDoc(doc(db, dayObject.day, Math.min(1440, timeId + 5).toString()));
         let resultRideIds = [];
         if (docSnapBefore.exists() && docSnapCurr.exists() && docSnapAfter.exists()) {
           resultRideIds = [...docSnapBefore.data().rides, ...docSnapCurr.data().rides, ...docSnapAfter.data().rides].filter((rideId) => rideId != id);
@@ -131,9 +131,6 @@ const DataProvider = ({ children }) => {
     resultRides = resultRides.filter(obj => {
       return obj.days.some(day => day.active === true && day.full === false);
     });
-
-    console.log("esras");
-    console.log(resultRides);
 
     let filteredByLocation = [];
     let pairs = [];
