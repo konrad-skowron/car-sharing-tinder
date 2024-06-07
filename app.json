@@ -1,5 +1,7 @@
 {
   "expo": {
+    "version": "1.0.2",
+    "icon": "./assets/icon.png",
     "scheme": "acme",
     "plugins": [
       [
@@ -12,7 +14,20 @@
     "web": {
       "bundler": "metro"
     },
-    "name": "car-sharing-tinder-router",
-    "slug": "car-sharing-tinder-router"
+    "name": "Car Sharing Tinder",
+    "slug": "car-sharing-tinder-router",
+    "extra": {
+      "eas": {
+        "projectId": "c8c7a905-5720-4282-a6c5-954cbffd0ba2"
+      }
+    },
+    "android": {
+      "package": "com.carsharingtinder",
+      "versionCode": 2,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#1b786f"
+      }
+    }
   }
 }
