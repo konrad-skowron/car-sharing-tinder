@@ -206,7 +206,7 @@ export default function App() {
               </View>
             )} */}
             </View>
-            {/* <MapScreen x1={ride.startLocation.lat} y1={ride.startLocation.lon} x2={ride.endLocation.lat} y2={ride.endLocation.lon} /> */}
+            <MapScreen x1={ride.startLocation.lat} y1={ride.startLocation.lon} x2={ride.endLocation.lat} y2={ride.endLocation.lon} />
           </>
         )}
 
