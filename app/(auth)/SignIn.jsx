@@ -17,8 +17,8 @@ const SignIn = () => {
   const { handleSignIn } = useAuthContext();
   const router = useRouter();
   const [form, setForm] = useState({
-    email: "admin@gmail.com",
-    password: "123456",
+    email: "",
+    password: "",
   });
 
   const submit = async () => {

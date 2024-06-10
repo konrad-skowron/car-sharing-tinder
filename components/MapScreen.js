@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
-import MapView, { Polyline, Marker } from "react-native-maps";
+import MapView, { Polyline, Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import axios from "axios";
 
 const MapScreen = ({ x1, y1, x2, y2 }) => {
@@ -43,6 +43,7 @@ const MapScreen = ({ x1, y1, x2, y2 }) => {
       <MapView
         style={styles.map}
         onLayout={onMapLayout}
+        provider={PROVIDER_GOOGLE}
         initialRegion={
           mapReady
             ? {

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "version": "1.0.2",
+    "version": "1.0.3",
     "icon": "./assets/icon.png",
     "scheme": "acme",
     "plugins": [
@@ -23,10 +23,15 @@
     },
     "android": {
       "package": "com.carsharingtinder",
-      "versionCode": 2,
+      "versionCode": 3,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1b786f"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": ""
+        }
       }
     }
   }
