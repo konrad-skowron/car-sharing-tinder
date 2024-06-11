@@ -53,6 +53,7 @@ const Home = () => {
                     width: 48,
                     borderRadius: 48,
                     marginRight: 16,
+                    marginTop: 16,
                   }}
                   source={{
                     uri: user ? (
@@ -71,7 +72,7 @@ const Home = () => {
             marginBottom: 4,
           }}
         >
-          Available:
+          Available
         </Text>
         {loading ? (
           <ActivityIndicator size="large"/>
@@ -86,7 +87,7 @@ const Home = () => {
                 </Link>
               ))
             ) : (
-              <Text>No rides available for you :(</Text>
+              <Text>No rides available for you 😢</Text>
             )}
           </View>
         )}
@@ -99,11 +100,21 @@ const Home = () => {
           alignSelf: "flex-end",
         }}
       >
-        <Link href="ride/new/StartLocationPick" asChild>
-          <TouchableOpacity style={styles.plusButton}>
-            <AntDesign name="plus" size={24} color="#eee" style={{ padding: 14 }} />
-          </TouchableOpacity>
-        </Link>
+        {user ? (
+          user.rides.length < 30 ? (
+            <Link href="ride/new/StartLocationPick" asChild>
+              <TouchableOpacity style={styles.plusButton}>
+                <AntDesign name="plus" size={24} color="#eee" style={{ padding: 14 }} />
+              </TouchableOpacity>
+            </Link>
+          ) : (
+            <TouchableOpacity style={styles.plusButton}>
+              <AntDesign name="plus" size={24} color="#eee" style={{ padding: 14 }} onPress={() => {
+                  alert("You have reached the limit of 30 rides.");
+              }} />
+            </TouchableOpacity>
+          )
+        ) : null}
       </View>
       <StatusBar style="auto" />
     </View>

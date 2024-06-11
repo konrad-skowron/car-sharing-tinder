@@ -35,7 +35,7 @@ const matched = () => {
             marginBottom: 4,
           }}
         >
-          Matched:
+          Matched
         </Text>
         {loading ? (
           <ActivityIndicator size="large"/>
@@ -48,7 +48,7 @@ const matched = () => {
             </Link>
           ))
         ) : (
-          <Text>No matched rides :(</Text>
+          <Text>No matches yet ⌚</Text>
         )}
         <View style={styles.tileContainer}></View>
         <Text
@@ -59,7 +59,7 @@ const matched = () => {
             marginTop: 8,
           }}
         >
-          Own:
+          My rides
         </Text>
         {loading ? (
           <ActivityIndicator size="large"/>
@@ -75,7 +75,7 @@ const matched = () => {
                 </Link>
               ))
             ) : (
-              <Text>You don't have your own rides :(</Text>
+              <Text>You don't have your own rides 🚗</Text>
             )}
           </View>
         )}
