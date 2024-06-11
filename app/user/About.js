@@ -63,7 +63,7 @@ export default function App() {
               borderRadius: 64,
             }}
             source={{
-              uri: imageUrl,
+              uri: imageUrl ? imageUrl : "https://i.imgur.com/Lo9o8cm.png"
             }}
           />
         </View>

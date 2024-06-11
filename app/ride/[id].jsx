@@ -94,7 +94,7 @@ export default function App() {
                     borderRadius: 64,
                   }}
                   source={{
-                    uri: ride.user.imageUrl,
+                    uri: ride.user.imageUrl ? ride.user.imageUrl : "https://i.imgur.com/Lo9o8cm.png"
                   }}
                 />
               </View>

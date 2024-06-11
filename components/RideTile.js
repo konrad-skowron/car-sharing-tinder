@@ -20,7 +20,7 @@ const RideTile = ({ ride }) => {
             // borderColor: COLORS.darkGray,
           }}
           source={{
-            uri: ride.user.imageUrl ? ride.user.imageUrl : "https://via.placeholder.com/150",
+            uri: ride.user.imageUrl ? ride.user.imageUrl : "https://i.imgur.com/Lo9o8cm.png",
           }}
         />
       </View>
