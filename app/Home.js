@@ -53,7 +53,7 @@ const Home = () => {
                     width: 48,
                     borderRadius: 48,
                     marginRight: 16,
-                    marginTop: 16,
+                    marginTop: 8,
                   }}
                   source={{
                     uri: user ? (

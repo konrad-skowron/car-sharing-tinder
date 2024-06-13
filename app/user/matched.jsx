@@ -37,6 +37,7 @@ const matched = () => {
         >
           Matched
         </Text>
+        <View style={styles.tileContainer}>
         {loading ? (
           <ActivityIndicator size="large"/>
         ) : matchedRides.length ? (
@@ -50,7 +51,7 @@ const matched = () => {
         ) : (
           <Text>No matches yet ⌚</Text>
         )}
-        <View style={styles.tileContainer}></View>
+        </View>
         <Text
           style={{
             fontSize: 16,
