@@ -1,6 +1,6 @@
 {
   "expo": {
-    "version": "1.0.5",
+    "version": "1.0.6",
     "icon": "./assets/icon.png",
     "scheme": "acme",
     "plugins": [
@@ -23,7 +23,7 @@
     },
     "android": {
       "package": "com.carsharingtinder",
-      "versionCode": 5,
+      "versionCode": 6,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1b786f"

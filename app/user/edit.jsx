@@ -85,7 +85,7 @@ const edit = () => {
 
   const changeData = async () => {
     try {
-      const imageUrl = await submitImage();
+      const imageUrl = image ? await submitImage() : '';
       const db = getFirestore(app);
       const userDocRef = doc(db, "users", user.uid);
       const userSnapshot = await getDoc(userDocRef);
