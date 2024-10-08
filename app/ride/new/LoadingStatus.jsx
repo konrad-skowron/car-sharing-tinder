@@ -1,10 +1,6 @@
-import React from 'react';
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
-import MainButton from "../../../components/MainButton";
-import { COLORS, FONTS } from "../../../constants";
+import React, { StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { COLORS, FONTS } from "../../../constants/Index";
 import { Stack } from "expo-router";
-import { useNewRideContext } from "../../../context/NewRideProvider";
 
 const LoadingStatus = () => {
   return (

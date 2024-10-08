@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { View, Image, Text, TextInput, ScrollView, TouchableOpacity, Keyboard } from "react-native";
-import { COLORS, FONTS } from "../../constants";
+import { COLORS, FONTS } from "../../constants/Index";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuthContext } from "../../context/AuthProvider";
+import LogoImage from "../../assets/Logo_car_sharing_tinder.png";
 
 const SignUp = () => {
   const { handleSignUp } = useAuthContext();
@@ -53,7 +54,7 @@ const SignUp = () => {
             alignItems: "center",
           }}
         >
-          {!isKeyboardVisible && <Image style={styles.image} source={require("../../assets/Logo_car_sharing_tinder.png")} />}
+          {!isKeyboardVisible && <Image style={styles.image} source={LogoImage} />}
           <View style={styles.formContainer}>
             <View style={styles.inputContainer}>
               <TextInput style={styles.input} value={form.firstName} onChangeText={(e) => setForm({ ...form, firstName: e })} placeholder="First name" />

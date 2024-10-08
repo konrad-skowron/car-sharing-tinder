@@ -1,5 +1,5 @@
 import { Modal, View, Text, Pressable, StyleSheet } from "react-native";
-import { COLORS, FONTS } from "../constants";
+import { COLORS, FONTS } from "../constants/Index";
 import React from "react";
 
 const days = {

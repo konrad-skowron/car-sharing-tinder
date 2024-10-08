@@ -1,23 +1,21 @@
-import { StatusBar } from "expo-status-bar";
+import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import MainButton from "../../../components/MainButton";
-import { COLORS, FONTS } from "../../../constants";
-import { AntDesign } from "@expo/vector-icons";
+import { COLORS, FONTS } from "../../../constants/Index";
 import { Stack } from "expo-router";
-import { useNewRideContext } from "../../../context/NewRideProvider";
 
-const Failed = () => {
- return (
+const Success = () => {
+  return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
-      <Text style={styles.title}>Something went wrong :c</Text>
+      <Text style={styles.title}>Success!</Text>
       <View style={styles.outer}>
         <View style={styles.inner}>
-          <Ionicons name="close-outline" size={128} color={COLORS.white} />
+          <Ionicons name="checkmark-outline" size={128} color={COLORS.white} />
         </View>
       </View>
-      <MainButton href="../../Home" content="Home" />
+      <MainButton href="../../Home" content="Home"/>
     </View>
   );
 };
@@ -41,7 +39,7 @@ const styles = StyleSheet.create({
     width: 256,
     height: 256,
     borderRadius: 256,
-    backgroundColor: "red",
+    backgroundColor: COLORS.primary,
   },
   inner: {
     display: "flex",
@@ -54,7 +52,7 @@ const styles = StyleSheet.create({
     borderRadius: 208,
     borderWidth: 5,
     borderColor: COLORS.white,
-    backgroundColor: "red",
+    backgroundColor: COLORS.primary,
   },
   title: {
     marginTop: 64,
@@ -64,4 +62,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Failed;
+export default Success;

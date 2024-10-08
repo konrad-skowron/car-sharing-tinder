@@ -1,20 +1,18 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Keyboard, Image, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
-import { COLORS, FONTS } from "../../constants";
+import { FONTS } from "../../constants/Index";
 import React from "react";
-import { Link, Stack, useRouter } from "expo-router";
+import { Stack } from "expo-router";
 import { useAuthContext } from "../../context/AuthProvider";
 import MainButton from "../../components/MainButton";
 import app from "../../firebaseConfig";
 import * as ImagePicker from "expo-image-picker";
-import { getFirestore, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const edit = () => {
-  const router = useRouter();
-  const { user, isLogged, getUserData, handleLogOut, fetchCurrentUser } = useAuthContext();
-  const { email, firstName, lastName, phoneNumber, rides, aboutMe, imageUrl } = user;
+  const { user, fetchCurrentUser } = useAuthContext();
+  const { email, firstName, lastName, phoneNumber, aboutMe, imageUrl } = user;
   const [image, setImage] = React.useState(imageUrl);
   const [firstNameText, setFirstNameText] = React.useState(firstName);
   const [lastNameText, setLastNameText] = React.useState(lastName);
@@ -150,7 +148,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
     justifyContent: "center",
     alignItems: "center",
-    justifyContent: "center",
   },
   container: {
     flex: 1,
@@ -162,7 +159,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#eee",
   },
   inputWrapper: {
-    marginBottom: "auto",
     gap: 8,
     marginBottom: 16,
   },

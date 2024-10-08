@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image, ActivityIndicator } from "react-native";
 import MainButton from "../../components/MainButton";
-import { Stack, router, useLocalSearchParams } from "expo-router";
-import { COLORS, FONTS } from "../../constants";
+import { Stack, useLocalSearchParams } from "expo-router";
+import { FONTS } from "../../constants/Index";
 import { useDataContext } from "../../context/DataProvider";
 import { useAuthContext } from "../../context/AuthProvider";
 import MapScreen from "../../components/MapScreen";
-import DaysPicker from "../../components/daysPicker";
+import DaysPicker from "../../components/DaysPicker";
 
 const days = {
   Monday: "M",
@@ -22,7 +22,7 @@ const days = {
 export default function App() {
   const param = useLocalSearchParams();
   const { user, fetchCurrentUser } = useAuthContext();
-  const { getRideByUid, getUserById, addRideToMatched, removeRideFromMatched, deleteRide, loading } = useDataContext();
+  const { getRideByUid, addRideToMatched, removeRideFromMatched, deleteRide } = useDataContext();
   const [ride, setRide] = useState({});
   const [matching, setMatching] = useState(false);
   const [showDaysPicker, setShowDaysPicker] = useState(false);
@@ -326,7 +326,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     aspectRatio: 1,
     width: "10%",
-    aspectRatio: 1,
     margin: 1,
   },
   buttonDayUnChoosen: {
@@ -336,7 +335,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     aspectRatio: 1,
     width: "10%",
-    aspectRatio: 1,
     margin: 1,
     borderColor: "#76ABAE",
     borderWidth: 1,

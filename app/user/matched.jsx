@@ -1,16 +1,11 @@
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView, ActivityIndicator } from "react-native";
-import { Link, Stack, useRouter, useFocusEffect } from "expo-router";
-import React, { useState, useCallback, useEffect } from "react";
-import app from "../../firebaseConfig";
-import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
-import { COLORS, FONTS } from "../../constants";
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator } from "react-native";
+import { Link, Stack } from "expo-router";
+import React, { useEffect } from "react";
 import RideTile from "../../components/RideTile";
-import { useAuthContext } from "../../context/AuthProvider";
 import { useDataContext } from "../../context/DataProvider";
+import { FONTS } from "../../constants/Fonts";
 
 const matched = () => {
-  const router = useRouter();
-  const { user } = useAuthContext();
   const { loading, reloadRides, userRides, matchedRides } = useDataContext();
 
   useEffect(() => {
@@ -75,7 +70,7 @@ const matched = () => {
                 </Link>
               ))
             ) : (
-              <Text>You don't have your own rides :(</Text>
+              <Text>You don&apos;t have your own rides :(</Text>
             )}
           </View>
         )}
