@@ -3,12 +3,12 @@ import { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { COLORS, FONTS } from "../../../constants/Index";
+import { COLORS, FONTS } from "../../../constants";
 import { Stack, useRouter } from "expo-router";
 import MainButton from "../../../components/MainButton";
 import { useNewRideContext } from "../../../context/NewRideProvider";
 
-export default function App() {
+export default function DayPick() {
   const { setDays } = useNewRideContext();
   const router = useRouter();
   const [daysD, setDaysD] = useState([
@@ -57,7 +57,6 @@ export default function App() {
       <View style={{ borderColor: COLORS.darkGray, borderWidth: 1.5, borderRadius: 3, height: 12, width: "100%", position: "relative", overflow: "hidden" }}>
         <View style={{ position: "absolute", width: "50%", height: "100%", backgroundColor: COLORS.primary }}></View>
       </View>
-      {/* <NavBar prev="ride/LocalizationPick" close="ride/LocalizationPick" /> */}
       <View
         style={{
           width: "100%",

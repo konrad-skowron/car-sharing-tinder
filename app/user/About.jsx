@@ -1,23 +1,14 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import {  FONTS } from "../../constants/Index";
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-  Text,
-  Image,
-  Modal,
-} from "react-native";
+import { FONTS } from "../../constants";
+import { StyleSheet, View, TouchableOpacity, SafeAreaView, Text, Image, Modal } from "react-native";
 import MainButton from "../../components/MainButton";
 import "../Home";
 import "../index";
 import { Stack, useRouter } from "expo-router";
 import { useAuthContext } from "../../context/AuthProvider";
 
-
-export default function App() {
+export default function About() {
   const router = useRouter();
   const [modalVisible, setModalVisible] = useState(false);
   const { user, handleLogOut } = useAuthContext();
@@ -75,31 +66,16 @@ export default function App() {
             <Text style={styles.foontEighteen}>About me</Text>
           </View>
           <View>
-            <Text style={styles.headerForSection}>
-              {aboutMe}
-            </Text>
+            <Text style={styles.headerForSection}>{aboutMe}</Text>
           </View>
         </View>
 
         <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Text style={styles.logOut}>Log out</Text>
         </TouchableOpacity>
-        {/* <View>
-          <Link href="../../../index" asChild>
-            <TouchableOpacity>
-              <Text style={styles.logOut}>Log out</Text>
-            </TouchableOpacity>  
-          </Link>
-        </View> */}
 
         <View style={styles.modalBand}>
-          <Modal
-            visible={modalVisible}
-            transparent={true}
-            animationType="fade"
-            hardwareAccelerated={true}
-            presentationStyle="overFullScreen"
-          >
+          <Modal visible={modalVisible} transparent={true} animationType="fade" hardwareAccelerated={true} presentationStyle="overFullScreen">
             <View style={styles.modalContainer}>
               <View style={styles.modal}>
                 <Text>Do you really want to logout?</Text>
@@ -159,7 +135,6 @@ const styles = StyleSheet.create({
     rowGap: 20,
     alignItems: "center",
   },
-  // { flex: 1, justifyContent: 'center', alignItems: 'center', width:'50%', height:'50%'}
   logOut: {
     color: "red",
     fontFamily: FONTS.primaryMedium,
@@ -210,7 +185,6 @@ const styles = StyleSheet.create({
   textEnv: {
     marginTop: 8,
     marginBottom: "auto",
-    // paddingVertical: 5,
   },
   text: {
     fontSize: 16,

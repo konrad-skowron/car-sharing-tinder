@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Image, Text, TextInput, ScrollView, TouchableOpacity, Keyboard } from "react-native";
-import { COLORS, FONTS } from "../../constants/Index";
+import { COLORS, FONTS } from "../../constants";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -61,7 +61,13 @@ const SignUp = () => {
               <TextInput style={styles.input} value={form.lastName} onChangeText={(e) => setForm({ ...form, lastName: e })} placeholder="Last name" />
               <TextInput style={styles.input} value={form.email} onChangeText={(e) => setForm({ ...form, email: e })} placeholder="Email" />
               <TextInput style={styles.input} value={form.phoneNumber} onChangeText={(e) => setForm({ ...form, phoneNumber: e })} placeholder="Phone number" />
-              <TextInput style={styles.input} value={form.password} onChangeText={(e) => setForm({ ...form, password: e })} placeholder="Password" secureTextEntry />
+              <TextInput
+                style={styles.input}
+                value={form.password}
+                onChangeText={(e) => setForm({ ...form, password: e })}
+                placeholder="Password"
+                secureTextEntry
+              />
             </View>
             <View style={{ width: "100%", gap: 16 }}>
               <TouchableOpacity style={styles.button} onPress={() => submit()}>

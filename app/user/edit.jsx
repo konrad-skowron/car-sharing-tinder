@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Keyboard, Image, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { FONTS } from "../../constants/Index";
+import { FONTS } from "../../constants";
 import React from "react";
 import { Stack } from "expo-router";
 import { useAuthContext } from "../../context/AuthProvider";
@@ -10,7 +10,7 @@ import * as ImagePicker from "expo-image-picker";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-const edit = () => {
+export default function Edit() {
   const { user, fetchCurrentUser } = useAuthContext();
   const { email, firstName, lastName, phoneNumber, aboutMe, imageUrl } = user;
   const [image, setImage] = React.useState(imageUrl);
@@ -117,7 +117,13 @@ const edit = () => {
         <View style={{ gap: 8 }}>
           <Text style={styles.text}>Profile picture</Text>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <TouchableOpacity onPress={pickImage}>{image ? <Image source={{ uri: image }} style={{ width: 150, height: 150, borderRadius: 10 }} /> : <Text style={styles.text}>No profile picture, click to pick one!</Text>}</TouchableOpacity>
+            <TouchableOpacity onPress={pickImage}>
+              {image ? (
+                <Image source={{ uri: image }} style={{ width: 150, height: 150, borderRadius: 10 }} />
+              ) : (
+                <Text style={styles.text}>No profile picture, click to pick one!</Text>
+              )}
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.inputWrapper}>
@@ -135,7 +141,7 @@ const edit = () => {
       <StatusBar style="auto" />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   multilineTextInput: {
@@ -195,5 +201,3 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.primaryRegular,
   },
 });
-
-export default edit;

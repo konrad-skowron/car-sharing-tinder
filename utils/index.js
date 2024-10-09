@@ -4,7 +4,7 @@ const fetchLocations = async (locationText) => {
     const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(locationText)}&limit=5&filter=countrycode:pl&apiKey=${apiKey}`;
     const res = await fetch(url);
     const data = await res.json();
-    
+
     return data.features.map((feature) => {
       return {
         address_line1: feature.properties.address_line1,

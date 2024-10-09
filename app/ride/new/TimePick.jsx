@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { StatusBar } from "expo-status-bar";
-import { COLORS, FONTS } from "../../../constants/Index";
+import { COLORS, FONTS } from "../../../constants";
 import { Stack, useRouter } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from "react-native";
 import MainButton from "../../../components/MainButton";
 import { useNewRideContext } from "../../../context/NewRideProvider";
 
-export default function App() {
+export default function TimePick() {
   const router = useRouter();
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
@@ -31,7 +31,7 @@ export default function App() {
   };
 
   const handleSaveTime = () => {
-    setTime(`${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`);
+    setTime(`${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`);
   };
 
   return (
@@ -56,12 +56,11 @@ export default function App() {
       <View style={{ borderColor: COLORS.darkGray, borderWidth: 1.5, borderRadius: 3, height: 12, width: "100%", position: "relative", overflow: "hidden" }}>
         <View style={{ position: "absolute", width: "70%", height: "100%", backgroundColor: COLORS.primary }}></View>
       </View>
-      {/* <NavBar prev="ride/LocalizationPick" close="ride/LocalizationPick" /> */}
       <SafeAreaView>
         <View style={styles.buttonEnv}>
           <TouchableOpacity style={styles.button} onPress={showTimepicker}>
             <Text style={styles.buttonHourPicker}>
-              {date.getHours().toString().padStart(2, '0')} : {date.getMinutes().toString().padStart(2, '0')}
+              {date.getHours().toString().padStart(2, "0")} : {date.getMinutes().toString().padStart(2, "0")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -127,7 +126,6 @@ const styles = StyleSheet.create({
   textEnv: {
     marginTop: 8,
     marginBottom: "auto",
-    // paddingVertical: 5,
   },
   text: {
     fontSize: 16,
@@ -135,7 +133,6 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    // backgroundColor: "#222831",
     backgroundColor: "#D9D9D9",
     borderRadius: 16,
     width: "100%",

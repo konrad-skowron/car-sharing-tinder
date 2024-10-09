@@ -33,9 +33,10 @@ const NewRideProvider = ({ children }) => {
         userId: user.uid,
         startLocation,
         endLocation,
-        days: days.map(day => ({
+        days: days.map((day) => ({
           ...day,
-          passengers: new Array()})),
+          passengers: new Array(),
+        })),
         time,
         carDetails,
       };

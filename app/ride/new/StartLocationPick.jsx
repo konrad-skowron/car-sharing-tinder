@@ -3,8 +3,8 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, FlatList } from "react-native";
 import { Stack, useRouter } from "expo-router";
 import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
-import { COLORS, FONTS } from "../../../constants/Index";
-import { fetchLocations } from "../../../utils/Index";
+import { COLORS, FONTS } from "../../../constants";
+import { fetchLocations } from "../../../utils";
 import MainButton from "../../../components/MainButton";
 import { useNewRideContext } from "../../../context/NewRideProvider";
 
@@ -14,7 +14,6 @@ export default function StartLocationPick() {
   const [selectedStartLocation, setSelectedStartLocation] = useState(null);
   const { setStartLocation } = useNewRideContext();
 
-  //TO NA TESTA, ŻEBY NIE WYSŁAĆ CO CHWILĘ REQUESTÓW
   const [data, setData] = useState([
     {
       address_line1: "C-15",
@@ -81,11 +80,24 @@ export default function StartLocationPick() {
       <View style={styles.inputWrapper}>
         <View>
           <View style={{ flexDirection: "row", alignItems: "center", width: "100%" }}>
-            <TextInput placeholder="Start location" style={styles.input} value={startLocationText} onChangeText={handleStartLocationChange} onSubmitEditing={handleFetchData} />
+            <TextInput
+              placeholder="Start location"
+              style={styles.input}
+              value={startLocationText}
+              onChangeText={handleStartLocationChange}
+              onSubmitEditing={handleFetchData}
+            />
             <TouchableOpacity
               onPress={handleFetchData}
               disabled={!startLocationText}
-              style={{ backgroundColor: "#D9D9D9", paddingVertical: 7.6, paddingHorizontal: 6, justifyContent: "center", borderTopRightRadius: 8, borderBottomRightRadius: 8 }}
+              style={{
+                backgroundColor: "#D9D9D9",
+                paddingVertical: 7.6,
+                paddingHorizontal: 6,
+                justifyContent: "center",
+                borderTopRightRadius: 8,
+                borderBottomRightRadius: 8,
+              }}
             >
               <AntDesign name="search1" size={24} color="black" />
             </TouchableOpacity>
@@ -96,9 +108,22 @@ export default function StartLocationPick() {
               renderItem={({ item }) => (
                 <TouchableOpacity
                   style={styles.item}
-                  onPress={() => handleSelectedStartLocation({ address_line1: item.address_line1, address_line2: item.address_line2, street: item.street, city: item.city, lat: item.lat, lon: item.lon })}
+                  onPress={() =>
+                    handleSelectedStartLocation({
+                      address_line1: item.address_line1,
+                      address_line2: item.address_line2,
+                      street: item.street,
+                      city: item.city,
+                      lat: item.lat,
+                      lon: item.lon,
+                    })
+                  }
                 >
-                  {item.resultType === "city" ? <FontAwesome6 name="city" size={24} color={COLORS.darkGray} /> : <FontAwesome6 name="location-dot" size={24} color={COLORS.darkGray} />}
+                  {item.resultType === "city" ? (
+                    <FontAwesome6 name="city" size={24} color={COLORS.darkGray} />
+                  ) : (
+                    <FontAwesome6 name="location-dot" size={24} color={COLORS.darkGray} />
+                  )}
                   <View>
                     <Text style={styles.itemText}>{item.address_line1}</Text>
                     <Text style={styles.itemSubtext}>{item.address_line2}</Text>

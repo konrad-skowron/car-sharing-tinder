@@ -1,13 +1,6 @@
 import React, { useState } from "react";
-import {
-  View,
-  Image,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
-import { COLORS, FONTS } from "../../constants/Index";
+import { View, Image, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import { COLORS, FONTS } from "../../constants";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -43,10 +36,7 @@ const SignIn = () => {
           }}
           keyboardShouldPersistTaps="handled"
         >
-          <Image
-            style={styles.image}
-            source={logo}
-          />
+          <Image style={styles.image} source={logo} />
           <View style={styles.formContainer}>
             <View style={styles.inputContainer}>
               <TextInput

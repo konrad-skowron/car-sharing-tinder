@@ -5,10 +5,10 @@ import { AntDesign } from "@expo/vector-icons";
 import MainButton from "../../../components/MainButton";
 import { useState } from "react";
 import { Stack, useRouter } from "expo-router";
-import { COLORS, FONTS } from "../../../constants/Index";
+import { COLORS, FONTS } from "../../../constants";
 import { useNewRideContext } from "../../../context/NewRideProvider";
 
-export default function App() {
+export default function CarDetails() {
   const router = useRouter();
   const { setCarDetails, addOffer } = useNewRideContext();
   const [haveCar, setHaveCar] = useState(false);
@@ -99,7 +99,13 @@ export default function App() {
               <TextInput placeholder="Brand" style={styles.input} value={details.brand} onChangeText={(text) => handleChange("brand", text)} />
               <TextInput placeholder="Model" style={styles.input} value={details.model} onChangeText={(text) => handleChange("model", text)} />
               <TextInput placeholder="Color" style={styles.input} value={details.color} onChangeText={(text) => handleChange("color", text)} />
-              <TextInput placeholder="Free seats" style={styles.input} value={details.freeSeats} onChangeText={(text) => handleChange("freeSeats", text)} keyboardType="numeric" />
+              <TextInput
+                placeholder="Free seats"
+                style={styles.input}
+                value={details.freeSeats}
+                onChangeText={(text) => handleChange("freeSeats", text)}
+                keyboardType="numeric"
+              />
               <Text style={styles.text}>Enter the details of your car.</Text>
             </View>
           ) : (

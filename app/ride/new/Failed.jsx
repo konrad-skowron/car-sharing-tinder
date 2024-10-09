@@ -2,11 +2,11 @@ import React from "react-native";
 import { StyleSheet, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import MainButton from "../../../components/MainButton";
-import { COLORS, FONTS } from "../../../constants/Index";
+import { COLORS, FONTS } from "../../../constants";
 import { Stack } from "expo-router";
 
-const Failed = () => {
- return (
+export default function Failed() {
+  return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
       <Text style={styles.title}>Something went wrong :c</Text>
@@ -18,7 +18,7 @@ const Failed = () => {
       <MainButton href="../../Home" content="Home" />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -61,5 +61,3 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-
-export default Failed;

@@ -1,20 +1,20 @@
 import React, { StyleSheet, Text, View, ActivityIndicator } from "react-native";
-import { COLORS, FONTS } from "../../../constants/Index";
+import { COLORS, FONTS } from "../../../constants";
 import { Stack } from "expo-router";
 
-const LoadingStatus = () => {
+export default function LoadingStatus() {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
       <Text style={styles.title}>Waiting...</Text>
       <View style={styles.outer}>
         <View style={styles.inner}>
-        <ActivityIndicator size="large" color={COLORS.white} style={styles.loader} />
+          <ActivityIndicator size="large" color={COLORS.white} style={styles.loader} />
         </View>
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -60,5 +60,3 @@ const styles = StyleSheet.create({
     transform: [{ scale: 4 }],
   },
 });
-
-export default LoadingStatus;

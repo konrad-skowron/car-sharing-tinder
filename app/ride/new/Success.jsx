@@ -2,10 +2,10 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import MainButton from "../../../components/MainButton";
-import { COLORS, FONTS } from "../../../constants/Index";
+import { COLORS, FONTS } from "../../../constants";
 import { Stack } from "expo-router";
 
-const Success = () => {
+export default function Success() {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
@@ -15,10 +15,10 @@ const Success = () => {
           <Ionicons name="checkmark-outline" size={128} color={COLORS.white} />
         </View>
       </View>
-      <MainButton href="../../Home" content="Home"/>
+      <MainButton href="../../Home" content="Home" />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -61,5 +61,3 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-
-export default Success;

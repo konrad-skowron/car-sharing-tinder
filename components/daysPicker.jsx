@@ -1,5 +1,5 @@
 import { Modal, View, Text, Pressable, StyleSheet } from "react-native";
-import { COLORS, FONTS } from "../constants/Index";
+import { COLORS, FONTS } from "../constants";
 import React from "react";
 
 const days = {
@@ -33,15 +33,33 @@ const DaysPicker = ({ availableDays, isVisible, onDiscard, onConfirm, pickedDays
                   disabled={!availableDays.includes(k)}
                   style={availableDays.includes(k) ? (pickedDays.includes(k) ? styles.pressedDayButton : styles.dayButton) : styles.disabledDayButton}
                 >
-                  <Text style={availableDays.includes(k) ? (pickedDays.includes(k) ? styles.pressedDayText : styles.dayText) : styles.disabledDayText}>{v}</Text>
+                  <Text style={availableDays.includes(k) ? (pickedDays.includes(k) ? styles.pressedDayText : styles.dayText) : styles.disabledDayText}>
+                    {v}
+                  </Text>
                 </Pressable>
               ))}
           </View>
           <View style={{ flexDirection: "row", gap: 32, justifyContent: "space-between" }}>
-            <Pressable onPress={onDiscard} style={{ flex: 1, padding: 10, backgroundColor: COLORS.white, borderColor: COLORS.darkGray, borderWidth: 3, justifyContent: "center", alignItems: "center", borderRadius: 8 }}>
+            <Pressable
+              onPress={onDiscard}
+              style={{
+                flex: 1,
+                padding: 10,
+                backgroundColor: COLORS.white,
+                borderColor: COLORS.darkGray,
+                borderWidth: 3,
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 8,
+              }}
+            >
               <Text style={{ fontFamily: FONTS.primaryBold, color: COLORS.darkGray, fontSize: 16 }}>Discard</Text>
             </Pressable>
-            <Pressable onPress={onConfirm} disabled={!pickedDays.length} style={{ flex: 1, padding: 10, backgroundColor: COLORS.darkGray, justifyContent: "center", alignItems: "center", borderRadius: 8 }}>
+            <Pressable
+              onPress={onConfirm}
+              disabled={!pickedDays.length}
+              style={{ flex: 1, padding: 10, backgroundColor: COLORS.darkGray, justifyContent: "center", alignItems: "center", borderRadius: 8 }}
+            >
               <Text style={{ fontFamily: FONTS.primaryBold, color: "#eee", fontSize: 16 }}>Confirm</Text>
             </Pressable>
           </View>

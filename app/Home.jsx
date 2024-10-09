@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, ActivityIndicator } from "react-native";
 import { Link, Stack, useRouter } from "expo-router";
-import { COLORS, FONTS } from "../constants/Index.jsx";
+import { COLORS, FONTS } from "../constants";
 import { AntDesign } from "@expo/vector-icons";
 import RideTile from "../components/RideTile.jsx";
 import "./index.jsx";
 import { useDataContext } from "../context/DataProvider.jsx";
 import { useAuthContext } from "../context/AuthProvider.jsx";
 
-const Home = () => {
+export default function Home() {
   const router = useRouter();
   const { loading, reloadRides, availableRides } = useDataContext();
   const { user } = useAuthContext();
@@ -68,7 +68,7 @@ const Home = () => {
           Available:
         </Text>
         {loading ? (
-          <ActivityIndicator size="large"/>
+          <ActivityIndicator size="large" />
         ) : (
           <View style={styles.tileContainer}>
             {availableRides.length ? (
@@ -102,7 +102,7 @@ const Home = () => {
       <StatusBar style="auto" />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   plusButton: {
@@ -135,5 +135,3 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
 });
-
-export default Home;

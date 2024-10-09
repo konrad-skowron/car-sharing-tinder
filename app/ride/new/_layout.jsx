@@ -14,6 +14,6 @@ const NewRideLayout = () => {
       </Stack>
     </NewRideProvider>
   );
-}
+};
 
 export default NewRideLayout;

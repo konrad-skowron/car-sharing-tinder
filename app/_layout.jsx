@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+/* eslint-disable no-undef */
+import React, { useEffect } from "react";
 import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import AuthProvider from "../context/AuthProvider";
@@ -18,9 +19,9 @@ const RootLayout = () => {
   });
 
   useEffect(() => {
-    if (error){
+    if (error) {
       console.error("Layout:", error.message);
-    } 
+    }
 
     if (fontsLoaded) {
       SplashScreen.hideAsync();

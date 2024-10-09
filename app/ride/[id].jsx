@@ -3,11 +3,11 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image, ActivityIndicator } from "react-native";
 import MainButton from "../../components/MainButton";
 import { Stack, useLocalSearchParams } from "expo-router";
-import { FONTS } from "../../constants/Index";
+import { FONTS } from "../../constants";
 import { useDataContext } from "../../context/DataProvider";
 import { useAuthContext } from "../../context/AuthProvider";
 import MapScreen from "../../components/MapScreen";
-import DaysPicker from "../../components/daysPicker";
+import DaysPicker from "../../components/DaysPicker";
 
 const days = {
   Monday: "M",
@@ -19,7 +19,7 @@ const days = {
   Sunday: "Su",
 };
 
-export default function App() {
+export default function RideDetails() {
   const param = useLocalSearchParams();
   const { user, fetchCurrentUser } = useAuthContext();
   const { getRideByUid, addRideToMatched, removeRideFromMatched, deleteRide } = useDataContext();
@@ -77,7 +77,7 @@ export default function App() {
           }}
         />
         {Object.keys(ride).length === 0 ? (
-          <ActivityIndicator size="large"/>
+          <ActivityIndicator size="large" />
         ) : (
           <>
             <View style={styles.row}>
@@ -126,27 +126,55 @@ export default function App() {
                   <View style={styles.center}>
                     <Text style={styles.foontEighteen}>Days</Text>
                   </View>
-                  {isAlreadyMatched(user.matched, param.id) ? (
-                    ride.days && (
-                      <View style={styles.days}>
-                        {Object.entries(days).map(([k, v]) => (
-                          <View key={k} style={ride.days.some(day => day.day === k && day.passengers.includes(user.uid)) ? styles.buttonDayChoosen : styles.buttonDayUnChoosen}>
-                            <Text style={ride.days.some(day => day.day === k && day.passengers.includes(user.uid)) ? styles.buttonDayTextUnChoosen : styles.buttonDayTextChoosen}>{v}</Text>
-                          </View>
-                        ))}
-                      </View>
-                    )
-                  ) : (
-                    ride.days && (
-                      <View style={styles.days}>
-                        {Object.entries(days).map(([k, v]) => (
-                          <View key={k} style={ride.days.some(day => day.day === k && (day.active === true && day.full === false) ) ? styles.buttonDayChoosen : styles.buttonDayUnChoosen}>
-                            <Text style={ride.days.some(day => day.day === k && (day.active === true && day.full === false)) ? styles.buttonDayTextUnChoosen : styles.buttonDayTextChoosen}>{v}</Text>
-                          </View>
-                        ))}
-                      </View>
-                    )
-                  )}
+                  {isAlreadyMatched(user.matched, param.id)
+                    ? ride.days && (
+                        <View style={styles.days}>
+                          {Object.entries(days).map(([k, v]) => (
+                            <View
+                              key={k}
+                              style={
+                                ride.days.some((day) => day.day === k && day.passengers.includes(user.uid))
+                                  ? styles.buttonDayChoosen
+                                  : styles.buttonDayUnChoosen
+                              }
+                            >
+                              <Text
+                                style={
+                                  ride.days.some((day) => day.day === k && day.passengers.includes(user.uid))
+                                    ? styles.buttonDayTextUnChoosen
+                                    : styles.buttonDayTextChoosen
+                                }
+                              >
+                                {v}
+                              </Text>
+                            </View>
+                          ))}
+                        </View>
+                      )
+                    : ride.days && (
+                        <View style={styles.days}>
+                          {Object.entries(days).map(([k, v]) => (
+                            <View
+                              key={k}
+                              style={
+                                ride.days.some((day) => day.day === k && day.active === true && day.full === false)
+                                  ? styles.buttonDayChoosen
+                                  : styles.buttonDayUnChoosen
+                              }
+                            >
+                              <Text
+                                style={
+                                  ride.days.some((day) => day.day === k && day.active === true && day.full === false)
+                                    ? styles.buttonDayTextUnChoosen
+                                    : styles.buttonDayTextChoosen
+                                }
+                              >
+                                {v}
+                              </Text>
+                            </View>
+                          ))}
+                        </View>
+                      )}
                 </View>
                 <View style={styles.row}>
                   <View style={styles.center}>
@@ -196,15 +224,6 @@ export default function App() {
                   <Text style={styles.fontSixteen}>{ride.user.aboutMe}</Text>
                 </View>
               </View>
-              {/* {isRideBelongToCurrUser() && ride.passengers && (
-              <View>
-                <Text style={styles.headerForSection}>Passengers</Text>
-                {ride.passengers.map((passenger, index) => {
-                  const u = getUserById(passenger);
-                  return <Text key={passenger} style={styles.fontSixteen}>{`${index + 1}. ${u.firstName} ${u.lastName}`}</Text>;
-                })}
-              </View>
-            )} */}
             </View>
             <MapScreen x1={ride.startLocation.lat} y1={ride.startLocation.lon} x2={ride.endLocation.lat} y2={ride.endLocation.lon} />
           </>
@@ -227,17 +246,21 @@ export default function App() {
           </TouchableOpacity>
         )}
         {ride.days && (
-        <DaysPicker
-          availableDays={ride.days.filter(d => d.active).filter(d => !d.full).map(d => (d.day))}
-          isVisible={showDaysPicker}
-          onDiscard={() => setShowDaysPicker(false)}
-          onConfirm={() => {
-            handleMatchRide();
-            setShowDaysPicker(false);
-          }}
-          pickedDays={pickedDays}
-          setPickedDays={setPickedDays}
-        />)}
+          <DaysPicker
+            availableDays={ride.days
+              .filter((d) => d.active)
+              .filter((d) => !d.full)
+              .map((d) => d.day)}
+            isVisible={showDaysPicker}
+            onDiscard={() => setShowDaysPicker(false)}
+            onConfirm={() => {
+              handleMatchRide();
+              setShowDaysPicker(false);
+            }}
+            pickedDays={pickedDays}
+            setPickedDays={setPickedDays}
+          />
+        )}
         <StatusBar style="auto" />
       </SafeAreaView>
     )
@@ -314,7 +337,6 @@ const styles = StyleSheet.create({
   textEnv: {
     marginTop: 8,
     marginBottom: "auto",
-    // paddingVertical: 5,
   },
   text: {
     fontSize: 16,

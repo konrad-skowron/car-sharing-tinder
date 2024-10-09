@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import app from "../firebaseConfig";
 import { getFirestore, collection, query, where, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove, deleteDoc, documentId } from "firebase/firestore";
-import { getCoordinatesRange, isLocationInRange, isLocationinZone } from "../utils/Index";
+import { getCoordinatesRange, isLocationInRange, isLocationinZone } from "../utils";
 import { useAuthContext } from "./AuthProvider";
 
 const DataContext = createContext();
@@ -13,8 +13,8 @@ const DataProvider = ({ children }) => {
   const [availableRides, setAvailableRides] = useState([]);
   const [matchedRides, setMatchedRides] = useState([]);
   const [userRides, setUserRides] = useState([]);
-  const {user, isLogged } = useAuthContext();
-  const [users ] = useState([]);
+  const { user, isLogged } = useAuthContext();
+  const [users] = useState([]);
 
   useEffect(() => {
     if (isLogged) {
@@ -46,13 +46,12 @@ const DataProvider = ({ children }) => {
         setAvailableRides(ar.filteredByLocation);
 
         const getBetterRides = async () => {
-            const betterRides = await getAvaibleRidesByAcurateLocation(ar.pairs, rangeDistance);
-            if (betterRides) {
-                setAvailableRides(betterRides);
-            }
+          const betterRides = await getAvaibleRidesByAcurateLocation(ar.pairs, rangeDistance);
+          if (betterRides) {
+            setAvailableRides(betterRides);
+          }
         };
         getBetterRides();
-       
 
         const mr = await getMatchedRides(user.matched);
         setMatchedRides(mr);
@@ -68,25 +67,34 @@ const DataProvider = ({ children }) => {
 
   const getAvaibleRidesByAcurateLocation = async (pairRides, rangeDistance) => {
     let acurateRides = [];
-    for(const ride of pairRides) {
+    for (const ride of pairRides) {
       const [ownRide, potentialRide] = ride;
       const ownStartLocation = ownRide.startLocation;
       const ownEndLocation = ownRide.endLocation;
       const potentialStartLocation = potentialRide.startLocation;
       const potentialEndLocation = potentialRide.endLocation;
-      const startLocationCheck = await isLocationinZone(ownStartLocation.lat, ownStartLocation.lon, 
-        potentialStartLocation.lat, potentialStartLocation.lon, rangeDistance);
-       const endLocationCheck = await isLocationinZone(ownEndLocation.lat, ownEndLocation.lon,
-         potentialEndLocation.lat, potentialEndLocation.lon, rangeDistance);
-      if (startLocationCheck && endLocationCheck ) {
+      const startLocationCheck = await isLocationinZone(
+        ownStartLocation.lat,
+        ownStartLocation.lon,
+        potentialStartLocation.lat,
+        potentialStartLocation.lon,
+        rangeDistance
+      );
+      const endLocationCheck = await isLocationinZone(
+        ownEndLocation.lat,
+        ownEndLocation.lon,
+        potentialEndLocation.lat,
+        potentialEndLocation.lon,
+        rangeDistance
+      );
+      if (startLocationCheck && endLocationCheck) {
         acurateRides.push(potentialRide);
-      };      
+      }
     }
-    
-    return acurateRides;
 
+    return acurateRides;
   };
-  
+
   const getAvailableRidesForCurrentUser = async (userRides, rangeDistance) => {
     let filteredRideIds = [];
     let resultRides = [];
@@ -106,14 +114,14 @@ const DataProvider = ({ children }) => {
           resultRideIds = [...docSnapBefore.data().rides, ...docSnapCurr.data().rides, ...docSnapAfter.data().rides].filter((rideId) => rideId != id);
           resultRideIds = resultRideIds.filter((rideId) => !user.matched.includes(rideId) && !user.rides.includes(rideId));
         }
-        
+
         if (resultRideIds.length > 0) {
           filteredRideIds = [...Array.from(new Set(resultRideIds)), ...filteredRideIds];
         }
       }
     }
-    
-    filteredRideIds = Array.from(new Set(filteredRideIds))
+
+    filteredRideIds = Array.from(new Set(filteredRideIds));
     for (const rid of filteredRideIds) {
       const docSnapRide = await getDoc(doc(db, "rides", rid));
       const ride = docSnapRide.data();
@@ -124,8 +132,8 @@ const DataProvider = ({ children }) => {
       }
     }
 
-    resultRides = resultRides.filter(obj => {
-      return obj.days.some(day => day.active === true && day.full === false);
+    resultRides = resultRides.filter((obj) => {
+      return obj.days.some((day) => day.active === true && day.full === false);
     });
 
     let filteredByLocation = [];
@@ -135,10 +143,11 @@ const DataProvider = ({ children }) => {
       const endLocationRange = getCoordinatesRange(ownRide.endLocation.lat, ownRide.endLocation.lon, rangeDistance);
       for (const potentialRide of resultRides) {
         if (
-          potentialRide.carDetails && Object.keys(potentialRide.carDetails).length > 0 
-          && filteredByLocation.includes(potentialRide) == false 
-          && isLocationInRange(potentialRide.startLocation.lat, potentialRide.startLocation.lon, startLocationRange) 
-          && isLocationInRange(potentialRide.endLocation.lat, potentialRide.endLocation.lon, endLocationRange)
+          potentialRide.carDetails &&
+          Object.keys(potentialRide.carDetails).length > 0 &&
+          filteredByLocation.includes(potentialRide) == false &&
+          isLocationInRange(potentialRide.startLocation.lat, potentialRide.startLocation.lon, startLocationRange) &&
+          isLocationInRange(potentialRide.endLocation.lat, potentialRide.endLocation.lon, endLocationRange)
         ) {
           filteredByLocation.push(potentialRide);
           const pair = [ownRide, potentialRide];
@@ -149,21 +158,21 @@ const DataProvider = ({ children }) => {
 
     const lists = {
       filteredByLocation,
-      pairs
-    }
+      pairs,
+    };
 
     return lists;
   };
 
   const addRideToMatched = async (rideId, newPassengerId, pickedDays) => {
     try {
-      const docRef = doc(db, 'rides', rideId);
+      const docRef = doc(db, "rides", rideId);
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
-        console.log('No such document!');
+        console.log("No such document!");
         return;
       }
-  
+
       const data = docSnap.data();
       const days = data.days;
 
@@ -182,35 +191,34 @@ const DataProvider = ({ children }) => {
           resultRideIds = [...docSnapBefore.data().rides, ...docSnapCurr.data().rides, ...docSnapAfter.data().rides].filter((rId) => rId != rideId);
           resultRideIds = resultRideIds.filter((rId) => user.rides.includes(rId));
         }
-        
+
         if (resultRideIds.length > 0) {
           filteredRideIdsToDeactivation = [...Array.from(new Set(resultRideIds)), ...filteredRideIdsToDeactivation];
         }
       }
 
-      filteredRideIdsToDeactivation = Array.from(new Set(filteredRideIdsToDeactivation))
+      filteredRideIdsToDeactivation = Array.from(new Set(filteredRideIdsToDeactivation));
 
       for (const rideId of filteredRideIdsToDeactivation) {
-        const insideDocRef = doc(db, 'rides', rideId);
+        const insideDocRef = doc(db, "rides", rideId);
         const insideDocSnap = await getDoc(insideDocRef);
 
-        const deactiveDays = insideDocSnap.data().days.map(day => {
-          if (pickedDays.includes(day.day)){
+        const deactiveDays = insideDocSnap.data().days.map((day) => {
+          if (pickedDays.includes(day.day)) {
             day.active = false;
             return {
-              ...day
+              ...day,
             };
           }
           return day;
-        })
+        });
 
         await updateDoc(insideDocRef, { days: deactiveDays });
-        console.log('Deactivate!');
+        console.log("Deactivate!");
       }
-  
-      const updatedDays = days.map(day => {
-        if (pickedDays.includes(day.day)) {
 
+      const updatedDays = days.map((day) => {
+        if (pickedDays.includes(day.day)) {
           const isFull = parseInt(day.passengers.length + 1) >= parseInt(data.carDetails.freeSeats);
 
           if (isFull) {
@@ -219,14 +227,14 @@ const DataProvider = ({ children }) => {
 
           return {
             ...day,
-            passengers: [...day.passengers, newPassengerId]
+            passengers: [...day.passengers, newPassengerId],
           };
         }
         return day;
       });
-  
+
       await updateDoc(docRef, { days: updatedDays });
-      console.log('Passenger added successfully!');
+      console.log("Passenger added successfully!");
 
       await updateDoc(doc(db, "users", user.uid), {
         matched: arrayUnion(rideId),
@@ -238,18 +246,18 @@ const DataProvider = ({ children }) => {
 
   const removeRideFromMatched = async (rideId, newPassengerId) => {
     try {
-      const docRef = doc(db, 'rides', rideId);
+      const docRef = doc(db, "rides", rideId);
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
-        console.log('No such document!');
+        console.log("No such document!");
         return;
       }
-  
+
       const data = docSnap.data();
       const days = data.days;
 
       const userDays = [];
-      days.forEach(day => {
+      days.forEach((day) => {
         if (day.passengers.includes(newPassengerId) && !userDays.includes(day.day)) {
           userDays.push(day.day);
         }
@@ -270,48 +278,47 @@ const DataProvider = ({ children }) => {
           resultRideIds = [...docSnapBefore.data().rides, ...docSnapCurr.data().rides, ...docSnapAfter.data().rides].filter((rId) => rId != rideId);
           resultRideIds = resultRideIds.filter((rId) => user.rides.includes(rId));
         }
-        
+
         if (resultRideIds.length > 0) {
           filteredRideIdsToActivation = [...Array.from(new Set(resultRideIds)), ...filteredRideIdsToActivation];
         }
       }
 
-      filteredRideIdsToActivation = Array.from(new Set(filteredRideIdsToActivation))
+      filteredRideIdsToActivation = Array.from(new Set(filteredRideIdsToActivation));
 
       for (const rideId of filteredRideIdsToActivation) {
-        const insideDocRef = doc(db, 'rides', rideId);
+        const insideDocRef = doc(db, "rides", rideId);
         const insideDocSnap = await getDoc(insideDocRef);
 
-        const deactiveDays = insideDocSnap.data().days.map(day => {
-          if (userDays.includes(day.day)){
+        const deactiveDays = insideDocSnap.data().days.map((day) => {
+          if (userDays.includes(day.day)) {
             day.active = true;
             return {
-              ...day
+              ...day,
             };
           }
           return day;
-        })
+        });
 
         await updateDoc(insideDocRef, { days: deactiveDays });
-        console.log('Activate!');
+        console.log("Activate!");
       }
-  
-      const updatedDays = days.map(day => {
 
+      const updatedDays = days.map((day) => {
         const isNotFull = parseInt(day.passengers.length - 1) <= parseInt(data.carDetails.freeSeats);
 
         if (isNotFull) {
           day.full = false;
         }
 
-          return {
-            ...day,
-            passengers: day.passengers.filter(p => p !== newPassengerId)
-          };
+        return {
+          ...day,
+          passengers: day.passengers.filter((p) => p !== newPassengerId),
+        };
       });
-  
+
       await updateDoc(docRef, { days: updatedDays });
-      console.log('Passenger removed successfully!');
+      console.log("Passenger removed successfully!");
 
       await updateDoc(doc(db, "users", user.uid), {
         matched: arrayRemove(rideId),
@@ -326,12 +333,11 @@ const DataProvider = ({ children }) => {
       const rideToDelete = getRideByUid(rideId);
       const [hours, minutes] = rideToDelete.time.split(":").map(Number);
       const timeId = hours * 60 + minutes - (minutes % 5);
-  
+
       for (const day of rideToDelete.days) {
         for (const passenger of day.passengers) {
-
           const userDays = [];
-          rideToDelete.days.forEach(day => {
+          rideToDelete.days.forEach((day) => {
             if (day.passengers.includes(passenger) && !userDays.includes(day.day)) {
               userDays.push(day.day);
             }
@@ -339,7 +345,7 @@ const DataProvider = ({ children }) => {
 
           const docSnapUser = await getDoc(doc(db, "users", passenger));
           const userToActivate = docSnapUser.data();
-  
+
           let filteredRideIdsToActivation = [];
           for (const dayObject of rideToDelete.days) {
             const docSnapBefore = await getDoc(doc(db, dayObject.day, Math.max(0, timeId - 5).toString()));
@@ -350,50 +356,50 @@ const DataProvider = ({ children }) => {
               resultRideIds = [...docSnapBefore.data().rides, ...docSnapCurr.data().rides, ...docSnapAfter.data().rides].filter((rId) => rId != rideId);
               resultRideIds = resultRideIds.filter((rId) => userToActivate.rides.includes(rId));
             }
-  
+
             if (resultRideIds.length > 0) {
               filteredRideIdsToActivation = [...Array.from(new Set(resultRideIds)), ...filteredRideIdsToActivation];
             }
           }
-  
-          filteredRideIdsToActivation = Array.from(new Set(filteredRideIdsToActivation))
-  
+
+          filteredRideIdsToActivation = Array.from(new Set(filteredRideIdsToActivation));
+
           for (const rideId of filteredRideIdsToActivation) {
-            const insideDocRef = doc(db, 'rides', rideId);
+            const insideDocRef = doc(db, "rides", rideId);
             const insideDocSnap = await getDoc(insideDocRef);
-  
-            const deactiveDays = insideDocSnap.data().days.map(day => {
+
+            const deactiveDays = insideDocSnap.data().days.map((day) => {
               if (userDays.includes(day.day)) {
                 day.active = true;
                 return {
-                  ...day
+                  ...day,
                 };
               }
               return day;
-            })
-  
+            });
+
             await updateDoc(insideDocRef, { days: deactiveDays });
-            console.log('Activate!');
+            console.log("Activate!");
           }
         }
       }
-  
+
       await deleteDoc(doc(db, "rides", rideId));
       await updateDoc(doc(db, "users", user.uid), {
         rides: arrayRemove(rideId),
       });
-  
+
       for (const dayObject of rideToDelete.days) {
         await updateDoc(doc(db, dayObject.day, timeId.toString()), {
           rides: arrayRemove(rideId),
         });
       }
-  
+
       if (rideToDelete.passengers) {
         for (const userId of rideToDelete.passengers) {
           const docSnapUser = await getDoc(doc(db, "users", userId));
           const userData = docSnapUser.data();
-  
+
           if (userData?.matched?.includes(rideId)) {
             await updateDoc(doc(db, "users", userId), {
               matched: arrayRemove(rideId),

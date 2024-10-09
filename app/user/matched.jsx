@@ -5,7 +5,7 @@ import RideTile from "../../components/RideTile";
 import { useDataContext } from "../../context/DataProvider";
 import { FONTS } from "../../constants/Fonts";
 
-const matched = () => {
+export default function Matched() {
   const { loading, reloadRides, userRides, matchedRides } = useDataContext();
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const matched = () => {
           Matched:
         </Text>
         {loading ? (
-          <ActivityIndicator size="large"/>
+          <ActivityIndicator size="large" />
         ) : matchedRides.length ? (
           matchedRides.map((ride, index) => (
             <Link key={index} href={`ride/${ride.id}`} asChild>
@@ -57,14 +57,13 @@ const matched = () => {
           Own:
         </Text>
         {loading ? (
-          <ActivityIndicator size="large"/>
+          <ActivityIndicator size="large" />
         ) : (
           <View style={styles.tileContainer}>
             {userRides.length ? (
               userRides.map((ride, index) => (
                 <Link key={index} href={`ride/${ride.id}`} asChild>
                   <TouchableOpacity>
-                    {/* <RideTile ride={{ ...ride, imageUrl: user.imageUrl, aboutMe: user.aboutMe }} /> */}
                     <RideTile ride={ride} />
                   </TouchableOpacity>
                 </Link>
@@ -78,7 +77,7 @@ const matched = () => {
       </ScrollView>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   plusButton: {
@@ -112,5 +111,3 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
 });
-
-export default matched;
