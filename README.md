@@ -3,7 +3,7 @@
 - [x] Usunąć car details z `user/about` screen
 - [x] Usunąć/Pomyśleć coś z postcode zwracanym z API (nie każda lokalizacja posiada postcode co powoduje błąd przy zapisie do bazy danych)
 - [x] Znowu poprawić screen z wybieraniem i zapisywaniem godziny. Nie wyświetla zera gdy liczba minut jest jednocyfrowa. Powinno byc np. 23:05 a jest 23:5
-- [ ] Pomyśleć coś z wyświetlaniem adresów bo poki co wyświetlamy address_line1. Czasami ta nazwa nic nie mówi a czasami jest tak długa, że się nie mieści
+- [X] Pomyśleć coś z wyświetlaniem adresów bo poki co wyświetlamy address_line1. Czasami ta nazwa nic nie mówi a czasami jest tak długa, że się nie mieści
 - [x] Dodać screen edycji usera - żeby mógł dodać opis about me i zmienić nazwę swoją nazwę, numer, zdjęcie
 - [x] Rozszerzyć screen edycji usera o przesyłanie zdjęcia
 - [x] Podczas tworzenia ogłoszenia dodać pole "imageUrl" i przypisać temu zdjęcie użytkownika, będzie to zdjęcie wyświetlane przy ogłoszeniu
@@ -20,10 +20,10 @@
 - [x] Zmienić strukture obiektu nowego przejazdu, active boolean, full boolean, passengers array dla dni, które wybrał użytkownik
   - [x] Dodać modal z wyborem dni na screenie przejazdu
   - [x] Uzupełnić filtrowanie o zajęte przejazdy
-  - [ ] Dodać pasażerów na screenie właściciela przejazdu
-  - [ ] Dodać wyświetlanie dni na ktore zapisał sie user - W TEORI ZROBIONE ALE CIULOWO SIĘ ODŚWIEŻA
+  - [X] Dodać pasażerów na screenie właściciela przejazdu
+  - [X] Dodać wyświetlanie dni na ktore zapisał sie user
 - [x] Dobieranie dostępnych przejazdów dla użytkownika na podstawie lokalizacji (teraz mamy tylko dni i godziny)
-- [ ] Dodać powiadomienia
+- [X] Dodać powiadomienia
 
 # Expo Router Example
 
