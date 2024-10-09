@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import MainButton from "../../components/MainButton";
 import "../Home";
-import "../Index";
+import "../index";
 import { Stack, useRouter } from "expo-router";
 import { useAuthContext } from "../../context/AuthProvider";
 

@@ -14,8 +14,7 @@ export default function EndLocationPick() {
   const [selectedEndLocation, setSelectedEndLocation] = useState(null);
   const { setEndLocation } = useNewRideContext();
 
-  //TO NA TESTA, ŻEBY NIE WYSŁAĆ CO CHWILĘ REQUESTÓW
-  const [data, setData] = useState([
+  const [data, setData] = useState([//testowe dane
     {
       address_line1: "C-15",
       address_line2: "Zygmunta Janiszewskiego 11a, 50-372 Wrocław, Poland",

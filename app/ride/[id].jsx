@@ -7,7 +7,7 @@ import { FONTS } from "../../constants/Index";
 import { useDataContext } from "../../context/DataProvider";
 import { useAuthContext } from "../../context/AuthProvider";
 import MapScreen from "../../components/MapScreen";
-import DaysPicker from "../../components/DaysPicker";
+import DaysPicker from "../../components/daysPicker";
 
 const days = {
   Monday: "M",

@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import NewRideProvider from "../../../context/NewRideProvider";
 import { Stack } from "expo-router";
 

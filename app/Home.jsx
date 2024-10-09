@@ -1,11 +1,11 @@
-import React, { useEffect } from "react-native";
+import React, { useEffect } from 'react';
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, ActivityIndicator } from "react-native";
 import { Link, Stack, useRouter } from "expo-router";
 import { COLORS, FONTS } from "../constants/Index.jsx";
 import { AntDesign } from "@expo/vector-icons";
 import RideTile from "../components/RideTile.jsx";
-import "./Index.jsx";
+import "./index.jsx";
 import { useDataContext } from "../context/DataProvider.jsx";
 import { useAuthContext } from "../context/AuthProvider.jsx";
 
